@@ -1,0 +1,50 @@
+{
+  "instrument_version": "qualification-attempt-v1",
+  "attempt_id": "synthetic-qa-001",
+  "t0": { "attempted_at": "2026-07-01T14:00:00Z", "captured_at": "2026-07-01T14:03:00Z", "collector_id": "researcher-01" },
+  "authoritative_state": {
+    "snapshot_at": "2026-07-01T14:00:00Z",
+    "evidence": [{
+      "evidence_id": "auth-001", "field": "operating_authority_status", "value": "ACTIVE",
+      "as_of": "2026-07-01T13:58:00Z", "captured_at": "2026-07-01T14:01:00Z",
+      "source": { "source_type": "REGULATOR", "locator": "synthetic://regulator/status/123", "retrieved_at": "2026-07-01T14:01:00Z", "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+      "signal_type": "MEASURED_FACT"
+    }]
+  },
+  "platform_state": {
+    "snapshot_at": "2026-07-01T14:00:00Z",
+    "evidence": [{
+      "evidence_id": "platform-001", "field": "operating_authority_status", "value": "PENDING",
+      "as_of": "2026-06-30T20:00:00Z", "captured_at": "2026-07-01T14:02:00Z",
+      "source": { "source_type": "PLATFORM", "locator": "synthetic://platform/screenshot/attempt-001", "retrieved_at": "2026-07-01T14:02:00Z", "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" },
+      "signal_type": "MEASURED_FACT"
+    }]
+  },
+  "policy": {
+    "policy_type": "PLATFORM_REQUIREMENT", "owner": "Synthetic Platform", "version": "2026-06",
+    "source": { "source_type": "PLATFORM", "locator": "synthetic://platform/policy/authority-active", "retrieved_at": "2026-07-01T13:55:00Z", "content_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" },
+    "notes": "Synthetic platform requirement, not represented as a regulatory mandate."
+  },
+  "rule": {
+    "owner": "Synthetic Platform", "version": "2026-06", "observability": "EXACT", "signal_type": "MEASURED_FACT",
+    "source": { "source_type": "PLATFORM", "locator": "synthetic://platform/policy/authority-active", "retrieved_at": "2026-07-01T13:55:00Z", "content_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" },
+    "predicate": { "expression": "operating_authority_status == ACTIVE", "threshold": "ACTIVE", "unit": null, "t0_evaluation": { "result": "SATISFIED", "evidence_refs": ["auth-001"] } }
+  },
+  "decision": { "state": "REJECT", "decided_at": "2026-07-01T14:02:30Z", "actor": "Synthetic Platform qualification gate", "reason_observed": "Operating authority is not active." },
+  "later_evidence": [{
+    "sequence": 1, "observed_at": "2026-07-02T10:00:00Z", "relationship_to_t0": "CONFIRMS_T0_STATE",
+    "evidence_id": "later-001", "field": "platform_support_resolution", "value": "Platform confirmed its cached status was stale and approved carrier",
+    "as_of": "2026-07-02T09:55:00Z", "captured_at": "2026-07-02T10:00:00Z",
+    "source": { "source_type": "PLATFORM", "locator": "synthetic://platform/support/case-001", "retrieved_at": "2026-07-02T10:00:00Z", "content_hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" },
+    "signal_type": "MEASURED_FACT"
+  }],
+  "economic_outcome": {
+    "status": "OBSERVED", "currency": "USD", "amount": 450, "basis": "Synthetic documented contribution margin of load missed during rejection interval", "observed_at": "2026-07-02T12:00:00Z",
+    "source": { "source_type": "CARRIER", "locator": "synthetic://carrier/load/offer-001", "retrieved_at": "2026-07-02T12:00:00Z", "content_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" }
+  },
+  "adjudication": {
+    "classification": "CONFIRMED_FALSE_GATE", "adjudicated_at": "2026-07-03T15:00:00Z", "adjudicator_id": "reviewer-02",
+    "rationale": "The observed platform predicate required ACTIVE status; timestamped authoritative evidence shows it was ACTIVE before the restrictive T0 decision, and later support evidence confirms stale representation.",
+    "evidence_refs": ["auth-001", "platform-001", "later-001"]
+  }
+}
