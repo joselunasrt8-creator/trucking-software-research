@@ -8,6 +8,7 @@ from pathlib import Path
 
 CLASSIFICATIONS = {"VALID_GATE", "CANDIDATE_FALSE_GATE", "CONFIRMED_FALSE_GATE", "INDETERMINATE"}
 DECISIONS = {"ALLOW", "DELAY", "REVIEW", "REJECT"}
+RECONCILIATION_STATUSES = {"AGREEMENT", "DISAGREEMENT_RESOLVED"}
 
 
 def timestamp(value):
@@ -49,6 +50,33 @@ def validate(record):
         if observed <= t0 or observed < previous_time:
             errors.append("later evidence must be observed after T0 in chronological order")
         previous_sequence, previous_time = item["sequence"], observed
+
+    assessments = record.get("reviewer_assessments", [])
+    if len(assessments) < 2:
+        errors.append("at least two independent reviewer assessments are required")
+    reviewer_ids = [item.get("reviewer_id") for item in assessments]
+    if len(reviewer_ids) != len(set(reviewer_ids)):
+        errors.append("reviewer assessments must use distinct reviewer_id values")
+    for item in assessments:
+        if item.get("classification") not in CLASSIFICATIONS:
+            errors.append("invalid reviewer assessment classification")
+
+    adjudication = record.get("adjudication", {})
+    reconciliation_status = adjudication.get("reconciliation_status")
+    if reconciliation_status not in RECONCILIATION_STATUSES:
+        errors.append("invalid reconciliation status")
+    assessment_classes = {item.get("classification") for item in assessments if item.get("classification") in CLASSIFICATIONS}
+    if reconciliation_status == "AGREEMENT":
+        if len(assessment_classes) != 1 or classification not in assessment_classes:
+            errors.append("AGREEMENT requires all reviewer assessments to match final classification")
+    if reconciliation_status == "DISAGREEMENT_RESOLVED" and len(assessment_classes) < 2:
+        errors.append("DISAGREEMENT_RESOLVED requires differing reviewer assessments")
+
+    if assessments:
+        latest_assessment = max(timestamp(item["assessed_at"]) for item in assessments)
+        if timestamp(adjudication["adjudicated_at"]) < latest_assessment:
+            errors.append("final adjudication must occur after independent reviewer assessments")
+
     return errors
 
 
