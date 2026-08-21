@@ -5,7 +5,7 @@
   "description": "Research record for one carrier-qualification gate attempt; not a production decision contract.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["instrument_version", "attempt_id", "t0", "authoritative_state", "platform_state", "policy", "rule", "decision", "later_evidence", "economic_outcome", "adjudication"],
+  "required": ["instrument_version", "attempt_id", "t0", "authoritative_state", "platform_state", "policy", "rule", "decision", "later_evidence", "economic_outcome", "reviewer_assessments", "adjudication"],
   "properties": {
     "instrument_version": { "const": "qualification-attempt-v1" },
     "attempt_id": { "$ref": "#/$defs/nonEmptyString" },
@@ -85,13 +85,20 @@
         "source": { "anyOf": [{ "$ref": "#/$defs/source" }, { "type": "null" }] }
       }
     },
+    "reviewer_assessments": {
+      "description": "Independent pre-reconciliation classifications. These must be recorded before final adjudication and must not be overwritten by the reconciled result.",
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/reviewerAssessment" }
+    },
     "adjudication": {
       "type": "object", "additionalProperties": false,
-      "required": ["classification", "adjudicated_at", "adjudicator_id", "rationale", "evidence_refs"],
+      "required": ["classification", "adjudicated_at", "resolver_id", "reconciliation_status", "rationale", "evidence_refs"],
       "properties": {
-        "classification": { "enum": ["VALID_GATE", "CANDIDATE_FALSE_GATE", "CONFIRMED_FALSE_GATE", "INDETERMINATE"] },
+        "classification": { "$ref": "#/$defs/classification" },
         "adjudicated_at": { "$ref": "#/$defs/dateTime" },
-        "adjudicator_id": { "$ref": "#/$defs/nonEmptyString" },
+        "resolver_id": { "$ref": "#/$defs/nonEmptyString" },
+        "reconciliation_status": { "enum": ["AGREEMENT", "DISAGREEMENT_RESOLVED"] },
         "rationale": { "$ref": "#/$defs/nonEmptyString" },
         "evidence_refs": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyString" }, "uniqueItems": true }
       }
@@ -135,6 +142,7 @@
   "$defs": {
     "nonEmptyString": { "type": "string", "minLength": 1 },
     "dateTime": { "type": "string", "format": "date-time" },
+    "classification": { "enum": ["VALID_GATE", "CANDIDATE_FALSE_GATE", "CONFIRMED_FALSE_GATE", "INDETERMINATE"] },
     "signalType": { "enum": ["MEASURED_FACT", "CALIBRATED_RISK", "UNCERTAINTY_PROXY", "UNKNOWN_PROPRIETARY_SIGNAL"] },
     "source": {
       "type": "object", "additionalProperties": false,
@@ -177,6 +185,17 @@
           "relationship_to_t0": { "enum": ["CONFIRMS_T0_STATE", "CONTRADICTS_T0_STATE", "POST_T0_CHANGE", "RESOLUTION_EVENT", "OTHER"] }
         } }
       ]
+    },
+    "reviewerAssessment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reviewer_id", "classification", "assessed_at", "rationale", "evidence_refs"],
+      "properties": {
+        "reviewer_id": { "$ref": "#/$defs/nonEmptyString" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "assessed_at": { "$ref": "#/$defs/dateTime" },
+        "rationale": { "$ref": "#/$defs/nonEmptyString" },
+        "evidence_refs": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyString" }, "uniqueItems": true }
+      }
     }
   }
 }
