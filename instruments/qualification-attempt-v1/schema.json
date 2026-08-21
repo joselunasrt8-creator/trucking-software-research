@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/joselunasrt8-creator/trucking-software-research/instruments/qualification-attempt-v1/schema.json",
+  "title": "qualification-attempt-v1",
+  "description": "Research record for one carrier-qualification gate attempt; not a production decision contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["instrument_version", "attempt_id", "t0", "authoritative_state", "platform_state", "policy", "rule", "decision", "later_evidence", "economic_outcome", "reviewer_assessments", "adjudication"],
+  "properties": {
+    "instrument_version": { "const": "qualification-attempt-v1" },
+    "attempt_id": { "$ref": "#/$defs/nonEmptyString" },
+    "t0": {
+      "type": "object", "additionalProperties": false,
+      "required": ["attempted_at", "captured_at", "collector_id"],
+      "properties": {
+        "attempted_at": { "$ref": "#/$defs/dateTime" },
+        "captured_at": { "$ref": "#/$defs/dateTime" },
+        "collector_id": { "$ref": "#/$defs/nonEmptyString" }
+      }
+    },
+    "authoritative_state": { "$ref": "#/$defs/t0EvidenceSet" },
+    "platform_state": { "$ref": "#/$defs/t0EvidenceSet" },
+    "policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["policy_type", "owner", "source", "version"],
+      "properties": {
+        "policy_type": { "enum": ["REGULATORY_REQUIREMENT", "BROKER_POLICY", "PLATFORM_REQUIREMENT", "RISK_SIGNAL"] },
+        "owner": { "$ref": "#/$defs/nonEmptyString" },
+        "source": { "$ref": "#/$defs/source" },
+        "version": { "type": ["string", "null"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "rule": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner", "source", "version", "observability", "predicate", "signal_type"],
+      "properties": {
+        "owner": { "$ref": "#/$defs/nonEmptyString" },
+        "source": { "$ref": "#/$defs/source" },
+        "version": { "type": ["string", "null"] },
+        "observability": { "enum": ["EXACT", "PARTIAL", "UNKNOWN_PROPRIETARY"] },
+        "predicate": {
+          "type": "object", "additionalProperties": false,
+          "required": ["expression", "threshold", "unit", "t0_evaluation"],
+          "properties": {
+            "expression": { "type": ["string", "null"] },
+            "threshold": { "type": ["string", "number", "boolean", "null"] },
+            "unit": { "type": ["string", "null"] },
+            "t0_evaluation": {
+              "type": "object", "additionalProperties": false,
+              "required": ["result", "evidence_refs"],
+              "properties": {
+                "result": { "enum": ["SATISFIED", "NOT_SATISFIED", "UNKNOWN"] },
+                "evidence_refs": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyString" }, "uniqueItems": true }
+              }
+            }
+          }
+        },
+        "signal_type": { "$ref": "#/$defs/signalType" }
+      }
+    },
+    "decision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state", "decided_at", "actor", "reason_observed"],
+      "properties": {
+        "state": { "enum": ["ALLOW", "DELAY", "REVIEW", "REJECT"] },
+        "decided_at": { "$ref": "#/$defs/dateTime" },
+        "actor": { "$ref": "#/$defs/nonEmptyString" },
+        "reason_observed": { "type": ["string", "null"] }
+      }
+    },
+    "later_evidence": {
+      "description": "Append-only observations made after T0, ordered by observed_at; entries never replace T0 evidence.",
+      "type": "array", "items": { "$ref": "#/$defs/laterEvidence" }
+    },
+    "economic_outcome": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "currency", "amount", "basis", "observed_at", "source"],
+      "properties": {
+        "status": { "enum": ["OBSERVED", "ESTIMATED", "NOT_OBSERVED", "UNKNOWN"] },
+        "currency": { "type": ["string", "null"], "pattern": "^[A-Z]{3}$" },
+        "amount": { "type": ["number", "null"] },
+        "basis": { "type": ["string", "null"] },
+        "observed_at": { "anyOf": [{ "$ref": "#/$defs/dateTime" }, { "type": "null" }] },
+        "source": { "anyOf": [{ "$ref": "#/$defs/source" }, { "type": "null" }] }
+      }
+    },
+    "reviewer_assessments": {
+      "description": "Independent pre-reconciliation classifications. These must be recorded before final adjudication and must not be overwritten by the reconciled result.",
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/reviewerAssessment" }
+    },
+    "adjudication": {
+      "type": "object", "additionalProperties": false,
+      "required": ["classification", "adjudicated_at", "resolver_id", "reconciliation_status", "rationale", "evidence_refs"],
+      "properties": {
+        "classification": { "$ref": "#/$defs/classification" },
+        "adjudicated_at": { "$ref": "#/$defs/dateTime" },
+        "resolver_id": { "$ref": "#/$defs/nonEmptyString" },
+        "reconciliation_status": { "enum": ["AGREEMENT", "DISAGREEMENT_RESOLVED"] },
+        "rationale": { "$ref": "#/$defs/nonEmptyString" },
+        "evidence_refs": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyString" }, "uniqueItems": true }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "adjudication": { "properties": { "classification": { "const": "CONFIRMED_FALSE_GATE" } }, "required": ["classification"] } } },
+      "then": {
+        "properties": {
+          "rule": { "properties": { "predicate": { "properties": { "t0_evaluation": { "properties": { "result": { "const": "SATISFIED" }, "evidence_refs": { "minItems": 1 } }, "required": ["result", "evidence_refs"] } } } } },
+          "decision": { "properties": { "state": { "enum": ["DELAY", "REVIEW", "REJECT"] } } }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "rule": { "properties": { "observability": { "const": "UNKNOWN_PROPRIETARY" } } }
+        }
+      },
+      "then": {
+        "properties": {
+          "rule": {
+            "properties": {
+              "signal_type": { "const": "UNKNOWN_PROPRIETARY_SIGNAL" },
+              "predicate": {
+                "properties": {
+                  "expression": { "type": "null" },
+                  "threshold": { "type": "null" },
+                  "unit": { "type": "null" },
+                  "t0_evaluation": { "properties": { "result": { "const": "UNKNOWN" }, "evidence_refs": { "maxItems": 0 } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "dateTime": { "type": "string", "format": "date-time" },
+    "classification": { "enum": ["VALID_GATE", "CANDIDATE_FALSE_GATE", "CONFIRMED_FALSE_GATE", "INDETERMINATE"] },
+    "signalType": { "enum": ["MEASURED_FACT", "CALIBRATED_RISK", "UNCERTAINTY_PROXY", "UNKNOWN_PROPRIETARY_SIGNAL"] },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_type", "locator", "retrieved_at", "content_hash"],
+      "properties": {
+        "source_type": { "enum": ["REGULATOR", "BROKER", "PLATFORM", "CARRIER", "THIRD_PARTY", "RESEARCHER_OBSERVATION"] },
+        "locator": { "$ref": "#/$defs/nonEmptyString" },
+        "retrieved_at": { "$ref": "#/$defs/dateTime" },
+        "content_hash": { "type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$" }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["evidence_id", "field", "value", "as_of", "captured_at", "source", "signal_type"],
+      "properties": {
+        "evidence_id": { "$ref": "#/$defs/nonEmptyString" },
+        "field": { "$ref": "#/$defs/nonEmptyString" },
+        "value": {},
+        "as_of": { "$ref": "#/$defs/dateTime" },
+        "captured_at": { "$ref": "#/$defs/dateTime" },
+        "source": { "$ref": "#/$defs/source" },
+        "signal_type": { "$ref": "#/$defs/signalType" }
+      }
+    },
+    "t0EvidenceSet": {
+      "type": "object", "additionalProperties": false,
+      "required": ["snapshot_at", "evidence"],
+      "properties": {
+        "snapshot_at": { "$ref": "#/$defs/dateTime" },
+        "evidence": { "type": "array", "items": { "allOf": [{ "$ref": "#/$defs/evidence" }], "unevaluatedProperties": false } }
+      }
+    },
+    "laterEvidence": {
+      "unevaluatedProperties": false,
+      "allOf": [
+        { "$ref": "#/$defs/evidence" },
+        { "type": "object", "required": ["sequence", "observed_at", "relationship_to_t0"], "properties": {
+          "sequence": { "type": "integer", "minimum": 1 },
+          "observed_at": { "$ref": "#/$defs/dateTime" },
+          "relationship_to_t0": { "enum": ["CONFIRMS_T0_STATE", "CONTRADICTS_T0_STATE", "POST_T0_CHANGE", "RESOLUTION_EVENT", "OTHER"] }
+        } }
+      ]
+    },
+    "reviewerAssessment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reviewer_id", "classification", "assessed_at", "rationale", "evidence_refs"],
+      "properties": {
+        "reviewer_id": { "$ref": "#/$defs/nonEmptyString" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "assessed_at": { "$ref": "#/$defs/dateTime" },
+        "rationale": { "$ref": "#/$defs/nonEmptyString" },
+        "evidence_refs": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyString" }, "uniqueItems": true }
+      }
+    }
+  }
+}
