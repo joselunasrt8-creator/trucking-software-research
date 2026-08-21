@@ -42,9 +42,28 @@
     "status": "OBSERVED", "currency": "USD", "amount": 450, "basis": "Synthetic documented contribution margin of load missed during rejection interval", "observed_at": "2026-07-02T12:00:00Z",
     "source": { "source_type": "CARRIER", "locator": "synthetic://carrier/load/offer-001", "retrieved_at": "2026-07-02T12:00:00Z", "content_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" }
   },
+  "reviewer_assessments": [
+    {
+      "reviewer_id": "reviewer-01",
+      "classification": "CONFIRMED_FALSE_GATE",
+      "assessed_at": "2026-07-03T14:30:00Z",
+      "rationale": "Authoritative T0 evidence established ACTIVE authority before the restrictive decision; the platform representation was stale.",
+      "evidence_refs": ["auth-001", "platform-001"]
+    },
+    {
+      "reviewer_id": "reviewer-02",
+      "classification": "CONFIRMED_FALSE_GATE",
+      "assessed_at": "2026-07-03T14:40:00Z",
+      "rationale": "The applicable observed predicate was already satisfied at T0 and later support evidence confirmed the stale platform state.",
+      "evidence_refs": ["auth-001", "platform-001", "later-001"]
+    }
+  ],
   "adjudication": {
-    "classification": "CONFIRMED_FALSE_GATE", "adjudicated_at": "2026-07-03T15:00:00Z", "adjudicator_id": "reviewer-02",
-    "rationale": "The observed platform predicate required ACTIVE status; timestamped authoritative evidence shows it was ACTIVE before the restrictive T0 decision, and later support evidence confirms stale representation.",
+    "classification": "CONFIRMED_FALSE_GATE",
+    "adjudicated_at": "2026-07-03T15:00:00Z",
+    "resolver_id": "resolver-01",
+    "reconciliation_status": "AGREEMENT",
+    "rationale": "Both independent reviewers classified the attempt as a confirmed false gate. The observed platform predicate required ACTIVE status; timestamped authoritative evidence shows it was ACTIVE before the restrictive T0 decision, and later support evidence confirms stale representation.",
     "evidence_refs": ["auth-001", "platform-001", "later-001"]
   }
 }
