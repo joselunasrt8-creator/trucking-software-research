@@ -62,8 +62,34 @@ class QualificationAttemptV1Tests(unittest.TestCase):
     def test_indeterminate_is_valid_without_forcing_complete_evidence(self):
         record = copy.deepcopy(self.example)
         record["adjudication"]["classification"] = "INDETERMINATE"
+        record["reviewer_assessments"][0]["classification"] = "INDETERMINATE"
+        record["reviewer_assessments"][1]["classification"] = "INDETERMINATE"
         record["rule"]["predicate"]["t0_evaluation"] = {"result": "UNKNOWN", "evidence_refs": []}
         self.assertEqual(validator.validate(record), [])
+
+    def test_requires_two_distinct_independent_reviewers(self):
+        record = copy.deepcopy(self.example)
+        record["reviewer_assessments"] = [record["reviewer_assessments"][0]]
+        self.assertIn("at least two independent reviewer assessments are required", validator.validate(record))
+
+        record = copy.deepcopy(self.example)
+        record["reviewer_assessments"][1]["reviewer_id"] = record["reviewer_assessments"][0]["reviewer_id"]
+        self.assertIn("reviewer assessments must use distinct reviewer_id values", validator.validate(record))
+
+    def test_agreement_requires_reviewers_to_match_final_classification(self):
+        record = copy.deepcopy(self.example)
+        record["reviewer_assessments"][1]["classification"] = "CANDIDATE_FALSE_GATE"
+        self.assertIn("AGREEMENT requires all reviewer assessments to match final classification", validator.validate(record))
+
+    def test_disagreement_resolution_requires_differing_reviews(self):
+        record = copy.deepcopy(self.example)
+        record["adjudication"]["reconciliation_status"] = "DISAGREEMENT_RESOLVED"
+        self.assertIn("DISAGREEMENT_RESOLVED requires differing reviewer assessments", validator.validate(record))
+
+    def test_final_adjudication_occurs_after_independent_reviews(self):
+        record = copy.deepcopy(self.example)
+        record["adjudication"]["adjudicated_at"] = "2026-07-03T14:35:00Z"
+        self.assertIn("final adjudication must occur after independent reviewer assessments", validator.validate(record))
 
 
 if __name__ == "__main__":
