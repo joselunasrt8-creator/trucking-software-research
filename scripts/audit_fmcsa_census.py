@@ -4,10 +4,10 @@ import hashlib
 import json
 import re
 from collections import Counter
-from datetime import datetime, timezone
 from pathlib import Path
 
 RAW = Path("data/raw/fmcsa/motor-carrier-census-10000.json")
+ACQUISITION_META = RAW.with_suffix(".provenance.json")
 OUT = Path("data/derived/fmcsa")
 DATE = re.compile(r"^(?:19|20)\d\d(?:-|$)")
 
@@ -27,6 +27,11 @@ def main():
     records = json.loads(raw)
     if not isinstance(records, list) or any(not isinstance(r, dict) for r in records):
         raise SystemExit("expected a JSON array of objects")
+
+    acquisition = None
+    if ACQUISITION_META.exists():
+        acquisition = json.loads(ACQUISITION_META.read_text())
+
     fields = sorted({key for row in records for key in row})
     schema = {}
     for field in fields:
@@ -43,6 +48,7 @@ def main():
             "categorical_vocabulary": sorted(counts) if 0 < len(counts) <= 30 else None,
             "observed_year_range": [years[0], years[-1]] if years else None,
         }
+
     dots = [str(row["dot_number"]) for row in records if row.get("dot_number") not in (None, "")]
     duplicate_counts = {k: v for k, v in sorted(Counter(dots).items()) if v > 1}
     anomalies = {
@@ -52,28 +58,45 @@ def main():
         "duplicate_dot_number_rows": sum(duplicate_counts.values()),
         "duplicate_dot_numbers": duplicate_counts,
     }
+
     audit = {
-        "row_count": len(records), "observed_field_count": len(fields),
-        "observed_schema": schema, "anomalies": anomalies,
+        "row_count": len(records),
+        "observed_field_count": len(fields),
+        "observed_schema": schema,
+        "anomalies": anomalies,
         "documentation_comparison": {
             "status": "not_assessable",
             "reason": "No versioned FMCSA Census README/data definition is present in this repository.",
-            "documented_but_absent": None, "present_but_undocumented": None,
+            "documented_but_absent": None,
+            "present_but_undocumented": None,
         },
     }
+
     provenance = {
         "source_agency": "U.S. DOT / Federal Motor Carrier Safety Administration",
         "dataset_identity": {"name": "Motor Carrier Census", "socrata_id": "az4n-8mr2"},
         "endpoint": "https://data.transportation.gov/resource/az4n-8mr2.json",
-        "acquisition_query": "$limit=10000", "acquisition_completed_utc": datetime.fromtimestamp(RAW.stat().st_mtime, timezone.utc).isoformat(),
-        "row_count": len(records), "raw_file": str(RAW), "sha256": hashlib.sha256(raw).hexdigest(),
+        "acquisition_query": "$limit=10000",
+        "acquisition_completed_utc": acquisition.get("acquisition_completed_utc") if isinstance(acquisition, dict) else None,
+        "acquisition_timestamp_status": "recorded_by_acquisition_script" if isinstance(acquisition, dict) and acquisition.get("acquisition_completed_utc") else "unknown",
+        "row_count": len(records),
+        "raw_file": str(RAW),
+        "sha256": hashlib.sha256(raw).hexdigest(),
         "observed_fields": fields,
-        "known_limitations": ["Limit-only query has no evidenced probability-sampling semantics.", "Response has no explicit order or immutable snapshot/version.", "Ingestion/audit cohort; not representative.", "Authoritative data definition is not versioned in this repository."],
+        "known_limitations": [
+            "Limit-only query has no evidenced probability-sampling semantics.",
+            "Response has no explicit order or immutable snapshot/version.",
+            "Ingestion/audit cohort; not representative.",
+            "Authoritative data definition is not versioned in this repository.",
+            "Acquisition completion time is unknown when acquisition sidecar metadata is absent.",
+        ],
     }
+
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "motor-carrier-census-10000-audit.json").write_text(json.dumps(audit, indent=2, sort_keys=True)+"\n")
     (OUT / "provenance.json").write_text(json.dumps(provenance, indent=2, sort_keys=True)+"\n")
     print(f"audited {len(records)} rows, {len(fields)} fields; sha256={provenance['sha256']}")
 
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()
