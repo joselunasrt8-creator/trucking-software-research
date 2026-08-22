@@ -2,7 +2,7 @@
 
 The intended input is `data/raw/fmcsa/motor-carrier-census-10000.json` from the
 U.S. Department of Transportation / Federal Motor Carrier Safety
-Administration Socrata dataset `az4n-8mr2` (“Motor Carrier Census”). The raw
+Administration Socrata dataset `az4n-8mr2` (“Company Census File”). The raw
 file is deliberately ignored. Recreate and audit it with:
 
 ```sh
@@ -18,17 +18,46 @@ called an **ingestion/audit cohort**, never a random or representative sample.
 The audit writes `data/derived/fmcsa/motor-carrier-census-10000-audit.json`,
 which is the empirical schema, missingness, vocabulary, range, duplicate, and
 anomaly record, and `provenance.json`, which binds the exact raw bytes by
-SHA-256. Acquisition time is the local UTC completion time and is not confused
-with a publisher timestamp.
+SHA-256. Acquisition time is the local UTC completion time recorded by the
+acquisition script and is not confused with a publisher timestamp.
+
+## Authoritative source references
+
+Use the following first-party / federal catalog resources for source identity,
+field definitions, and future reproducible acquisition work:
+
+- Company Census File catalog record:
+  https://catalog.data.gov/dataset/company-census-file
+- Exact Socrata dataset identifier and machine-readable column definitions:
+  https://data.transportation.gov/api/views/az4n-8mr2/columns.json
+- Current JSON download endpoint exposed by the federal catalog:
+  https://data.transportation.gov/api/v3/views/az4n-8mr2/query.json?accessType=DOWNLOAD
+- FMCSA Dataset Description and Data Definitions — Select Datasets:
+  https://data.transportation.gov/api/views/wahn-z3rq/files/6b2991b6-05c6-4745-a1d8-a1595f34b021?download=true&filename=FMCSA+Dataset+Description+and+Data+Definitions+-+Select+Datasets.pdf
+- Broader Motor Carrier Registrations — Census Files catalog record:
+  https://catalog.data.gov/dataset/motor-carrier-registrations-census-files
+
+The Company Census File catalog describes the dataset as containing active,
+inactive, and pending FMCSA entities and identifies USDOT number as the unique
+entity identifier. Its JSON distribution explicitly links the machine-readable
+`columns.json` definition for dataset `az4n-8mr2`.
+
+The separate FMCSA data-definitions PDF covers selected FMCSA datasets,
+including carrier/authority/insurance definitions. It must not be assumed to be
+identical to the `az4n-8mr2` Company Census schema without an explicit field
+mapping.
 
 ## Documentation comparison boundary
 
-No FMCSA Census README or data-definition artifact is present in this
-repository. Therefore the required documented-present/absent comparison cannot
-be silently inferred. The generated audit records this as `not_assessable` and
-keeps observed fields separate. A versioned source data definition must be
-added or cited before making that comparison; API labels or guessed meanings
-are not substitutes.
+The repository now records authoritative external documentation references, but
+it does not yet contain a frozen/versioned local copy or field-by-field mapping
+for the exact acquisition snapshot. Therefore a documented-present/absent
+comparison must still not be silently inferred from names alone.
+
+Until the exact `az4n-8mr2` column definition is acquired, version-bound, and
+mapped to the observed raw snapshot, the generated audit may remain
+`not_assessable`. API labels or guessed meanings are not substitutes for that
+mapping.
 
 ## Preregistered cohort proposal (before looking at outcomes)
 
@@ -71,16 +100,16 @@ cannot demonstrate a false gate.
 
 ## Storage recommendation
 
-Keep the raw response local and gitignored. It is public, reproducibly queried,
-and about 11 MB; Git LFS adds operational dependency without a stated need, and
-direct Git storage creates repository history churn. Preserve exact bytes only
-when a research snapshot is necessary; then use immutable object storage with
-the committed digest/manifest rather than treating an API response as source
-code.
+Keep the raw response local and gitignored. It is public and reproducibly
+queried; Git LFS adds operational dependency without a stated need, and direct
+Git storage creates repository history churn. Preserve exact bytes only when a
+research snapshot is necessary; then use immutable object storage with the
+committed digest/manifest rather than treating an API response as source code.
 
 ## Highest-information-gain next step
 
-Obtain and version the authoritative FMCSA/Socrata data definition and a
-deterministically ordered complete eligible frame (or immutable snapshot), then
-run the audit and preregister/draw the sample. This resolves field semantics and
-selection bias before collecting broker-rule and observed-decision evidence.
+Acquire and version the exact `az4n-8mr2` machine-readable column definition,
+then obtain a deterministically ordered complete eligible frame or immutable
+snapshot. Bind both to digests before running the audit and preregistering the
+sample. This resolves field semantics and selection bias before collecting
+broker-rule and observed-decision evidence.
