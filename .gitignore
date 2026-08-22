@@ -1,2 +1,6 @@
 __pycache__/
 *.py[cod]
+
+# Public source data is reacquired from the provenance-bound command instead of
+# storing mutable API responses in Git.
+data/raw/
