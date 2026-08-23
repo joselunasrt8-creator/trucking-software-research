@@ -4,3 +4,5 @@ __pycache__/
 # Public source data is reacquired from the provenance-bound command instead of
 # storing mutable API responses in Git.
 data/raw/
+data/fmcsa/company-census-schema.json
+data/derived/fmcsa/complete-frame-manifest.json

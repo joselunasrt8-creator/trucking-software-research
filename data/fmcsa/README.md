@@ -1,115 +1,80 @@
-# FMCSA Motor Carrier Census empirical boundary
+# FMCSA Company Census empirical boundary (Issue #6)
 
-The intended input is `data/raw/fmcsa/motor-carrier-census-10000.json` from the
-U.S. Department of Transportation / Federal Motor Carrier Safety
-Administration Socrata dataset `az4n-8mr2` (“Company Census File”). The raw
-file is deliberately ignored. Recreate and audit it with:
+## Current execution status
 
-```sh
-python scripts/acquire_fmcsa_census.py
-python scripts/audit_fmcsa_census.py
+The authoritative hosts were unreachable from the 2026-08-22 implementation
+environment (the proxy returned HTTP 403). No live schema, complete frame,
+manifest, or eligible-frame counts are committed or claimed. Current status is:
+
+```text
+SCHEMA_NOT_BOUND
+COMPLETE_FRAME_BLOCKED
 ```
 
-Acquisition is exactly `$limit=10000`; it has no `$order`, `$offset`, filter,
-randomization, snapshot/version selector, or application token. A limit caps a
-response; it does **not** establish probability sampling. The result must be
-called an **ingestion/audit cohort**, never a random or representative sample.
+The code path is fixture-tested, but fixture values are not empirical results.
+The bounded live attempt is recorded in `execution-status.json`.
 
-The audit writes `data/derived/fmcsa/motor-carrier-census-10000-audit.json`,
-which is the empirical schema, missingness, vocabulary, range, duplicate, and
-anomaly record, and `provenance.json`, which binds the exact raw bytes by
-SHA-256. Acquisition time is the local UTC completion time recorded by the
-acquisition script and is not confused with a publisher timestamp.
+## Exact source identities and acquisition contract
 
-## Authoritative source references
+- Dataset: **Company Census File**, Socrata ID `az4n-8mr2`, U.S. DOT / FMCSA.
+- Schema: `https://data.transportation.gov/api/views/az4n-8mr2/columns.json`.
+- Dataset metadata/version check:
+  `https://data.transportation.gov/api/views/az4n-8mr2`.
+- Rows: `https://data.transportation.gov/resource/az4n-8mr2.json`.
+- Query contract: `$order=dot_number ASC` with deterministic `$limit`/`$offset`
+  pages. `dot_number` is the stable ordering key. Missing or duplicate keys fail
+  closed rather than invoking an undocumented tie-break or deduplication rule.
 
-Use the following first-party / federal catalog resources for source identity,
-field definitions, and future reproducible acquisition work:
+Run `python scripts/acquire_fmcsa_census.py`. The acquirer obtains the official
+column array and preserves its source, retrieval time, canonical SHA-256 digest,
+field names, labels, descriptions, and types. A missing official description is
+explicitly unresolved; names and labels are never promoted into definitions.
 
-- Company Census File catalog record:
-  https://catalog.data.gov/dataset/company-census-file
-- Exact Socrata dataset identifier and machine-readable column definitions:
-  https://data.transportation.gov/api/views/az4n-8mr2/columns.json
-- Current JSON download endpoint exposed by the federal catalog:
-  https://data.transportation.gov/api/v3/views/az4n-8mr2/query.json?accessType=DOWNLOAD
-- FMCSA Dataset Description and Data Definitions — Select Datasets:
-  https://data.transportation.gov/api/views/wahn-z3rq/files/6b2991b6-05c6-4745-a1d8-a1595f34b021?download=true&filename=FMCSA+Dataset+Description+and+Data+Definitions+-+Select+Datasets.pdf
-- Broader Motor Carrier Registrations — Census Files catalog record:
-  https://catalog.data.gov/dataset/motor-carrier-registrations-census-files
+It reads `rowsUpdatedAt` before pagination and again after the short (possibly
+empty) terminal page. A change, absent version marker, malformed response,
+unstable ordering, missing `dot_number`, or duplicate `dot_number` produces
+`COMPLETE_FRAME_BLOCKED` and no output files. Transport failures, timeouts, HTTP
+429, and HTTP 5xx receive three retries after 1, 2, and 4 seconds. Other HTTP
+errors are not retried. Page provenance records URL, offset, requested limit,
+row count, retrieval time, and digest.
 
-The Company Census File catalog describes the dataset as containing active,
-inactive, and pending FMCSA entities and identifies USDOT number as the unique
-entity identifier. Its JSON distribution explicitly links the machine-readable
-`columns.json` definition for dataset `az4n-8mr2`.
+On success, atomic writes produce the ignored raw JSON file, the official schema
+binding, and `data/derived/fmcsa/complete-frame-manifest.json`. The manifest
+records dataset and schema identity, start/completion times, exact query,
+ordering, pagination, retry and termination contracts, page/row counts, raw
+content digest, duplicate/missing counts, every page's provenance, and the
+limitation that `rowsUpdatedAt` is a stability check rather than an immutable
+snapshot selector. `python scripts/audit_fmcsa_census.py` rechecks the frozen
+bytes, count, digest, and identifier counts.
 
-The separate FMCSA data-definitions PDF covers selected FMCSA datasets,
-including carrier/authority/insurance definitions. It must not be assumed to be
-identical to the `az4n-8mr2` Company Census schema without an explicit field
-mapping.
+Raw responses, live schema bindings, manifests, and eligible frames remain
+gitignored because they are execution outputs, not source code.
 
-## Documentation comparison boundary
+## Eligible-carrier field boundary and transformation freeze
 
-The repository now records authoritative external documentation references, but
-it does not yet contain a frozen/versioned local copy or field-by-field mapping
-for the exact acquisition snapshot. Therefore a documented-present/absent
-comparison must still not be silently inferred from names alone.
+The preregistered target population remains **active interstate for-hire
+property carriers as of a fixed reference date**. Issue #6 does not authorize
+guessing which `az4n-8mr2` fields or code values establish active, interstate,
+for-hire, or property status. Because the authoritative column definitions
+could not be retrieved, none of those predicates is currently bound and the
+complete-frame → eligible-frame construction rule is **not frozen**.
 
-Until the exact `az4n-8mr2` column definition is acquired, version-bound, and
-mapped to the observed raw snapshot, the generated audit may remain
-`not_assessable`. API labels or guessed meanings are not substitutes for that
-mapping.
+| field | authoritative definition | intended research use | observability limitation | disposition |
+|---|---|---|---|---|
+| `dot_number` | unresolved until official schema retrieval | stable carrier identity and ordering | does not establish eligibility | required for complete-frame integrity |
+| active-status field | unresolved; field not selected | active predicate at the reference date | census state may not equal current authority | excluded until bound |
+| operation field | unresolved; field not selected | interstate predicate | codes must not be inferred | excluded until bound |
+| for-hire/property field(s) | unresolved; fields not selected | for-hire property predicate | may require another authoritative FMCSA source | excluded until bound |
+| address/state fields | unresolved; fields not selected | descriptive/stratification use only | carrier state is not platform-represented state | optional only after binding |
 
-## Preregistered cohort proposal (before looking at outcomes)
+Missing eligibility inputs will be excluded without imputation once definitions
+are bound. Ambiguous duplicate identifiers will be rejected, not selected.
+Before any qualification outcome is inspected, a later bounded execution must
+freeze the reference date, exact authoritative field definitions and code
+values, inclusion/exclusion predicates, missing-data behavior, deterministic
+logic, and then record the eligible row count and canonical digest. That is the
+next empirical step; it is not performed here.
 
-1. Freeze a dataset version/acquisition timestamp and its digest.
-2. Define the target population as active interstate for-hire property carriers
-   as of a fixed reference date, using only predeclared FMCSA authority/status,
-   operation, and cargo predicates whose exact field definitions have been
-   verified.
-3. Exclude records missing the unique carrier identifier or fields required by
-   those eligibility predicates; report every exclusion count and do not impute
-   eligibility.
-4. Deduplicate by `dot_number` using a rule fixed before analysis (prefer a
-   documented record-update timestamp; otherwise reject ambiguous duplicates).
-5. Draw a seeded simple-random or state-stratified sample from the complete
-   eligible frame, publish the seed and algorithm, and retain all selected
-   carriers regardless of whether they look likely to confirm a false gate.
-6. Keep hypothesis testing separate from this 10,000-row ingestion audit.
-
-## Qualification evidence boundary
-
-Exact classification depends on the observed schema and authoritative field
-definitions. In general, census fields can support only dated **FMCSA carrier
-state evidence** such as identity, registered address/state, operation/entity
-classification, authority/status fields, fleet/driver counts, cargo flags, and
-reported census dates when those fields are actually present and defined.
-
-They only partially support predicates whose truth changes after the snapshot
-or requires another FMCSA source: current authority, insurance/filing state,
-safety fitness, inspection/crash history, or identity matching.
-
-They do not observe broker/platform onboarding state, the platform's displayed
-or internally represented carrier state, broker qualification rules, rule
-versions, insurance limits and endorsements, lane/equipment availability,
-fraud checks, performance history, prices, offers, application evidence, or an
-actual accept/reject decision.
-
-**FMCSA carrier state evidence ≠ broker/platform represented state ≠ broker
-qualification rule ≠ observed qualification decision.** This source alone
-cannot demonstrate a false gate.
-
-## Storage recommendation
-
-Keep the raw response local and gitignored. It is public and reproducibly
-queried; Git LFS adds operational dependency without a stated need, and direct
-Git storage creates repository history churn. Preserve exact bytes only when a
-research snapshot is necessary; then use immutable object storage with the
-committed digest/manifest rather than treating an API response as source code.
-
-## Highest-information-gain next step
-
-Acquire and version the exact `az4n-8mr2` machine-readable column definition,
-then obtain a deterministically ordered complete eligible frame or immutable
-snapshot. Bind both to digests before running the audit and preregistering the
-sample. This resolves field semantics and selection bias before collecting
-broker-rule and observed-decision evidence.
+FMCSA carrier state **does not equal** platform-represented state, a broker rule,
+or a qualification decision. This work collects none of those other evidence
+classes and tests no false-gate hypothesis.

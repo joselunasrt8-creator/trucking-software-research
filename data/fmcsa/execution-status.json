@@ -1,0 +1,11 @@
+{
+  "attempted_at": null,
+  "attempted_at_limitation": "The failed manual execution did not emit a machine-recorded start timestamp.",
+  "complete_frame_status": "COMPLETE_FRAME_BLOCKED",
+  "dataset_id": "az4n-8mr2",
+  "eligible_frame_rule_frozen": false,
+  "error": "Authoritative host access failed at the environment CONNECT proxy with HTTP 403; no response content was acquired.",
+  "recorded_at": "2026-08-22T08:25:20Z",
+  "schema_source": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
+  "schema_status": "SCHEMA_NOT_BOUND"
+}
