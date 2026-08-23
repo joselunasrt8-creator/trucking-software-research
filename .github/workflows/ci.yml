@@ -1,0 +1,62 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile Python sources
+        run: |
+          python -m py_compile scripts/acquire_fmcsa_census.py scripts/audit_fmcsa_census.py
+
+      - name: Run unit tests
+        run: |
+          python -m unittest discover -s tests -v
+
+      - name: Verify no live FMCSA outputs are committed
+        run: |
+          test ! -e data/raw/fmcsa/company-census-complete.json
+          test ! -e data/fmcsa/company-census-schema.json
+          test ! -e data/derived/fmcsa/complete-frame-manifest.json
+
+      - name: Preserve empirical boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/fmcsa/execution-status.json")
+          data = json.loads(path.read_text())
+
+          assert data["schema_status"] in {
+              "SCHEMA_NOT_BOUND",
+              "SCHEMA_BOUND",
+              "SCHEMA_BOUND_WITH_LIMITATIONS",
+          }
+          assert data["complete_frame_status"] in {
+              "COMPLETE_FRAME_BLOCKED",
+              "COMPLETE_FRAME_READY",
+              "COMPLETE_FRAME_READY_WITH_LIMITATIONS",
+          }
+          PY
+
+# CI intentionally does not call the live FMCSA/Socrata endpoints.
+# Network acquisition is an empirical execution step, not a deterministic PR test.
