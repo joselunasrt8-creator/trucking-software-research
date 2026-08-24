@@ -5,8 +5,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import tempfile
 import time
-from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
@@ -89,6 +90,13 @@ def page_url(limit, offset):
     return BASE + "?" + urlencode({"$limit": limit, "$offset": offset, "$order": ORDER})
 
 
+def temporary_path(destination):
+    """Reserve a temporary artifact beside its destination for atomic replacement."""
+    descriptor, name = tempfile.mkstemp(prefix=destination.name + ".", suffix=".tmp", dir=destination.parent)
+    os.close(descriptor)
+    return Path(name)
+
+
 def acquire(transport, out, manifest_path, schema_path, page_size=50000, retries=3, clock=utc_now, sleep=time.sleep):
     if page_size < 1:
         raise ValueError("page_size must be positive")
@@ -99,63 +107,101 @@ def acquire(transport, out, manifest_path, schema_path, page_size=50000, retries
     version_before = before.get("rowsUpdatedAt")
     if version_before is None:
         raise CompleteFrameBlocked("dataset metadata has no rowsUpdatedAt version marker")
-    rows, pages, offset = [], [], 0
-    while True:
-        url = page_url(page_size, offset)
-        page = retry_get(transport, url, retries, sleep)
-        if not isinstance(page, list) or any(not isinstance(row, dict) for row in page):
-            raise CompleteFrameBlocked(f"page at offset {offset} is not an array of objects")
-        pages.append({"page": len(pages) + 1, "offset": offset, "requested_limit": page_size,
-                      "row_count": len(page), "source_url": url, "content_digest": digest(page),
-                      "retrieved_at": clock()})
-        rows.extend(page)
-        if len(page) < page_size:
-            break
-        offset += page_size
-    after = retry_get(transport, VIEW, retries, sleep)
-    if after.get("rowsUpdatedAt") != version_before:
-        raise CompleteFrameBlocked("dataset rowsUpdatedAt changed during pagination")
-
-    keys = [str(row["dot_number"]) for row in rows if row.get("dot_number") not in (None, "")]
-    duplicates = sum(count - 1 for count in Counter(keys).values() if count > 1)
-    missing = len(rows) - len(keys)
-    # Ordering is verified locally rather than trusted to the server.
-    try:
-        order_keys = [int(row["dot_number"]) for row in rows]
-    except (KeyError, TypeError, ValueError):
-        raise CompleteFrameBlocked("dot_number is missing or is not an integer identifier")
-    if order_keys != sorted(order_keys):
-        raise CompleteFrameBlocked("server response violates the declared stable ordering contract")
-    if missing:
-        raise CompleteFrameBlocked("missing dot_number prevents a complete keyed carrier frame")
-    if duplicates:
-        raise CompleteFrameBlocked("duplicate dot_number prevents unambiguous carrier deduplication")
-
-    completed = clock()
-    payload = canonical_json(rows) + b"\n"
-    manifest = {
-        "status": "COMPLETE_FRAME_READY_WITH_LIMITATIONS",
-        "dataset_identity": {"id": DATASET_ID, "name": DATASET_NAME, "agency": AGENCY, "rows_updated_at": version_before},
-        "schema_identity": {"source_url": SCHEMA_URL, "digest": digest(binding),
-                            "source_content_digest": binding["content_digest"],
-                            "retrieved_at": binding["retrieved_at"]},
-        "acquisition_started_at": started, "acquisition_completed_at": completed,
-        "query_contract": {"endpoint": BASE, "order": ORDER, "pagination": "$limit/$offset", "page_size": page_size,
-                           "termination": "first page with row_count < page_size; includes a possibly empty terminal page"},
-        "retry_contract": {"retries": retries, "backoff_seconds": [2**n for n in range(retries)], "retryable": ["transport", "timeout", "HTTP 429", "HTTP 5xx"]},
-        "page_count": len(pages), "row_count": len(rows), "content_digest": "sha256:" + hashlib.sha256(payload).hexdigest(),
-        "duplicate_dot_number_count": duplicates, "missing_dot_number_count": missing, "pages": pages,
-        "known_limitations": ["rowsUpdatedAt is checked before and after pagination; the API does not expose an immutable snapshot selector.",
-                              "Completeness depends on Socrata rowsUpdatedAt changing for every intervening dataset mutation."],
-    }
     for path in (out, manifest_path, schema_path):
         path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = out.with_suffix(out.suffix + ".tmp")
-    temporary.write_bytes(payload); temporary.replace(out)
-    for path, value in ((manifest_path, manifest), (schema_path, binding)):
-        temporary = path.with_suffix(path.suffix + ".tmp")
-        temporary.write_bytes(canonical_json(value) + b"\n"); temporary.replace(path)
-    return manifest
+    raw_temporary = temporary_path(out)
+    staged = [raw_temporary]
+    pages, offset, row_count = [], 0, 0
+    missing = duplicates = 0
+    previous_dot_number = None
+    artifact_hash = hashlib.sha256()
+    try:
+        with raw_temporary.open("wb") as raw:
+            def write(chunk):
+                raw.write(chunk)
+                artifact_hash.update(chunk)
+
+            write(b"[")
+            while True:
+                url = page_url(page_size, offset)
+                page = retry_get(transport, url, retries, sleep)
+                if not isinstance(page, list) or any(not isinstance(row, dict) for row in page):
+                    raise CompleteFrameBlocked(f"page at offset {offset} is not an array of objects")
+                pages.append({"page": len(pages) + 1, "offset": offset, "requested_limit": page_size,
+                              "row_count": len(page), "source_url": url, "content_digest": digest(page),
+                              "retrieved_at": clock()})
+                for row in page:
+                    value = row.get("dot_number")
+                    if value in (None, ""):
+                        missing += 1
+                        raise CompleteFrameBlocked("missing dot_number prevents a complete keyed carrier frame")
+                    try:
+                        if isinstance(value, bool):
+                            raise ValueError
+                        if not isinstance(value, (str, int)):
+                            raise ValueError
+                        dot_number = int(value)
+                    except (TypeError, ValueError, OverflowError):
+                        raise CompleteFrameBlocked("dot_number is missing or is not an integer identifier")
+                    if previous_dot_number is not None:
+                        if dot_number == previous_dot_number:
+                            duplicates += 1
+                            raise CompleteFrameBlocked("duplicate dot_number prevents unambiguous carrier deduplication")
+                        if dot_number < previous_dot_number:
+                            raise CompleteFrameBlocked("server response violates the declared stable ordering contract")
+                    if row_count:
+                        write(b",")
+                    write(canonical_json(row))
+                    row_count += 1
+                    previous_dot_number = dot_number
+                if len(page) < page_size:
+                    break
+                offset += page_size
+            write(b"]\n")
+            raw.flush()
+            os.fsync(raw.fileno())
+
+        after = retry_get(transport, VIEW, retries, sleep)
+        if after.get("rowsUpdatedAt") != version_before:
+            raise CompleteFrameBlocked("dataset rowsUpdatedAt changed during pagination")
+
+        completed = clock()
+        manifest = {
+            "status": "COMPLETE_FRAME_READY_WITH_LIMITATIONS",
+            "dataset_identity": {"id": DATASET_ID, "name": DATASET_NAME, "agency": AGENCY,
+                                 "rows_updated_at": version_before},
+            "schema_identity": {"source_url": SCHEMA_URL, "digest": digest(binding),
+                                "source_content_digest": binding["content_digest"],
+                                "retrieved_at": binding["retrieved_at"]},
+            "acquisition_started_at": started, "acquisition_completed_at": completed,
+            "query_contract": {"endpoint": BASE, "order": ORDER, "pagination": "$limit/$offset",
+                               "page_size": page_size,
+                               "termination": "first page with row_count < page_size; includes a possibly empty terminal page"},
+            "retry_contract": {"retries": retries, "backoff_seconds": [2**n for n in range(retries)],
+                               "retryable": ["transport", "timeout", "HTTP 429", "HTTP 5xx"]},
+            "page_count": len(pages), "row_count": row_count,
+            "content_digest": "sha256:" + artifact_hash.hexdigest(),
+            "duplicate_dot_number_count": duplicates, "missing_dot_number_count": missing, "pages": pages,
+            "known_limitations": [
+                "rowsUpdatedAt is checked before and after pagination; the API does not expose an immutable snapshot selector.",
+                "Completeness depends on Socrata rowsUpdatedAt changing for every intervening dataset mutation.",
+            ],
+        }
+        schema_temporary = temporary_path(schema_path)
+        manifest_temporary = temporary_path(manifest_path)
+        staged.extend((schema_temporary, manifest_temporary))
+        schema_temporary.write_bytes(canonical_json(binding) + b"\n")
+        manifest_temporary.write_bytes(canonical_json(manifest) + b"\n")
+
+        # Publish only after every artifact is complete. The manifest is the final
+        # commit marker, so audit never observes a new manifest before its inputs.
+        schema_temporary.replace(schema_path)
+        raw_temporary.replace(out)
+        manifest_temporary.replace(manifest_path)
+        return manifest
+    finally:
+        for path in staged:
+            path.unlink(missing_ok=True)
 
 
 def main(argv=None):
