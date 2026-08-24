@@ -1,7 +1,9 @@
 import importlib.util
+import gc
 import json
 import tempfile
 import unittest
+import weakref
 from pathlib import Path
 from urllib.error import URLError
 
@@ -37,14 +39,14 @@ class FakeTransport:
 
 
 class CompleteFrameTests(unittest.TestCase):
-    def run_acquisition(self, pages, versions=(42, 42)):
+    def run_acquisition(self, pages, versions=(42, 42), page_size=2):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
         ticks = iter(f"2026-08-22T00:00:0{i}+00:00" for i in range(20))
         transport = FakeTransport(pages, versions)
         manifest = acquire.acquire(transport, root / "raw.json", root / "manifest.json", root / "schema.json",
-                                    page_size=2, clock=lambda: next(ticks), sleep=lambda _: None)
+                                    page_size=page_size, clock=lambda: next(ticks), sleep=lambda _: None)
         return root, transport, manifest
 
     def test_deterministic_pagination_provenance_and_digest(self):
@@ -59,6 +61,22 @@ class CompleteFrameTests(unittest.TestCase):
         _, _, second = self.run_acquisition(pages)
         self.assertEqual(first["content_digest"], second["content_digest"])
         self.assertEqual([p["content_digest"] for p in first["pages"]], [p["content_digest"] for p in second["pages"]])
+
+    def test_streamed_artifact_is_exact_canonical_json_array(self):
+        rows = [{"legal_name": "Café", "dot_number": "1"}, {"z": 2, "dot_number": "2", "a": 1}]
+        root, _, manifest = self.run_acquisition({0: rows, 2: []})
+        expected = acquire.canonical_json(rows) + b"\n"
+        self.assertEqual((root / "raw.json").read_bytes(), expected)
+        self.assertEqual(manifest["content_digest"], "sha256:" + acquire.hashlib.sha256(expected).hexdigest())
+
+    def test_page_size_does_not_change_logical_frame(self):
+        rows = [{"dot_number": str(number), "name": chr(64 + number)} for number in range(1, 6)]
+        root_two, _, manifest_two = self.run_acquisition(
+            {0: rows[:2], 2: rows[2:4], 4: rows[4:]}, page_size=2)
+        root_three, _, manifest_three = self.run_acquisition(
+            {0: rows[:3], 3: rows[3:]}, page_size=3)
+        self.assertEqual((root_two / "raw.json").read_bytes(), (root_three / "raw.json").read_bytes())
+        self.assertEqual(manifest_two["content_digest"], manifest_three["content_digest"])
 
     def test_exact_multiple_requests_empty_terminal_page(self):
         _, _, manifest = self.run_acquisition({0: [{"dot_number": "1"}, {"dot_number": "2"}], 2: []})
@@ -75,6 +93,12 @@ class CompleteFrameTests(unittest.TestCase):
         with self.assertRaisesRegex(acquire.CompleteFrameBlocked, "missing"):
             self.run_acquisition({0: [{"dot_number": "1"}, {}], 2: []})
 
+    def test_malformed_identifier_fails_closed(self):
+        for malformed in ("not-a-number", 1.5, True):
+            with self.subTest(malformed=malformed):
+                with self.assertRaisesRegex(acquire.CompleteFrameBlocked, "integer identifier"):
+                    self.run_acquisition({0: [{"dot_number": malformed}]})
+
     def test_version_change_fails_closed_without_outputs(self):
         temporary = tempfile.TemporaryDirectory(); self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
@@ -82,6 +106,50 @@ class CompleteFrameTests(unittest.TestCase):
             acquire.acquire(FakeTransport({0: []}, (1, 2)), root / "raw", root / "manifest", root / "schema",
                             page_size=2, clock=lambda: "now", sleep=lambda _: None)
         self.assertFalse((root / "raw").exists())
+
+    def test_failure_does_not_replace_existing_artifacts(self):
+        temporary = tempfile.TemporaryDirectory(); self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        paths = [root / name for name in ("raw", "manifest", "schema")]
+        for path, content in zip(paths, (b"old raw", b"old manifest", b"old schema")):
+            path.write_bytes(content)
+        with self.assertRaisesRegex(acquire.CompleteFrameBlocked, "changed"):
+            acquire.acquire(FakeTransport({0: [{"dot_number": "1"}]}, (1, 2)), *paths,
+                            page_size=2, clock=lambda: "now", sleep=lambda _: None)
+        self.assertEqual([path.read_bytes() for path in paths], [b"old raw", b"old manifest", b"old schema"])
+        self.assertEqual(list(root.glob("*.tmp")), [])
+
+    def test_completed_pages_are_released_during_acquisition(self):
+        class Page(list):
+            pass
+
+        class GeneratingTransport:
+            def __init__(self):
+                self.version_calls = 0
+                self.references = []
+                self.prior_pages_alive = []
+
+            def get_json(inner_self, url):
+                if url == acquire.VIEW:
+                    inner_self.version_calls += 1
+                    return {"rowsUpdatedAt": 42}
+                if url == acquire.SCHEMA_URL:
+                    return COLUMNS
+                gc.collect()
+                inner_self.prior_pages_alive.append(sum(reference() is not None for reference in inner_self.references))
+                offset = int(url.split("%24offset=")[1].split("&")[0])
+                page = Page([] if offset == 10 else [
+                    {"dot_number": str(offset + 1)}, {"dot_number": str(offset + 2)}])
+                inner_self.references.append(weakref.ref(page))
+                return page
+
+        temporary = tempfile.TemporaryDirectory(); self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        transport = GeneratingTransport()
+        acquire.acquire(transport, root / "raw", root / "manifest", root / "schema",
+                        page_size=2, clock=lambda: "now", sleep=lambda _: None)
+        self.assertTrue(transport.prior_pages_alive)
+        self.assertLessEqual(max(transport.prior_pages_alive), 1)
 
     def test_schema_preserves_authoritative_metadata_and_unresolved_definition(self):
         binding = acquire.schema_binding(COLUMNS, "now")
