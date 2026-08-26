@@ -33,10 +33,26 @@ explicitly unresolved; names and labels are never promoted into definitions.
 It reads `rowsUpdatedAt` before pagination and again after the short (possibly
 empty) terminal page. A change, absent version marker, malformed response,
 unstable ordering, missing `dot_number`, or duplicate `dot_number` produces
-`COMPLETE_FRAME_BLOCKED` and no output files. Transport failures, timeouts, HTTP
-429, and HTTP 5xx receive three retries after 1, 2, and 4 seconds. Other HTTP
-errors are not retried. Page provenance records URL, offset, requested limit,
-row count, retrieval time, and digest.
+`COMPLETE_FRAME_BLOCKED` and does not replace any published output. Transient
+URL/socket failures, timeouts and resets, `http.client.IncompleteRead`,
+plausibly transient SSL read failures, HTTP 429, and HTTP 5xx receive three
+retries after 1, 2, and 4 seconds. Certificate-verification failures and other
+HTTP errors are not retried. A response-read failure occurs before JSON parsing,
+so a partial JSON page is never accepted. Page provenance records URL, offset,
+requested limit, row count, retrieval time, and digest.
+
+Progress is committed after each complete page. The raw prefix is first
+canonically serialized, flushed, and `fsync`ed; only then is an integrity-sealed
+checkpoint atomically replaced and its directory `fsync`ed. The checkpoint
+preserves the exact next offset, cumulative row count, prior `dot_number`, raw
+prefix byte length and SHA-256 digest, schema binding, acquisition start time,
+and all prior page provenance. It is bound to dataset/version, query and strict
+ordering contracts, page size, serialization/schema identities, and the
+resolved output paths. Re-running the same command resumes automatically. A
+changed `rowsUpdatedAt`, schema, page size, order/query contract, output identity,
+malformed checkpoint, missing partial file, or prefix digest mismatch fails
+closed. Bytes written after the last checkpoint are verified as outside the
+committed prefix and truncated before the exact next page is requested.
 
 On success, atomic writes produce the ignored raw JSON file, the official schema
 binding, and `data/derived/fmcsa/complete-frame-manifest.json`. The manifest
@@ -47,7 +63,8 @@ limitation that `rowsUpdatedAt` is a stability check rather than an immutable
 snapshot selector. `python scripts/audit_fmcsa_census.py` rechecks the frozen
 frame bytes, count, digest, identifier counts, schema artifact digest, and the
 dataset/schema source identities. A missing, malformed, or altered schema fails
-closed.
+closed. The manifest remains the final publication commit marker. Only after it
+is published successfully are the checkpoint and partial-work names removed.
 
 Raw responses, live schema bindings, manifests, and eligible frames remain
 gitignored because they are execution outputs, not source code.
