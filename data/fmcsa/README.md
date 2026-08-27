@@ -71,13 +71,27 @@ gitignored because they are execution outputs, not source code.
 
 The complete-frame audit has the same bounded-resource invariant as acquisition:
 its memory consumption must not scale approximately with complete-frame size.
-It incrementally hashes and frames the top-level JSON array, retaining only one
-record at a time, and stores exact `dot_number` uniqueness state in a temporary
-on-disk SQLite B-tree with a bounded cache. The temporary state is removed after
-either success or failure. Malformed arrays and objects, non-object records,
-records larger than the fixed 64 MiB corruption guard, digest/count differences,
-and provenance inconsistencies continue to fail closed as
-`COMPLETE_FRAME_BLOCKED`; no probabilistic duplicate check is used.
+It incrementally hashes and decodes the top-level JSON array in fixed-size
+chunks, retaining at most a bounded input buffer and one record. Acquisition's
+authoritative contract orders rows by numeric `dot_number` ascending and rejects
+missing, duplicate, or descending identifiers before publication, including at
+page and resume boundaries. The audit validates the manifest's exact ordered
+query, independently revalidates numeric order, and counts equal adjacent
+identifiers exactly. Any descending identifier fails closed. Because every equal
+value in a nondecreasing sequence is adjacent to its prior occurrence, this is
+scientifically equivalent to a global uniqueness index while requiring only the
+prior identifier as state; no probabilistic duplicate check is used.
+
+New manifests publish the strict `ordering_contract` already integrity-bound in
+acquisition checkpoints. The preserved complete-frame manifest predates that
+explicit field, but records the same exact `$order=dot_number ASC` query on the
+overall query and every page; it was produced by acquisition code that enforced
+strict order. The audit accepts that legacy representation only after validating
+the exact ordered query and then validates every identifier in the preserved
+frame. Malformed arrays and objects, non-object records, invalid UTF-8, records
+larger than the fixed 64 MiB corruption guard, trailing/incomplete JSON,
+digest/count differences, ordering violations, and provenance inconsistencies
+continue to fail closed as `COMPLETE_FRAME_BLOCKED`.
 
 ## Eligible-carrier field boundary and transformation freeze
 
