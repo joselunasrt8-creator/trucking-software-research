@@ -528,6 +528,7 @@ def acquire(transport, out, manifest_path, schema_path, page_size=50000, retries
             "acquisition_started_at": started,
             "acquisition_completed_at": completed,
             "query_contract": query_contract(page_size),
+            "ordering_contract": contract["ordering_contract"],
             "retry_contract": {
                 "retries": retries,
                 "backoff_seconds": [2**n for n in range(retries)],

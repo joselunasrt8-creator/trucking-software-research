@@ -94,6 +94,13 @@ class CompleteFrameTests(unittest.TestCase):
         self.assertEqual([p["row_count"] for p in first["pages"]], [2, 1])
         self.assertTrue(all("%24order=dot_number+ASC" in url for url in transport.urls if url.startswith(acquire.BASE)))
         self.assertEqual(first["row_count"], 3)
+        self.assertEqual(first["ordering_contract"], {
+            "field": "dot_number",
+            "direction": "ascending",
+            "strict": True,
+            "missing_identifiers": "reject",
+            "duplicate_identifiers": "reject",
+        })
         self.assertEqual(first["content_digest"], "sha256:" + acquire.hashlib.sha256((root / "raw.json").read_bytes()).hexdigest())
         _, _, second = self.run_acquisition(pages)
         self.assertEqual(first["content_digest"], second["content_digest"])
@@ -393,6 +400,32 @@ class CompleteFrameTests(unittest.TestCase):
         result = audit.audit(root / "raw.json", root / "manifest.json", root / "schema.json")
         self.assertEqual(result["content_digest"], manifest["content_digest"])
 
+    def test_audit_accepts_preserved_manifest_ordering_representation(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        manifest_path = root / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest.pop("ordering_contract")
+        manifest_path.write_text(json.dumps(manifest))
+        result = audit.audit(root / "raw.json", manifest_path, root / "schema.json")
+        self.assertEqual(result["row_count"], 1)
+
+    def test_audit_rejects_noncanonical_ordering_contracts(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        manifest_path = root / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["query_contract"]["order"] = "dot_number DESC"
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, "ordering query"):
+            audit.audit(root / "raw.json", manifest_path, root / "schema.json")
+
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        manifest_path = root / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["ordering_contract"]["strict"] = False
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, "ordering contract"):
+            audit.audit(root / "raw.json", manifest_path, root / "schema.json")
+
     def test_audit_rejects_missing_and_malformed_schema(self):
         root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
         (root / "schema.json").unlink()
@@ -470,6 +503,46 @@ class CompleteFrameTests(unittest.TestCase):
             result = audit.audit(raw_path, manifest_path, root / "schema.json")
         self.assertEqual(result["row_count"], 10000)
 
+    def test_audit_ordered_unique_identifiers(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        raw_path, manifest_path = self.rewrite_audit_frame(
+            root, [{"dot_number": str(number)} for number in range(1, 101)]
+        )
+        result = audit.audit(raw_path, manifest_path, root / "schema.json")
+        self.assertEqual(result["duplicate_dot_number_count"], 0)
+
+    def test_audit_exactly_counts_adjacent_duplicates(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        raw_path, manifest_path = self.rewrite_audit_frame(
+            root, [{"dot_number": "1"}, {"dot_number": 1}, {"dot_number": "2"}]
+        )
+        result = audit.audit(raw_path, manifest_path, root / "schema.json")
+        self.assertEqual(result["duplicate_dot_number_count"], 1)
+
+    def test_audit_rejects_identifier_ordering_violation(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        raw_path, manifest_path = self.rewrite_audit_frame(
+            root, [{"dot_number": "1"}, {"dot_number": "3"}, {"dot_number": "2"}]
+        )
+        with self.assertRaisesRegex(ValueError, "ascending dot_number ordering"):
+            audit.audit(raw_path, manifest_path, root / "schema.json")
+
+    def test_audit_rejects_malformed_identifier(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        raw_path, manifest_path = self.rewrite_audit_frame(
+            root, [{"dot_number": "not-a-number"}]
+        )
+        with self.assertRaisesRegex(ValueError, "integer identifier"):
+            audit.audit(raw_path, manifest_path, root / "schema.json")
+
+    def test_audit_exactly_counts_missing_identifiers(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        raw_path, manifest_path = self.rewrite_audit_frame(
+            root, [{"dot_number": "1"}, {}, {"dot_number": "2"}, {"dot_number": ""}]
+        )
+        result = audit.audit(raw_path, manifest_path, root / "schema.json")
+        self.assertEqual(result["missing_dot_number_count"], 2)
+
     def test_audit_rejects_malformed_json(self):
         root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
         (root / "raw.json").write_bytes(b'[{"dot_number":"1"}')
@@ -482,6 +555,16 @@ class CompleteFrameTests(unittest.TestCase):
                 "--schema", str(root / "schema.json"),
             ]), 2)
         self.assertTrue(output.call_args.args[0].startswith("COMPLETE_FRAME_BLOCKED:"))
+
+    def test_audit_rejects_trailing_and_invalid_utf8_input(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        (root / "raw.json").write_bytes(b'[{"dot_number":"1"}] trailing')
+        with self.assertRaisesRegex(ValueError, "content after"):
+            audit.audit(root / "raw.json", root / "manifest.json", root / "schema.json")
+
+        (root / "raw.json").write_bytes(b'[{"dot_number":"1\xff"}]')
+        with self.assertRaisesRegex(ValueError, "valid UTF-8"):
+            audit.audit(root / "raw.json", root / "manifest.json", root / "schema.json")
 
     def test_audit_rejects_non_object_array_records(self):
         root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
