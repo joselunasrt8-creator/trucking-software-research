@@ -69,6 +69,16 @@ is published successfully are the checkpoint and partial-work names removed.
 Raw responses, live schema bindings, manifests, and eligible frames remain
 gitignored because they are execution outputs, not source code.
 
+The complete-frame audit has the same bounded-resource invariant as acquisition:
+its memory consumption must not scale approximately with complete-frame size.
+It incrementally hashes and frames the top-level JSON array, retaining only one
+record at a time, and stores exact `dot_number` uniqueness state in a temporary
+on-disk SQLite B-tree with a bounded cache. The temporary state is removed after
+either success or failure. Malformed arrays and objects, non-object records,
+records larger than the fixed 64 MiB corruption guard, digest/count differences,
+and provenance inconsistencies continue to fail closed as
+`COMPLETE_FRAME_BLOCKED`; no probabilistic duplicate check is used.
+
 ## Eligible-carrier field boundary and transformation freeze
 
 The preregistered target population remains **active interstate for-hire

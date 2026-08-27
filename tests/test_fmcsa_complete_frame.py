@@ -428,6 +428,103 @@ class CompleteFrameTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "source identity"):
             audit.audit(root / "raw.json", manifest_path, root / "schema.json")
 
+    def rewrite_audit_frame(self, root, rows, **manifest_overrides):
+        raw_path = root / "raw.json"
+        raw_path.write_bytes(acquire.canonical_json(rows) + b"\n")
+        manifest_path = root / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        identifiers = [str(row["dot_number"]) for row in rows
+                       if row.get("dot_number") not in (None, "")]
+        seen = set()
+        duplicate_count = 0
+        for identifier in identifiers:
+            if identifier in seen:
+                duplicate_count += 1
+            else:
+                seen.add(identifier)
+        manifest.update({
+            "content_digest": "sha256:" + acquire.hashlib.sha256(raw_path.read_bytes()).hexdigest(),
+            "row_count": len(rows),
+            "missing_dot_number_count": sum(
+                row.get("dot_number") in (None, "") for row in rows
+            ),
+            "duplicate_dot_number_count": duplicate_count,
+            **manifest_overrides,
+        })
+        manifest_path.write_text(json.dumps(manifest))
+        return raw_path, manifest_path
+
+    def test_audit_streams_raw_frame_without_read_bytes(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        raw_path, manifest_path = self.rewrite_audit_frame(
+            root, [{"dot_number": str(number), "payload": "x" * 100} for number in range(10000)]
+        )
+        original = Path.read_bytes
+
+        def reject_raw_read_bytes(path):
+            if path == raw_path:
+                raise AssertionError("audit loaded the complete frame with read_bytes")
+            return original(path)
+
+        with mock.patch.object(Path, "read_bytes", reject_raw_read_bytes):
+            result = audit.audit(raw_path, manifest_path, root / "schema.json")
+        self.assertEqual(result["row_count"], 10000)
+
+    def test_audit_rejects_malformed_json(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        (root / "raw.json").write_bytes(b'[{"dot_number":"1"}')
+        with self.assertRaisesRegex(ValueError, "separator|incomplete"):
+            audit.audit(root / "raw.json", root / "manifest.json", root / "schema.json")
+        with mock.patch("builtins.print") as output:
+            self.assertEqual(audit.main([
+                "--raw", str(root / "raw.json"),
+                "--manifest", str(root / "manifest.json"),
+                "--schema", str(root / "schema.json"),
+            ]), 2)
+        self.assertTrue(output.call_args.args[0].startswith("COMPLETE_FRAME_BLOCKED:"))
+
+    def test_audit_rejects_non_object_array_records(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        (root / "raw.json").write_bytes(b'[1]\n')
+        with self.assertRaisesRegex(ValueError, "array of objects"):
+            audit.audit(root / "raw.json", root / "manifest.json", root / "schema.json")
+
+    def test_audit_rejects_digest_and_row_count_mismatches(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        raw_path, manifest_path = self.rewrite_audit_frame(root, [{"dot_number": "2"}])
+        manifest = json.loads(manifest_path.read_text())
+        manifest["content_digest"] = "sha256:" + "0" * 64
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, "content digest"):
+            audit.audit(raw_path, manifest_path, root / "schema.json")
+
+        manifest["content_digest"] = "sha256:" + acquire.hashlib.sha256(raw_path.read_bytes()).hexdigest()
+        manifest["row_count"] = 2
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, "row count"):
+            audit.audit(raw_path, manifest_path, root / "schema.json")
+
+    def test_audit_exactly_counts_missing_and_duplicate_identifiers(self):
+        root, _, _ = self.run_acquisition({0: [{"dot_number": "1"}]})
+        rows = [{"dot_number": "1"}, {}, {"dot_number": "1"},
+                {"dot_number": 2}, {"dot_number": "2"}, {"dot_number": ""}]
+        raw_path, manifest_path = self.rewrite_audit_frame(root, rows)
+        result = audit.audit(raw_path, manifest_path, root / "schema.json")
+        self.assertEqual(result["missing_dot_number_count"], 2)
+        self.assertEqual(result["duplicate_dot_number_count"], 2)
+
+        manifest = json.loads(manifest_path.read_text())
+        manifest["missing_dot_number_count"] = 0
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, "identifier audit"):
+            audit.audit(raw_path, manifest_path, root / "schema.json")
+
+        manifest["missing_dot_number_count"] = 2
+        manifest["duplicate_dot_number_count"] = 0
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, "identifier audit"):
+            audit.audit(raw_path, manifest_path, root / "schema.json")
+
 
 if __name__ == "__main__":
     unittest.main()
