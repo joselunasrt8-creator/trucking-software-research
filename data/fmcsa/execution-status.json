@@ -3,8 +3,18 @@
   "attempted_at_limitation": "The failed manual execution did not emit a machine-recorded start timestamp.",
   "complete_frame_status": "COMPLETE_FRAME_BLOCKED",
   "dataset_id": "az4n-8mr2",
+  "eligible_frame_blockers": [
+    "The repository-owned complete-frame bytes are unavailable in this execution environment, so their digest and row count cannot be verified.",
+    "The repository-owned acquisition manifest, authoritative schema binding, and successful real-frame audit evidence are unavailable in this execution environment.",
+    "Without authoritative field definitions and code values, active, interstate, for-hire, and property-carrier predicates cannot be frozen without inferring undocumented FMCSA semantics."
+  ],
+  "eligible_frame_determination": "ELIGIBLE_FRAME_BLOCKED",
+  "eligible_frame_evaluated_at": "2026-08-28T00:00:00Z",
   "eligible_frame_rule_frozen": false,
   "error": "Authoritative host access failed at the environment CONNECT proxy with HTTP 403; no response content was acquired.",
+  "issue_6_determination": "COMPLETE_FRAME_BLOCKED",
+  "issue_6_re_evaluated_at": "2026-08-28T00:00:00Z",
+  "issue_6_re_evaluation_basis": "Tracked repository evidence contains no complete-frame bytes, acquisition manifest, authoritative schema binding, or successful real-frame audit artifact. Fixture-tested code and merge history for PRs #18 and #19 are implementation evidence, not empirical acquisition evidence.",
   "recorded_at": "2026-08-22T08:25:20Z",
   "schema_source": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
   "schema_status": "SCHEMA_NOT_BOUND"
