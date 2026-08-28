@@ -1,9 +1,11 @@
 {
   "specification_version": "fmcsa-governed-reacquisition-requirement-v1",
-  "status": "NOT_AUTHORIZED_PENDING_RECOVERY_ACCESS",
+  "status": "AUTHORIZED_BY_ISSUE_25_ATTEMPT_BLOCKED",
+  "authorization": "GitHub Issue #25",
+  "acquisition_attempt": "data/fmcsa/issue-25-acquisition-attempt.json",
   "historical_recovery_state": "HISTORICAL_PACKAGE_ACCESS_BLOCKED",
   "trigger": "Use only if a later access-capable recovery investigation confirms that the historical package cannot be recovered sufficiently and an explicit issue authorizes a new empirical object.",
-  "why_not_started": "Blocked access to legitimate GitHub project-history and authoritative-source surfaces prevents a final irrecoverability finding. This task does not authorize acquisition.",
+  "why_not_started": "Issue #25 authorized a distinct new object, but authoritative schema retrieval returned HTTP 403 before response content. Complete-frame row acquisition therefore did not start.",
   "replacement_candidates": [
     "complete-frame bytes",
     "acquisition manifest",

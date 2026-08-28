@@ -7,7 +7,10 @@
   "historical_recovery_report": "data/fmcsa/recovery-report.json",
   "historical_recovery_state": "HISTORICAL_PACKAGE_ACCESS_BLOCKED",
   "reacquisition_requirement": "data/fmcsa/reacquisition-requirement.json",
-  "reacquisition_status": "NOT_AUTHORIZED_PENDING_RECOVERY_ACCESS",
+  "issue_25_acquisition_attempt": "data/fmcsa/issue-25-acquisition-attempt.json",
+  "issue_25_empirical_object_id": "fmcsa-company-census-az4n-8mr2-issue25-20260828T041841Z",
+  "issue_25_determination": "NEW_FMCSA_ACQUISITION_BLOCKED",
+  "reacquisition_status": "AUTHORIZED_BY_ISSUE_25_ATTEMPT_BLOCKED",
   "dataset_id": "az4n-8mr2",
   "eligible_frame_blockers": [
     "The repository-owned complete-frame bytes are unavailable in this execution environment, so their digest and row count cannot be verified.",

@@ -107,9 +107,21 @@ blocked.
 
 `reacquisition-requirement.json` preserves the governed transition and the
 requirements for a distinct new empirical object. Its status is
-`NOT_AUTHORIZED_PENDING_RECOVERY_ACCESS`: an access-capable recovery pass and an
-explicit authorizing issue must precede any live acquisition. No reacquisition
-was performed in this investigation.
+`AUTHORIZED_BY_ISSUE_25_ATTEMPT_BLOCKED`. Issue #25 supplied the explicit
+authorization and a new identity was assigned before any row acquisition.
+`issue-25-acquisition-attempt.json` preserves that identity, the canonical
+endpoints and contracts, the attempt timestamp, and the exact result.
+
+The attempt stopped at its earliest legitimacy boundary: the authoritative
+Socrata columns endpoint returned HTTP 403 before any response content was
+received. No schema artifact could be identity-bound, so the complete-frame row
+request was not started and no frame, manifest, page provenance, or audit
+artifact was manufactured. Historical unknown identities and recovery findings
+remain unchanged. The Issue #25 determination is:
+
+```text
+NEW_FMCSA_ACQUISITION_BLOCKED
+```
 
 ## Exact source identities and acquisition contract
 

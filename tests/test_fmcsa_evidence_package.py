@@ -31,11 +31,28 @@ class EvidencePackageTests(unittest.TestCase):
             (ROOT / "data/fmcsa/reacquisition-requirement.json").read_text()
         )
         self.assertEqual(requirement["status"],
-                         "NOT_AUTHORIZED_PENDING_RECOVERY_ACCESS")
+                         "AUTHORIZED_BY_ISSUE_25_ATTEMPT_BLOCKED")
         self.assertIn("distinct", requirement["new_object_requirements"]["acquisition_identity"])
         self.assertIsNone(
             requirement["historical_identities_to_preserve"]["artifact_digests"]
         )
+
+    def test_issue_25_attempt_stops_at_authoritative_schema_boundary(self):
+        attempt = json.loads(
+            (ROOT / "data/fmcsa/issue-25-acquisition-attempt.json").read_text()
+        )
+        self.assertEqual(attempt["authorization"]["issue_number"], 25)
+        self.assertEqual(attempt["dataset_identity"]["id"], "az4n-8mr2")
+        self.assertEqual(attempt["earliest_legitimacy_boundary"],
+                         "AUTHORITATIVE_SCHEMA_ACCESS")
+        self.assertEqual(attempt["schema_retrieval"]["result"], "BLOCKED")
+        self.assertFalse(attempt["schema_retrieval"]["artifact_preserved"])
+        self.assertEqual(attempt["complete_frame_acquisition"]["result"],
+                         "NOT_STARTED_PREREQUISITE_BLOCKED")
+        self.assertIsNone(attempt["complete_frame_acquisition"]["frame_sha256"])
+        self.assertEqual(attempt["determination"],
+                         "NEW_FMCSA_ACQUISITION_BLOCKED")
+        self.assertIn("Distinct", attempt["historical_object_relationship"])
 
     def test_repository_contract_determines_blocked_without_local_artifacts(self):
         result = verifier.verify(ROOT / "data/fmcsa/evidence-package.json", ROOT)
