@@ -14,6 +14,38 @@ COMPLETE_FRAME_BLOCKED
 The code path is fixture-tested, but fixture values are not empirical results.
 The bounded live attempt is recorded in `execution-status.json`.
 
+### Issue #21 bounded re-evaluation (2026-08-28)
+
+Issue #21 cannot legitimately freeze an eligible frame from the repository-owned
+evidence available in this checkout. The ignored complete-frame bytes,
+acquisition manifest, authoritative schema binding, and successful real-frame
+audit artifact are absent. Consequently, the source content digest, row count,
+schema digests, acquisition/retrieval window, and real-frame audit result cannot
+be verified or bound. Merge commits for PRs #18 and #19 prove that the streaming
+audit implementation was reviewed and merged; they do not substitute for its
+empirical output.
+
+Issue #6 has therefore been re-evaluated from preserved evidence and remains
+`COMPLETE_FRAME_BLOCKED`, not `COMPLETE_FRAME_READY_WITH_LIMITATIONS`. The
+fixture-tested acquisition and audit paths demonstrate executable validation
+logic only. They do not establish a canonical acquired frame or authoritative
+eligibility semantics.
+
+No eligibility predicate, transformation, derived eligible-frame artifact, or
+sampling operation was created. Doing so would require either manufacturing
+missing source evidence or inferring undocumented meanings for the active,
+interstate, for-hire, and property-carrier fields. Both are outside the research
+boundary. Once the exact ignored artifacts are restored, Issue #21 must first
+verify them with `python scripts/audit_fmcsa_census.py`, then bind every
+eligibility field to its preserved authoritative definition and code values
+before inspecting qualification outcomes or implementing the transformation.
+
+The canonical Issue #21 determination for this evidence state is:
+
+```text
+ELIGIBLE_FRAME_BLOCKED
+```
+
 ## Exact source identities and acquisition contract
 
 - Dataset: **Company Census File**, Socrata ID `az4n-8mr2`, U.S. DOT / FMCSA.
