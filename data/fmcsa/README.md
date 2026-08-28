@@ -46,6 +46,42 @@ The canonical Issue #21 determination for this evidence state is:
 ELIGIBLE_FRAME_BLOCKED
 ```
 
+### Issue #23 portable evidence package
+
+`evidence-package.json` is the repository-owned, machine-readable inventory for
+the canonical empirical prerequisites. It separates a historical claim from
+possession, retrieval, and successful verification; records each required
+artifact's identity, provenance, location, retrieval and verification method,
+status, and blocker; and binds the unresolved authoritative field semantics.
+
+A search of tracked history and the checkout found no complete-frame bytes,
+produced acquisition manifest, produced schema binding, real-frame audit output,
+Git LFS configuration, release/storage binding, exact artifact digest, byte-size
+record, or row-count record. The ignored output paths are local conventions, not
+retrieval references. The official live schema and row endpoints are legitimate
+sources for a new acquisition only: without a historical digest or immutable
+snapshot selector, querying them cannot recover or prove the prior object.
+
+Run the deterministic readiness check from a fresh checkout:
+
+```bash
+python scripts/verify_fmcsa_evidence_package.py
+```
+
+Exit status `2` and `CANONICAL_EVIDENCE_PACKAGE_BLOCKED` are the expected result
+while mandatory artifacts or identities remain absent. A file appearing at an
+ignored path is not accepted on presence alone: its expected digest and byte
+size must already be bound, and the canonical auditor must validate the frame,
+manifest, schema identities, row count, ordering, and relationships. Unknown or
+mismatched identities fail closed. No reacquired live response may overwrite or
+inherit the missing historical identity.
+
+The Issue #23 determination is:
+
+```text
+CANONICAL_EVIDENCE_PACKAGE_BLOCKED
+```
+
 ## Exact source identities and acquisition contract
 
 - Dataset: **Company Census File**, Socrata ID `az4n-8mr2`, U.S. DOT / FMCSA.

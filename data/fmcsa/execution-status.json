@@ -2,6 +2,8 @@
   "attempted_at": null,
   "attempted_at_limitation": "The failed manual execution did not emit a machine-recorded start timestamp.",
   "complete_frame_status": "COMPLETE_FRAME_BLOCKED",
+  "canonical_evidence_package_contract": "data/fmcsa/evidence-package.json",
+  "canonical_evidence_package_determination": "CANONICAL_EVIDENCE_PACKAGE_BLOCKED",
   "dataset_id": "az4n-8mr2",
   "eligible_frame_blockers": [
     "The repository-owned complete-frame bytes are unavailable in this execution environment, so their digest and row count cannot be verified.",
