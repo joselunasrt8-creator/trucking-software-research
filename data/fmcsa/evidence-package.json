@@ -6,6 +6,9 @@
     "name": "Company Census File"
   },
   "determination": "CANONICAL_EVIDENCE_PACKAGE_BLOCKED",
+  "historical_recovery_report": "data/fmcsa/recovery-report.json",
+  "historical_recovery_state": "HISTORICAL_PACKAGE_ACCESS_BLOCKED",
+  "reacquisition_requirement": "data/fmcsa/reacquisition-requirement.json",
   "historical_object_policy": "A response acquired from the live source now is a new empirical object and must not replace or inherit an identity from the unavailable historical canonical frame.",
   "artifacts": [
     {

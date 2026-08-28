@@ -82,6 +82,35 @@ The Issue #23 determination is:
 CANONICAL_EVIDENCE_PACKAGE_BLOCKED
 ```
 
+### Historical recovery investigation
+
+`recovery-report.json` records each recovery lead, access attempt, artifact-level
+classification, blocker type, and evidence reference. The local checkout, every
+available commit/ref, unreachable Git objects, Git/LFS configuration, workflow
+history, ignored paths, scripts, documentation, and storage/environment-variable
+references yielded no historical digest, byte size, row count, artifact locator,
+release asset, workflow artifact ID, object key, or repository LFS object.
+
+The raw frame, manifest, and audit are therefore
+`IRRECOVERABLE_FROM_AVAILABLE_EVIDENCE`: their ignored filesystem names are
+generation destinations, not retrieval locations. The authoritative columns
+endpoint is a legitimate path for a current schema object, but not for the
+unidentified historical capture. Access to that endpoint, the GitHub project,
+PRs #18/#19, and the releases surface was blocked by the execution environment's
+CONNECT proxy before any response content was received.
+
+The aggregate historical state is consequently
+`HISTORICAL_PACKAGE_ACCESS_BLOCKED`, not `HISTORICAL_PACKAGE_IRRECOVERABLE`.
+Legitimate external evidence surfaces were not exhaustively inspectable. No file
+was recovered, no identity became verified, and the canonical package remains
+blocked.
+
+`reacquisition-requirement.json` preserves the governed transition and the
+requirements for a distinct new empirical object. Its status is
+`NOT_AUTHORIZED_PENDING_RECOVERY_ACCESS`: an access-capable recovery pass and an
+explicit authorizing issue must precede any live acquisition. No reacquisition
+was performed in this investigation.
+
 ## Exact source identities and acquisition contract
 
 - Dataset: **Company Census File**, Socrata ID `az4n-8mr2`, U.S. DOT / FMCSA.

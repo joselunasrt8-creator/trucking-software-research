@@ -1,0 +1,132 @@
+{
+  "report_version": "fmcsa-historical-recovery-v1",
+  "investigated_at": "2026-08-28",
+  "dataset_id": "az4n-8mr2",
+  "historical_recovery_state": "HISTORICAL_PACKAGE_ACCESS_BLOCKED",
+  "canonical_evidence_state": "CANONICAL_EVIDENCE_PACKAGE_BLOCKED",
+  "scope": "Recovery investigation only; no live dataset acquisition was performed.",
+  "available_evidence_search": {
+    "surfaces_examined": [
+      "tracked working tree",
+      "all locally available commits and refs",
+      "unreachable Git objects",
+      "Git configuration and remotes",
+      ".gitignore and .gitattributes history",
+      "Git LFS object directory",
+      "GitHub Actions workflow history",
+      "acquisition and audit implementations",
+      "documentation and execution-status history",
+      "environment-variable, URL, object-key, digest, row-count, and byte-count references"
+    ],
+    "results": [
+      "Only one local branch ref exists and git fsck reports no unreachable objects.",
+      "No Git remote is configured.",
+      "No repository .gitattributes file or repository Git LFS objects exist; system-level Git LFS filters do not establish repository storage.",
+      "CI explicitly asserts that the raw frame, schema binding, and manifest are absent and does not acquire or upload live artifacts.",
+      "Ignored output paths and local checkpoint paths are generation conventions, not storage or retrieval references.",
+      "No historical artifact SHA-256, byte size, row count, release asset, workflow artifact ID, cloud object key, storage provider, mirror, or credential/environment-variable binding was found."
+    ]
+  },
+  "external_access_attempts": [
+    {
+      "lead": "GitHub repository refs",
+      "source": "Merge-commit subjects and repository history identify the GitHub project and PR numbers.",
+      "claimed_artifact": "Possible repository refs containing additional recovery evidence",
+      "storage_or_provenance_implication": "The upstream repository is a legitimate project evidence surface, but no artifact location is established by this lead.",
+      "independently_verifiable": false,
+      "retrieval_possible": false,
+      "result": "git ls-remote failed at the environment CONNECT proxy with HTTP 403."
+    },
+    {
+      "lead": "PR #18 and PR #19 pages",
+      "source": "Local merge commits 10d71948 and 6ec952b reference PR #18 and PR #19.",
+      "claimed_artifact": "Discussion or attachments that might identify audit inputs or outputs",
+      "storage_or_provenance_implication": "PR pages are legitimate project-history surfaces; their narratives would be leads, not empirical proof.",
+      "independently_verifiable": false,
+      "retrieval_possible": false,
+      "result": "Both HTTPS requests failed at the environment CONNECT proxy with HTTP 403 before response content."
+    },
+    {
+      "lead": "GitHub releases API",
+      "source": "The repository host is evidenced by local merge history; releases were checked only as that host's standard repository-owned surface.",
+      "claimed_artifact": "Possible release assets",
+      "storage_or_provenance_implication": "No local release URL, tag, asset name, or asset ID exists.",
+      "independently_verifiable": false,
+      "retrieval_possible": false,
+      "result": "The HTTPS request failed at the environment CONNECT proxy with HTTP 403; no claim that a release or asset exists is made."
+    },
+    {
+      "lead": "Authoritative Socrata columns endpoint",
+      "source": "scripts/acquire_fmcsa_census.py and scripts/audit_fmcsa_census.py bind https://data.transportation.gov/api/views/az4n-8mr2/columns.json.",
+      "claimed_artifact": "Current authoritative schema response",
+      "storage_or_provenance_implication": "This is a legitimate authoritative retrieval path for a newly retrieved schema object, not a locator for the missing historical capture.",
+      "independently_verifiable": true,
+      "retrieval_possible": false,
+      "result": "The HTTPS request failed at the environment CONNECT proxy with HTTP 403 before response content."
+    }
+  ],
+  "artifacts": [
+    {
+      "mandatory_artifact": "canonical complete-frame bytes",
+      "historical_expected_identity": null,
+      "recovery_leads_examined": ["ignored canonical output path", "local Git history and objects", "Git LFS", "CI", "GitHub PR and release surfaces"],
+      "legitimate_storage_or_reference": null,
+      "access_result": "No location is established by available evidence; GitHub project surfaces could not be inspected because access was blocked.",
+      "verification_result": "NOT_VERIFIABLE",
+      "recovery_classification": "IRRECOVERABLE_FROM_AVAILABLE_EVIDENCE",
+      "blocker_type": "NO_RECOVERABLE_PROVENANCE",
+      "blocker": "The historical bytes, digest, size, row count, and a legitimate locator are all absent from available evidence.",
+      "evidence_references": [".gitignore:6", ".github/workflows/ci.yml:36", "data/fmcsa/evidence-package.json:12"]
+    },
+    {
+      "mandatory_artifact": "canonical acquisition manifest",
+      "historical_expected_identity": null,
+      "recovery_leads_examined": ["ignored manifest output path", "checkpoint conventions", "local Git history and objects", "Git LFS", "CI", "GitHub PR and release surfaces"],
+      "legitimate_storage_or_reference": null,
+      "access_result": "No location is established by available evidence; no checkpoint or partial output exists.",
+      "verification_result": "NOT_VERIFIABLE",
+      "recovery_classification": "IRRECOVERABLE_FROM_AVAILABLE_EVIDENCE",
+      "blocker_type": "HISTORICAL_EXISTENCE_ONLY",
+      "blocker": "Documentation describes a produced or preserved manifest, but no bytes, identity, or locator survive in available evidence.",
+      "evidence_references": [".gitignore:8", ".github/workflows/ci.yml:38", "scripts/acquire_fmcsa_census.py:140", "data/fmcsa/evidence-package.json:29"]
+    },
+    {
+      "mandatory_artifact": "authoritative schema artifact/binding",
+      "historical_expected_identity": null,
+      "recovery_leads_examined": ["ignored schema output path", "local Git history and objects", "CI", "authoritative columns endpoint", "GitHub PR and release surfaces"],
+      "legitimate_storage_or_reference": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
+      "access_result": "The authoritative endpoint is known but CONNECT proxy access returned HTTP 403. It can return a current object only; no historical capture identity is available.",
+      "verification_result": "NOT_VERIFIABLE",
+      "recovery_classification": "RETRIEVAL_BLOCKED",
+      "blocker_type": "AUTHORITATIVE_SOURCE_ACCESS_BLOCKED",
+      "blocker": "Current authoritative schema access is blocked, while the historical schema capture additionally has no expected digest or repository-owned locator.",
+      "evidence_references": [".github/workflows/ci.yml:37", "scripts/acquire_fmcsa_census.py:24", "scripts/audit_fmcsa_census.py:19", "data/fmcsa/evidence-package.json:46"]
+    },
+    {
+      "mandatory_artifact": "successful real-frame audit evidence",
+      "historical_expected_identity": null,
+      "recovery_leads_examined": ["audit implementation and tests", "local Git history and objects", "CI", "GitHub PR #18 and PR #19 surfaces"],
+      "legitimate_storage_or_reference": null,
+      "access_result": "No machine-readable historical audit output or output locator exists in available evidence; PR access was blocked.",
+      "verification_result": "NOT_VERIFIABLE",
+      "recovery_classification": "IRRECOVERABLE_FROM_AVAILABLE_EVIDENCE",
+      "blocker_type": "HISTORICAL_EXISTENCE_ONLY",
+      "blocker": "Merged audit code and fixture tests establish capability only, and the missing frame prevents rerunning a historical audit.",
+      "evidence_references": ["scripts/audit_fmcsa_census.py:184", "data/fmcsa/execution-status.json:19", "data/fmcsa/evidence-package.json:64"]
+    },
+    {
+      "mandatory_artifact": "authoritative eligibility-field definitions",
+      "historical_expected_identity": null,
+      "recovery_leads_examined": ["schema and documentation history", "authoritative columns endpoint", "GitHub PR and release surfaces"],
+      "legitimate_storage_or_reference": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
+      "access_result": "The known authoritative schema endpoint was inaccessible; available repository evidence selects no eligibility fields or code definitions.",
+      "verification_result": "NOT_VERIFIABLE",
+      "recovery_classification": "RETRIEVAL_BLOCKED",
+      "blocker_type": "AUTHORITATIVE_SOURCE_ACCESS_BLOCKED",
+      "blocker": "Authoritative access is blocked and it is not yet known whether that source alone contains all required code semantics.",
+      "evidence_references": ["data/fmcsa/README.md:166", "data/fmcsa/evidence-package.json:81"]
+    }
+  ],
+  "state_rationale": "Available local evidence establishes no recoverable provenance for the frame, manifest, or audit. The package is classified ACCESS_BLOCKED rather than IRRECOVERABLE because legitimate GitHub project-history surfaces and the authoritative schema source could not be accessed and therefore were not exhausted.",
+  "reacquisition_decision": "NOT_AUTHORIZED_PENDING_RECOVERY_ACCESS"
+}

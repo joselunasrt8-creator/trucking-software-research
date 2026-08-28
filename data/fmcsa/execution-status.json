@@ -4,6 +4,10 @@
   "complete_frame_status": "COMPLETE_FRAME_BLOCKED",
   "canonical_evidence_package_contract": "data/fmcsa/evidence-package.json",
   "canonical_evidence_package_determination": "CANONICAL_EVIDENCE_PACKAGE_BLOCKED",
+  "historical_recovery_report": "data/fmcsa/recovery-report.json",
+  "historical_recovery_state": "HISTORICAL_PACKAGE_ACCESS_BLOCKED",
+  "reacquisition_requirement": "data/fmcsa/reacquisition-requirement.json",
+  "reacquisition_status": "NOT_AUTHORIZED_PENDING_RECOVERY_ACCESS",
   "dataset_id": "az4n-8mr2",
   "eligible_frame_blockers": [
     "The repository-owned complete-frame bytes are unavailable in this execution environment, so their digest and row count cannot be verified.",

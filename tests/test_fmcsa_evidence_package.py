@@ -13,6 +13,30 @@ spec.loader.exec_module(verifier)
 
 
 class EvidencePackageTests(unittest.TestCase):
+    def test_recovery_report_preserves_access_blocked_distinction(self):
+        report = json.loads((ROOT / "data/fmcsa/recovery-report.json").read_text())
+        self.assertEqual(report["historical_recovery_state"],
+                         "HISTORICAL_PACKAGE_ACCESS_BLOCKED")
+        self.assertEqual(report["canonical_evidence_state"],
+                         "CANONICAL_EVIDENCE_PACKAGE_BLOCKED")
+        classifications = {
+            artifact["recovery_classification"] for artifact in report["artifacts"]
+        }
+        self.assertEqual(classifications,
+                         {"IRRECOVERABLE_FROM_AVAILABLE_EVIDENCE", "RETRIEVAL_BLOCKED"})
+        self.assertEqual(len(report["artifacts"]), 5)
+
+    def test_reacquisition_requires_authorization_and_new_identity(self):
+        requirement = json.loads(
+            (ROOT / "data/fmcsa/reacquisition-requirement.json").read_text()
+        )
+        self.assertEqual(requirement["status"],
+                         "NOT_AUTHORIZED_PENDING_RECOVERY_ACCESS")
+        self.assertIn("distinct", requirement["new_object_requirements"]["acquisition_identity"])
+        self.assertIsNone(
+            requirement["historical_identities_to_preserve"]["artifact_digests"]
+        )
+
     def test_repository_contract_determines_blocked_without_local_artifacts(self):
         result = verifier.verify(ROOT / "data/fmcsa/evidence-package.json", ROOT)
         self.assertEqual(result["dataset_id"], "az4n-8mr2")

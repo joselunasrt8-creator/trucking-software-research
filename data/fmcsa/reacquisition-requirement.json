@@ -1,0 +1,38 @@
+{
+  "specification_version": "fmcsa-governed-reacquisition-requirement-v1",
+  "status": "NOT_AUTHORIZED_PENDING_RECOVERY_ACCESS",
+  "historical_recovery_state": "HISTORICAL_PACKAGE_ACCESS_BLOCKED",
+  "trigger": "Use only if a later access-capable recovery investigation confirms that the historical package cannot be recovered sufficiently and an explicit issue authorizes a new empirical object.",
+  "why_not_started": "Blocked access to legitimate GitHub project-history and authoritative-source surfaces prevents a final irrecoverability finding. This task does not authorize acquisition.",
+  "replacement_candidates": [
+    "complete-frame bytes",
+    "acquisition manifest",
+    "authoritative schema binding",
+    "real-frame audit evidence",
+    "authoritative eligibility-field definitions"
+  ],
+  "historical_identities_to_preserve": {
+    "dataset_id": "az4n-8mr2",
+    "artifact_digests": null,
+    "rule": "Unknown historical digests, sizes, row counts, timestamps, and schema identities remain null and must never be overwritten with new values."
+  },
+  "new_object_requirements": {
+    "acquisition_identity": "Assign an identity explicitly distinct from the historical canonical package.",
+    "retrieval_timestamps": "Record new acquisition start, every retrieval, and completion timestamp.",
+    "source_and_schema_binding": "Bind dataset az4n-8mr2, source URLs, rowsUpdatedAt stability checks, exact schema source content digest, and schema binding digest.",
+    "manifest": "Create a new manifest containing query, strict ordering, pagination, retry, serialization, page provenance, row count, byte size, exact frame SHA-256, and all schema relationships.",
+    "complete_frame_digest": "Compute SHA-256 over the exact newly published bytes; do not compare or alias it to an unknown historical digest.",
+    "audit": "Run the existing canonical fail-closed audit unchanged and preserve its machine-readable result bound to the new frame, manifest, and schema.",
+    "field_semantics": "Preserve authoritative definitions and code meanings with source identities and retrieval evidence before any eligibility predicate is authorized.",
+    "provenance": "Record the authorizing issue, acquisition command/version, execution environment, source locators, retrieval results, timestamps, and limitations.",
+    "distinction": "Every new artifact and status record must state that it is a new live-source empirical object and not byte-identical historical recovery."
+  },
+  "required_transition": [
+    "historical object unavailable",
+    "recovery evidence",
+    "explicit irrecoverability or access determination",
+    "new acquisition authorization",
+    "new empirical object"
+  ],
+  "prohibited_transition": "historical object unavailable -> download current data -> label it historical recovery"
+}
