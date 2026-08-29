@@ -1,0 +1,69 @@
+{
+  "record_version": "fmcsa-new-acquisition-attempt-v1",
+  "empirical_object_id": "fmcsa-company-census-az4n-8mr2-issue25-20260828T041841Z",
+  "object_class": "NEW_AUTHORIZED_EMPIRICAL_OBJECT",
+  "historical_object_relationship": "Distinct from, and not a recovery or replacement identity for, the unavailable historical PR #19 object.",
+  "authorization": {
+    "issue": "https://github.com/joselunasrt8-creator/trucking-software-research/issues/25",
+    "issue_number": 25,
+    "scope": "Authorize creation of a new FMCSA Company Census complete-frame empirical object"
+  },
+  "dataset_identity": {
+    "agency": "U.S. DOT / Federal Motor Carrier Safety Administration",
+    "id": "az4n-8mr2",
+    "name": "Company Census File"
+  },
+  "acquisition_implementation": {
+    "path": "scripts/acquire_fmcsa_census.py",
+    "repository_commit_at_attempt": "b086198",
+    "command": "python scripts/acquire_fmcsa_census.py"
+  },
+  "source_endpoints": {
+    "rows": "https://data.transportation.gov/resource/az4n-8mr2.json",
+    "schema": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
+    "metadata_version": "https://data.transportation.gov/api/views/az4n-8mr2"
+  },
+  "contracts": {
+    "query": "$order=dot_number ASC",
+    "pagination": "deterministic $limit/$offset pages; terminate after the first page whose row count is less than the requested limit, including a possibly empty terminal page",
+    "retry": "Three retries after 1, 2, and 4 seconds for HTTP 429/5xx and enumerated transient transport/read failures; other HTTP failures fail immediately",
+    "termination": "Publish only after a short terminal page and unchanged rowsUpdatedAt before and after pagination",
+    "serialization": "UTF-8 JSON array followed by LF; each row uses canonical JSON with sorted keys and compact separators"
+  },
+  "acquisition_started_at": "2026-08-28T04:18:41Z",
+  "acquisition_completed_at": null,
+  "earliest_legitimacy_boundary": "AUTHORITATIVE_SCHEMA_ACCESS",
+  "schema_retrieval": {
+    "attempted_at": "2026-08-28T04:18:41Z",
+    "source": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
+    "result": "BLOCKED",
+    "failure": "HTTP 403 returned before authoritative schema response content was received.",
+    "artifact_preserved": false,
+    "artifact_sha256": null,
+    "source_content_digest": null,
+    "source_identity_or_version": null
+  },
+  "complete_frame_acquisition": {
+    "result": "NOT_STARTED_PREREQUISITE_BLOCKED",
+    "frame_byte_size": null,
+    "row_count": null,
+    "frame_sha256": null,
+    "manifest": null,
+    "reason": "The authoritative schema prerequisite failed; no row request or live complete-frame acquisition was started."
+  },
+  "audit": {
+    "result": "NOT_RUN_NO_EMPIRICAL_FRAME",
+    "artifact": null
+  },
+  "preservation_binding": {
+    "result": "NOT_ESTABLISHED_NO_ACQUIRED_ARTIFACTS",
+    "storage_reference": null
+  },
+  "portable_verifier_result": "CANONICAL_EVIDENCE_PACKAGE_BLOCKED",
+  "limitations": [
+    "The environment could not retrieve the authoritative schema response.",
+    "No schema, frame, manifest, page provenance, or audit empirical artifact was created.",
+    "The repository has no portable storage binding for a new empirical package because acquisition did not pass its first authoritative prerequisite."
+  ],
+  "determination": "NEW_FMCSA_ACQUISITION_BLOCKED"
+}

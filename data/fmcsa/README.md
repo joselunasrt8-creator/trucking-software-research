@@ -46,6 +46,83 @@ The canonical Issue #21 determination for this evidence state is:
 ELIGIBLE_FRAME_BLOCKED
 ```
 
+### Issue #23 portable evidence package
+
+`evidence-package.json` is the repository-owned, machine-readable inventory for
+the canonical empirical prerequisites. It separates a historical claim from
+possession, retrieval, and successful verification; records each required
+artifact's identity, provenance, location, retrieval and verification method,
+status, and blocker; and binds the unresolved authoritative field semantics.
+
+A search of tracked history and the checkout found no complete-frame bytes,
+produced acquisition manifest, produced schema binding, real-frame audit output,
+Git LFS configuration, release/storage binding, exact artifact digest, byte-size
+record, or row-count record. The ignored output paths are local conventions, not
+retrieval references. The official live schema and row endpoints are legitimate
+sources for a new acquisition only: without a historical digest or immutable
+snapshot selector, querying them cannot recover or prove the prior object.
+
+Run the deterministic readiness check from a fresh checkout:
+
+```bash
+python scripts/verify_fmcsa_evidence_package.py
+```
+
+Exit status `2` and `CANONICAL_EVIDENCE_PACKAGE_BLOCKED` are the expected result
+while mandatory artifacts or identities remain absent. A file appearing at an
+ignored path is not accepted on presence alone: its expected digest and byte
+size must already be bound, and the canonical auditor must validate the frame,
+manifest, schema identities, row count, ordering, and relationships. Unknown or
+mismatched identities fail closed. No reacquired live response may overwrite or
+inherit the missing historical identity.
+
+The Issue #23 determination is:
+
+```text
+CANONICAL_EVIDENCE_PACKAGE_BLOCKED
+```
+
+### Historical recovery investigation
+
+`recovery-report.json` records each recovery lead, access attempt, artifact-level
+classification, blocker type, and evidence reference. The local checkout, every
+available commit/ref, unreachable Git objects, Git/LFS configuration, workflow
+history, ignored paths, scripts, documentation, and storage/environment-variable
+references yielded no historical digest, byte size, row count, artifact locator,
+release asset, workflow artifact ID, object key, or repository LFS object.
+
+The raw frame, manifest, and audit are therefore
+`IRRECOVERABLE_FROM_AVAILABLE_EVIDENCE`: their ignored filesystem names are
+generation destinations, not retrieval locations. The authoritative columns
+endpoint is a legitimate path for a current schema object, but not for the
+unidentified historical capture. Access to that endpoint, the GitHub project,
+PRs #18/#19, and the releases surface was blocked by the execution environment's
+CONNECT proxy before any response content was received.
+
+The aggregate historical state is consequently
+`HISTORICAL_PACKAGE_ACCESS_BLOCKED`, not `HISTORICAL_PACKAGE_IRRECOVERABLE`.
+Legitimate external evidence surfaces were not exhaustively inspectable. No file
+was recovered, no identity became verified, and the canonical package remains
+blocked.
+
+`reacquisition-requirement.json` preserves the governed transition and the
+requirements for a distinct new empirical object. Its status is
+`AUTHORIZED_BY_ISSUE_25_ATTEMPT_BLOCKED`. Issue #25 supplied the explicit
+authorization and a new identity was assigned before any row acquisition.
+`issue-25-acquisition-attempt.json` preserves that identity, the canonical
+endpoints and contracts, the attempt timestamp, and the exact result.
+
+The attempt stopped at its earliest legitimacy boundary: the authoritative
+Socrata columns endpoint returned HTTP 403 before any response content was
+received. No schema artifact could be identity-bound, so the complete-frame row
+request was not started and no frame, manifest, page provenance, or audit
+artifact was manufactured. Historical unknown identities and recovery findings
+remain unchanged. The Issue #25 determination is:
+
+```text
+NEW_FMCSA_ACQUISITION_BLOCKED
+```
+
 ## Exact source identities and acquisition contract
 
 - Dataset: **Company Census File**, Socrata ID `az4n-8mr2`, U.S. DOT / FMCSA.

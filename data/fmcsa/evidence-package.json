@@ -1,0 +1,137 @@
+{
+  "contract_version": "fmcsa-canonical-evidence-package-v1",
+  "dataset_identity": {
+    "agency": "U.S. DOT / Federal Motor Carrier Safety Administration",
+    "id": "az4n-8mr2",
+    "name": "Company Census File"
+  },
+  "determination": "CANONICAL_EVIDENCE_PACKAGE_BLOCKED",
+  "historical_recovery_report": "data/fmcsa/recovery-report.json",
+  "historical_recovery_state": "HISTORICAL_PACKAGE_ACCESS_BLOCKED",
+  "reacquisition_requirement": "data/fmcsa/reacquisition-requirement.json",
+  "authorized_new_object_attempt": "data/fmcsa/issue-25-acquisition-attempt.json",
+  "historical_object_policy": "A response acquired from the live source now is a new empirical object and must not replace or inherit an identity from the unavailable historical canonical frame.",
+  "artifacts": [
+    {
+      "artifact_id": "canonical_complete_frame",
+      "role": "Exact historical complete-frame bytes required by Issue #21",
+      "required": true,
+      "expected_filename": "data/raw/fmcsa/company-census-complete.json",
+      "media_type": "application/json",
+      "expected_sha256": null,
+      "expected_byte_size": null,
+      "expected_row_count": null,
+      "dataset_id": "az4n-8mr2",
+      "provenance": "Historical acquisition was described by repository documentation, but no empirical artifact or identity record is tracked in this repository.",
+      "storage_reference": null,
+      "retrieval_method": null,
+      "verification_method": "Exact SHA-256, byte size, row count, manifest relationship, and canonical audit must all verify; the absent expected values prevent verification.",
+      "status": "MISSING",
+      "blocker": "Neither the bytes, their exact identity, nor a legitimate retrieval reference is repository-owned. The live Socrata endpoint cannot recover byte-identical historical bytes."
+    },
+    {
+      "artifact_id": "acquisition_manifest",
+      "role": "Provenance and acquisition-contract binding for the historical complete frame",
+      "required": true,
+      "expected_filename": "data/derived/fmcsa/complete-frame-manifest.json",
+      "media_type": "application/json",
+      "expected_sha256": null,
+      "expected_byte_size": null,
+      "expected_row_count": null,
+      "dataset_id": "az4n-8mr2",
+      "provenance": "The acquirer writes this ignored path, but no produced manifest or digest is tracked.",
+      "storage_reference": null,
+      "retrieval_method": null,
+      "verification_method": "Validate manifest dataset, query, ordering, schema and frame relationships with the package verifier and canonical auditor.",
+      "status": "MISSING",
+      "blocker": "No manifest bytes, exact digest, or legitimate retrieval reference exists in repository-owned evidence."
+    },
+    {
+      "artifact_id": "authoritative_schema_binding",
+      "role": "Preserved authoritative column definitions and source identity",
+      "required": true,
+      "expected_filename": "data/fmcsa/company-census-schema.json",
+      "media_type": "application/json",
+      "expected_sha256": null,
+      "expected_byte_size": null,
+      "expected_row_count": null,
+      "dataset_id": "az4n-8mr2",
+      "schema_source": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
+      "provenance": "The official live columns endpoint is known, but the historical response and its source-content and binding digests are not preserved.",
+      "storage_reference": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
+      "retrieval_method": "A future acquisition may query the official endpoint, but its result is a newly retrieved schema object and cannot be asserted to be the historical binding.",
+      "verification_method": "Verify source URL, dataset identity, exact binding digest and source-content digest against the acquisition manifest.",
+      "status": "RECOVERABLE",
+      "blocker": "The current live schema may be obtained, but no expected historical digest exists and the required historical frame-manifest relationship cannot be verified."
+    },
+    {
+      "artifact_id": "canonical_real_frame_audit",
+      "role": "Successful audit result for the exact historical complete frame",
+      "required": true,
+      "expected_filename": "data/derived/fmcsa/complete-frame-audit.json",
+      "media_type": "application/json",
+      "expected_sha256": null,
+      "expected_byte_size": null,
+      "expected_row_count": null,
+      "dataset_id": "az4n-8mr2",
+      "provenance": "Repository history contains audit implementation changes and fixture tests, not a preserved real-frame audit result.",
+      "storage_reference": null,
+      "retrieval_method": null,
+      "verification_method": "Run the unchanged canonical auditor only after the exact frame, manifest, and schema are identity-verified; preserve its machine-readable result.",
+      "status": "MISSING",
+      "blocker": "The prerequisite empirical artifacts are absent and no prior audit output is tracked or legitimately referenced."
+    },
+    {
+      "artifact_id": "eligibility_field_definitions",
+      "role": "Authoritative definitions and code meanings needed to freeze later eligibility semantics",
+      "required": true,
+      "expected_filename": null,
+      "media_type": "application/json",
+      "expected_sha256": null,
+      "expected_byte_size": null,
+      "expected_row_count": null,
+      "dataset_id": "az4n-8mr2",
+      "provenance": "No repository-owned source currently binds the active, interstate, for-hire, and property-carrier meanings.",
+      "storage_reference": null,
+      "retrieval_method": null,
+      "verification_method": "Each selected field and every used code value must cite an authoritative source identity and preserved evidence location before predicates are defined.",
+      "status": "MISSING",
+      "blocker": "Authoritative field/code definitions and their identities are unavailable; names or labels are not definitions."
+    }
+  ],
+  "field_semantics": [
+    {
+      "field": "dot_number",
+      "authoritative_source_definition": null,
+      "schema_or_source_identity": null,
+      "evidence_location": null,
+      "limitation": "Used by the acquisition contract as an ordering identifier, but its authoritative historical schema definition is not bound."
+    },
+    {
+      "field": "active-status field",
+      "authoritative_source_definition": null,
+      "schema_or_source_identity": null,
+      "evidence_location": null,
+      "limitation": "No field or code values are selected; no active predicate is authorized."
+    },
+    {
+      "field": "operation field",
+      "authoritative_source_definition": null,
+      "schema_or_source_identity": null,
+      "evidence_location": null,
+      "limitation": "No field or code values are selected; no interstate predicate is authorized."
+    },
+    {
+      "field": "for-hire/property field(s)",
+      "authoritative_source_definition": null,
+      "schema_or_source_identity": null,
+      "evidence_location": null,
+      "limitation": "No fields or code values are selected; no for-hire property predicate is authorized."
+    }
+  ],
+  "verification": {
+    "command": "python scripts/verify_fmcsa_evidence_package.py",
+    "complete_when": "Every required artifact is AVAILABLE_AND_VERIFIED and all identity and relationship checks pass.",
+    "canonical_audit_command": "python scripts/audit_fmcsa_census.py"
+  }
+}
