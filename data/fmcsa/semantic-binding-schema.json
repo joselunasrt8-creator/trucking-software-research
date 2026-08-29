@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/joselunasrt8-creator/trucking-software-research/data/fmcsa/semantic-binding-schema.json",
+  "title": "FMCSA coded-field semantic binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_format", "dataset_id", "metadata_evidence", "fields", "eligibility_rule_status"],
+  "properties": {
+    "artifact_format": {"const": "fmcsa-semantic-binding-v1"},
+    "dataset_id": {"const": "az4n-8mr2"},
+    "metadata_evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "finding"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "finding": {"const": "field names and types available; authoritative coded-value definitions unavailable"}
+      }
+    },
+    "fields": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["field", "definition_status", "authoritative_definition", "authoritative_source", "inference_policy", "eligibility_use"],
+        "properties": {
+          "field": {"type": "string", "minLength": 1},
+          "definition_status": {"enum": ["AUTHORITATIVE_DEFINITION_AVAILABLE", "AUTHORITATIVE_DEFINITION_UNAVAILABLE"]},
+          "authoritative_definition": {"type": ["string", "null"]},
+          "authoritative_source": {"type": ["object", "null"]},
+          "inference_policy": {"const": "PROHIBITED_INFERENCE"},
+          "eligibility_use": {"enum": ["PERMITTED_AFTER_RULE_FREEZE", "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"]}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"definition_status": {"const": "AUTHORITATIVE_DEFINITION_AVAILABLE"}}},
+            "then": {
+              "properties": {
+                "authoritative_definition": {"type": "string", "minLength": 1},
+                "authoritative_source": {"type": "object"},
+                "eligibility_use": {"const": "PERMITTED_AFTER_RULE_FREEZE"}
+              }
+            }
+          },
+          {
+            "if": {"properties": {"definition_status": {"const": "AUTHORITATIVE_DEFINITION_UNAVAILABLE"}}},
+            "then": {
+              "properties": {
+                "authoritative_definition": {"const": null},
+                "authoritative_source": {"const": null},
+                "eligibility_use": {"const": "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"}
+              }
+            }
+          }
+        ]
+      }
+    },
+    "eligibility_rule_status": {"const": "NOT_FROZEN_SEMANTIC_DEPENDENCIES_UNRESOLVED"}
+  }
+}

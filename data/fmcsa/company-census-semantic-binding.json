@@ -1,0 +1,17 @@
+{
+  "artifact_format": "fmcsa-semantic-binding-v1",
+  "dataset_id": "az4n-8mr2",
+  "metadata_evidence": {
+    "path": "data/fmcsa/company-census-columns-official.json",
+    "sha256": "sha256:8ca885f2d6ba7de8c2cbad66b1a5c2cfda88bd6125c0413e117e79215a3e661e",
+    "finding": "field names and types available; authoritative coded-value definitions unavailable"
+  },
+  "fields": [
+    {"field":"status_code","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"},
+    {"field":"carrier_operation","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"},
+    {"field":"docket1_status_code","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"},
+    {"field":"safety_rating","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"},
+    {"field":"review_type","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"}
+  ],
+  "eligibility_rule_status": "NOT_FROZEN_SEMANTIC_DEPENDENCIES_UNRESOLVED"
+}

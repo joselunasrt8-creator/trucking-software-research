@@ -26,5 +26,13 @@
   "issue_6_re_evaluation_basis": "Tracked repository evidence contains no complete-frame bytes, acquisition manifest, authoritative schema binding, or successful real-frame audit artifact. Fixture-tested code and merge history for PRs #18 and #19 are implementation evidence, not empirical acquisition evidence.",
   "recorded_at": "2026-08-22T08:25:20Z",
   "schema_source": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
-  "schema_status": "SCHEMA_NOT_BOUND"
+  "schema_status": "OFFICIAL_COLUMN_METADATA_ACQUIRED",
+  "bounded_cohort_status": "BOUNDED_COHORT_AUDIT_PASSED",
+  "bounded_cohort_requested_limit": 100,
+  "bounded_cohort_row_count": 100,
+  "bounded_cohort_content_digest": "sha256:0d5b09ce940d0d22c7fba5eaee72c3904532a3e1bd77c33066fe0c7c3f59e9e6",
+  "bounded_cohort_scope": "NON_RANDOM_NON_REPRESENTATIVE_NON_COMPLETE_FRAME",
+  "semantic_binding_status": "SEMANTIC_BINDING_UNRESOLVED",
+  "eligibility_rule_status": "ELIGIBILITY_RULE_NOT_FROZEN",
+  "prospective_qualification_status": "PROSPECTIVE_QUALIFICATION_NOT_STARTED"
 }

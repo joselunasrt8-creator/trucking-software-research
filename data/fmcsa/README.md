@@ -2,17 +2,68 @@
 
 ## Current execution status
 
-The authoritative hosts were unreachable from the 2026-08-22 implementation
-environment (the proxy returned HTTP 403). No live schema, complete frame,
-manifest, or eligible-frame counts are committed or claimed. Current status is:
+The authoritative hosts were unreachable from the 2026-08-22 complete-frame
+implementation environment (the proxy returned HTTP 403). A later bounded
+request acquired 100 rows and official Socrata column metadata, but no complete
+frame or eligible frame is committed or claimed. Current status is:
 
 ```text
-SCHEMA_NOT_BOUND
+SEMANTIC_BINDING_UNRESOLVED
 COMPLETE_FRAME_BLOCKED
 ```
 
 The code path is fixture-tested, but fixture values are not empirical results.
-The bounded live attempt is recorded in `execution-status.json`.
+The bounded acquisition and its semantic limitation are recorded below and in
+`execution-status.json`.
+
+## Bounded ingestion cohort (2026-08-28)
+
+`company-census-bounded-100.json` is a deterministic ingestion cohort selected
+by the exact query `$limit=100&$offset=0&$order=dot_number ASC` against dataset
+`az4n-8mr2`. Its manifest is `data/derived/fmcsa/bounded-100-manifest.json`.
+Run:
+
+```bash
+python3 scripts/audit_fmcsa_census_bounded.py --expected-limit 100
+```
+
+The audit independently verifies dataset/query identity, requested limit, actual
+row count, strict numeric DOT ordering, missing/duplicate identifiers, the
+SHA-256 of the exact raw bytes, manifest consistency, and the required scope
+disclaimers. The preserved artifact currently yields
+`BOUNDED_COHORT_AUDIT_PASSED` with 100 rows, zero missing DOT numbers, zero
+duplicates, and digest
+`sha256:0d5b09ce940d0d22c7fba5eaee72c3904532a3e1bd77c33066fe0c7c3f59e9e6`.
+
+This is the first 100 results under the declared order. It is not random,
+representative, or a complete population frame and cannot support prevalence or
+population claims.
+
+## Semantic binding and qualification boundary
+
+The official column response is preserved as
+`company-census-columns-official.json`. It supplies field names and Socrata
+types, but its descriptions for the relevant coded fields are blank. The
+machine-readable `company-census-semantic-binding.json`, governed by
+`semantic-binding-schema.json`, therefore records the definitions of
+`status_code`, `carrier_operation`, `docket1_status_code`, `safety_rating`, and
+`review_type` as `AUTHORITATIVE_DEFINITION_UNAVAILABLE`, makes inference
+`PROHIBITED_INFERENCE`, and blocks their eligibility use.
+
+Observed letters, frequencies, field names, and labels are not definitions.
+No eligible subset is produced. Exact current downstream states are:
+
+```text
+SEMANTIC_BINDING_UNRESOLVED
+ELIGIBILITY_RULE_NOT_FROZEN
+PROSPECTIVE_QUALIFICATION_NOT_STARTED
+```
+
+The next empirical dependency is an authoritative FMCSA data dictionary or
+other official source that defines each required field and every selected code
+value. After preserving and digest-binding that source, preregister the reference
+time, inclusion/exclusion predicates, missing-data behavior, and deterministic
+logic before observing platform qualification outcomes.
 
 ### Issue #21 bounded re-evaluation (2026-08-28)
 
@@ -213,7 +264,7 @@ complete-frame → eligible-frame construction rule is **not frozen**.
 
 | field | authoritative definition | intended research use | observability limitation | disposition |
 |---|---|---|---|---|
-| `dot_number` | unresolved until official schema retrieval | stable carrier identity and ordering | does not establish eligibility | required for complete-frame integrity |
+| `dot_number` | official metadata identifies a numeric field but supplies no description | stable carrier identity and ordering in the bounded protocol | does not establish eligibility | required for ingestion integrity only |
 | active-status field | unresolved; field not selected | active predicate at the reference date | census state may not equal current authority | excluded until bound |
 | operation field | unresolved; field not selected | interstate predicate | codes must not be inferred | excluded until bound |
 | for-hire/property field(s) | unresolved; fields not selected | for-hire property predicate | may require another authoritative FMCSA source | excluded until bound |

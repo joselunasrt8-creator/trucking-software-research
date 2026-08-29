@@ -97,3 +97,15 @@ This repository does not begin with a predetermined SaaS product.
 A product hypothesis should emerge only after evidence identifies a recurring and economically meaningful problem where software can improve the decision boundary.
 
 **Find the gate before building the product.**
+
+## Evidence pipeline and current boundary
+
+The FMCSA work proceeds through distinct, non-substitutable stages:
+
+1. **Complete-frame infrastructure** — resumable acquisition and streaming audit code for a version-checked census frame. Its current empirical status remains `COMPLETE_FRAME_BLOCKED`; fixture tests do not create a frame.
+2. **Bounded ingestion cohort** — the deterministic first 100 rows of dataset `az4n-8mr2` under `dot_number ASC`. Run `python3 scripts/audit_fmcsa_census_bounded.py --expected-limit 100` to verify its identity, count, ordering, identifiers, digest, manifest, and explicitly non-random/non-representative/non-complete scope.
+3. **Semantic binding** — authoritative meanings and coded values must be bound before a field can enter an eligibility rule. The current binding marks `status_code`, `carrier_operation`, `docket1_status_code`, `safety_rating`, and `review_type` as `AUTHORITATIVE_DEFINITION_UNAVAILABLE` with `PROHIBITED_INFERENCE`.
+4. **Eligibility-rule freezing** — not started. It requires authoritative definitions, a fixed reference time, exact predicates/code values, missing-data behavior, and deterministic exclusions before selection.
+5. **Prospective qualification/gate observation** — begins only after the instrument and eligibility rule are frozen. FMCSA state, platform-represented state, and the platform decision remain separate evidence classes.
+
+Current determination: `BOUNDED_COHORT_AUDIT_PASSED`; `SEMANTIC_BINDING_UNRESOLVED`; `ELIGIBILITY_RULE_NOT_FROZEN`. These are pipeline states, not evidence that any carrier is eligible or that any platform gate is valid or invalid.
