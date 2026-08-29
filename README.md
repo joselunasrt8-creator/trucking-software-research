@@ -109,3 +109,9 @@ The FMCSA work proceeds through distinct, non-substitutable stages:
 5. **Prospective qualification/gate observation** — begins only after the instrument and eligibility rule are frozen. FMCSA state, platform-represented state, and the platform decision remain separate evidence classes.
 
 Current determination: `BOUNDED_COHORT_AUDIT_PASSED`; `SEMANTIC_BINDING_UNRESOLVED`; `ELIGIBILITY_RULE_NOT_FROZEN`. These are pipeline states, not evidence that any carrier is eligible or that any platform gate is valid or invalid.
+
+### Candidate MOTUS eligibility boundary (2026-08-29)
+
+The exact candidate MOTUS values are recorded, but neither is bound to preserved authoritative FMCSA/U.S. DOT text. Authoritative retrieval attempts returned a CONNECT-proxy HTTP 403 without response bytes; therefore no digest, document identity, or semantic definition can legitimately be preserved. The determination remains `AUTHORITATIVE_MOTUS_SEMANTICS_BLOCKED` and the values must not be inferred from observed MOTUS data.
+
+Because semantic freeze is a strict prerequisite, no T0, source pair, join protocol, MOTUS snapshot, joined cohort, or cohort row count has been created. `scripts/verify_fmcsa_candidate_eligibility.py` enforces that boundary and rejects a protocol or cohort introduced before the authoritative bindings exist. The resulting determination is `CANDIDATE_RULE_VERIFIED_UNFROZEN`; `ELIGIBILITY_RULE_NOT_FROZEN` cannot advance.

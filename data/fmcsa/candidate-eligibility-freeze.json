@@ -1,0 +1,24 @@
+{
+  "artifact_format": "fmcsa-candidate-eligibility-freeze-v1",
+  "candidate_rule": {
+    "company_census": {"status_code": "A", "carrier_operation": "A"},
+    "join": {"left": "Company Census.dot_number", "right": "MOTUS.usdot_number"},
+    "motus_exists": {
+      "op_auth_type": "Motor Carrier of Property (Except Household Goods)",
+      "op_auth_status": "Active"
+    }
+  },
+  "semantic_evidence": "data/fmcsa/motus-candidate-semantic-evidence.json",
+  "prerequisite_gate": "A point-in-time protocol may be preregistered only after every exact candidate value is bound to preserved authoritative FMCSA/U.S. DOT bytes.",
+  "reference_time_t0": null,
+  "admissible_company_census_artifact": null,
+  "admissible_motus_artifact": null,
+  "join_protocol": null,
+  "cohort_artifact": null,
+  "candidate_cohort_row_count": null,
+  "point_in_time_protocol_status": "NOT_CREATED_SEMANTIC_PREREQUISITE_UNSATISFIED",
+  "actual_point_in_time_motus_artifact_acquired": false,
+  "deterministic_joined_cohort_produced": false,
+  "eligibility_rule_status": "ELIGIBILITY_RULE_NOT_FROZEN",
+  "determination": "CANDIDATE_RULE_VERIFIED_UNFROZEN"
+}

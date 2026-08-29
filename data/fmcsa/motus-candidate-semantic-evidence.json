@@ -1,0 +1,45 @@
+{
+  "artifact_format": "fmcsa-motus-candidate-semantic-evidence-v1",
+  "authority_constraint": "FMCSA_OR_US_DOT_ONLY",
+  "retrieval_attempt": {
+    "attempted_at": "2026-08-29T03:30:50Z",
+    "sources": [
+      {
+        "identifier": "U.S. DOT National Transportation Data Archives",
+        "url": "https://data.transportation.gov/data.json",
+        "result": "CONNECT_PROXY_HTTP_403_NO_RESPONSE_BYTES",
+        "retrieved_byte_size": 0,
+        "sha256": null
+      },
+      {
+        "identifier": "FMCSA registration authority guidance",
+        "url": "https://www.fmcsa.dot.gov/registration/get-motor-carrier-authority",
+        "result": "CONNECT_PROXY_HTTP_403_NO_RESPONSE_BYTES",
+        "retrieved_byte_size": 0,
+        "sha256": null
+      }
+    ],
+    "timestamp_limitation": "The timestamp records the UTC date of the attempted retrieval; the failed commands did not emit a response-side timestamp or authoritative bytes."
+  },
+  "candidate_bindings": [
+    {
+      "field": "op_auth_type",
+      "candidate_value": "Motor Carrier of Property (Except Household Goods)",
+      "definition_status": "AUTHORITATIVE_EXACT_TEXT_NOT_PRESERVED",
+      "authoritative_artifact": null,
+      "authoritative_text": null,
+      "inference_policy": "PROHIBITED_INFERENCE"
+    },
+    {
+      "field": "op_auth_status",
+      "candidate_value": "Active",
+      "definition_status": "AUTHORITATIVE_EXACT_TEXT_NOT_PRESERVED",
+      "authoritative_artifact": null,
+      "authoritative_text": null,
+      "inference_policy": "PROHIBITED_INFERENCE"
+    }
+  ],
+  "semantic_status": "SEMANTIC_BINDING_PARTIALLY_BOUND",
+  "motus_candidate_semantics": "NOT_FREEZE_GRADE",
+  "determination": "AUTHORITATIVE_MOTUS_SEMANTICS_BLOCKED"
+}
