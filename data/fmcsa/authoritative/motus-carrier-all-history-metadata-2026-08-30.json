@@ -1,0 +1,1889 @@
+{
+  "id" : "inys-ebih",
+  "name" : "Motus Carrier - All With History",
+  "assetType" : "dataset",
+  "averageRating" : 0,
+  "category" : "Trucking and Motorcoaches",
+  "createdAt" : 1780455615,
+  "description" : "*This is an All With History dataset*. Records for all carriers/brokers/freight forwarders with active, inactive, or pending operating authorities. It includes the DOT number and docket number for the carrier/broker/freight forwarder, along with entity census, authority, and insurance data (e.g., types of authority, address, types of insurance on file, and amounts of insurance on file). Note: DOCKET_NUMBER and DOT_NUMBER can have duplicates in this file, since this file will show each OA per Docket Number and a single USDOT number can have multiple docket numbers. Also, the legacy registration system allowed multiple OAs per docket number, while Motus will assign a unique docket number to each OA and allows multiple OAs per USDOT number. Please refer attached data dictionary for additional details.",
+  "diciBackend" : false,
+  "displayType" : "table",
+  "domainCName" : "data.transportation.gov",
+  "downloadCount" : 58777,
+  "hideFromCatalog" : false,
+  "hideFromDataJson" : false,
+  "locked" : false,
+  "newBackend" : true,
+  "numberOfComments" : 0,
+  "oid" : 42214203,
+  "provenance" : "official",
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1781559630,
+  "publicationGroup" : 20407865,
+  "publicationStage" : "published",
+  "rowsUpdatedAt" : 1787999953,
+  "rowsUpdatedBy" : "7kpx-sgf3",
+  "tableId" : 20420799,
+  "totalTimesRated" : 0,
+  "viewCount" : 51136,
+  "viewLastModified" : 1787999888,
+  "viewType" : "tabular",
+  "approvals" : [ {
+    "reviewedAt" : 1780922396,
+    "reviewedAutomatically" : false,
+    "state" : "approved",
+    "submissionId" : 7522530,
+    "submissionObject" : "public_audience_request",
+    "submissionOutcome" : "change_audience",
+    "submittedAt" : 1780892312,
+    "targetAudience" : "public",
+    "workflowId" : 568,
+    "reviewer" : {
+      "id" : "5h76-frvc",
+      "displayName" : "shyla.morisetty@dot.gov"
+    },
+    "submissionDetails" : {
+      "permissionType" : "read"
+    },
+    "submissionOutcomeApplication" : {
+      "endedAt" : 1780922396,
+      "failureCount" : 0,
+      "startedAt" : 1780922396,
+      "status" : "success"
+    },
+    "submitter" : {
+      "id" : "9pji-k3v9",
+      "displayName" : "Ankur Saini"
+    }
+  }, {
+    "message" : "The `strict_permissions` flag must be on to enable internal approvals.",
+    "state" : "unsubmittable",
+    "targetAudience" : "internal",
+    "workflowId" : 5258
+  } ],
+  "clientContext" : {
+    "clientContextVariables" : [ ],
+    "inheritedVariables" : { }
+  },
+  "columns" : [ {
+    "id" : 635149854,
+    "name" : "DOCKET_NUMBER",
+    "dataTypeName" : "text",
+    "description" : "Unique FMCSA alpha-numeric identifying for-hire motor carriers (MC0000000000, FF0000000000, MX0000000000)",
+    "fieldName" : "docket_number",
+    "position" : 1,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276750,
+    "cachedContents" : {
+      "non_null" : "118306",
+      "largest" : "MX999109",
+      "null" : "8",
+      "top" : [ {
+        "item" : "MC5428",
+        "count" : "5"
+      }, {
+        "item" : "MC362367",
+        "count" : "5"
+      }, {
+        "item" : "MC1513574",
+        "count" : "4"
+      }, {
+        "item" : "MC152324",
+        "count" : "4"
+      }, {
+        "item" : "MC1773595",
+        "count" : "4"
+      }, {
+        "item" : "MC192821",
+        "count" : "4"
+      }, {
+        "item" : "MC1019040",
+        "count" : "4"
+      }, {
+        "item" : "MC186407",
+        "count" : "4"
+      }, {
+        "item" : "MC129283",
+        "count" : "4"
+      }, {
+        "item" : "MC451491",
+        "count" : "4"
+      }, {
+        "item" : "MC88368",
+        "count" : "4"
+      }, {
+        "item" : "MC1820411",
+        "count" : "4"
+      }, {
+        "item" : "MC1251554",
+        "count" : "4"
+      }, {
+        "item" : "MC133655",
+        "count" : "4"
+      }, {
+        "item" : "MC134030",
+        "count" : "4"
+      }, {
+        "item" : "MC97186",
+        "count" : "4"
+      }, {
+        "item" : "MC210998",
+        "count" : "4"
+      }, {
+        "item" : "MC817540",
+        "count" : "4"
+      }, {
+        "item" : "MC139564",
+        "count" : "4"
+      }, {
+        "item" : "MC127227",
+        "count" : "4"
+      } ],
+      "smallest" : "FF10096",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149855,
+    "name" : "USDOT_NUMBER",
+    "dataTypeName" : "text",
+    "description" : "\t Official FMCSA registration number for all interstate motor carriers",
+    "fieldName" : "usdot_number",
+    "position" : 2,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276751,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "9999733",
+      "null" : "0",
+      "top" : [ {
+        "item" : "2216004",
+        "count" : "8"
+      }, {
+        "item" : "569258",
+        "count" : "6"
+      }, {
+        "item" : "153343",
+        "count" : "6"
+      }, {
+        "item" : "2556441",
+        "count" : "6"
+      }, {
+        "item" : "277907",
+        "count" : "6"
+      }, {
+        "item" : "991721",
+        "count" : "6"
+      }, {
+        "item" : "4410111",
+        "count" : "6"
+      }, {
+        "item" : "7975126",
+        "count" : "6"
+      }, {
+        "item" : "567635",
+        "count" : "6"
+      }, {
+        "item" : "190356",
+        "count" : "6"
+      }, {
+        "item" : "125563",
+        "count" : "6"
+      }, {
+        "item" : "606920",
+        "count" : "6"
+      }, {
+        "item" : "4526466",
+        "count" : "6"
+      }, {
+        "item" : "227698",
+        "count" : "6"
+      }, {
+        "item" : "4149687",
+        "count" : "6"
+      }, {
+        "item" : "77949",
+        "count" : "6"
+      }, {
+        "item" : "1746836",
+        "count" : "6"
+      }, {
+        "item" : "444539",
+        "count" : "6"
+      }, {
+        "item" : "105287",
+        "count" : "6"
+      }, {
+        "item" : "3808497",
+        "count" : "6"
+      } ],
+      "smallest" : "100002",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149856,
+    "name" : "RFC_NUMBER",
+    "dataTypeName" : "text",
+    "description" : "\t Mexican Government registration code for Mexican carriers",
+    "fieldName" : "rfc_number",
+    "position" : 3,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276752,
+    "cachedContents" : {
+      "non_null" : "589",
+      "largest" : "ZERH780720SX4",
+      "null" : "117725",
+      "top" : [ {
+        "item" : "PST901101MC6",
+        "count" : "2"
+      }, {
+        "item" : "REOV7610229U1",
+        "count" : "2"
+      }, {
+        "item" : "TIG8902064M6",
+        "count" : "2"
+      }, {
+        "item" : "AALC680109DU7",
+        "count" : "2"
+      }, {
+        "item" : "SASA760421CF2",
+        "count" : "2"
+      }, {
+        "item" : "TLC990519V22",
+        "count" : "2"
+      }, {
+        "item" : "AAHC770317KC3",
+        "count" : "1"
+      }, {
+        "item" : "AAGV660428RI0",
+        "count" : "1"
+      }, {
+        "item" : "AAAA8309111G6",
+        "count" : "1"
+      }, {
+        "item" : "AAR170413DU1",
+        "count" : "1"
+      }, {
+        "item" : "AAR201217KD8",
+        "count" : "1"
+      }, {
+        "item" : "AARA801020RJ0",
+        "count" : "1"
+      }, {
+        "item" : "AAVM600425TR2",
+        "count" : "1"
+      }, {
+        "item" : "ACC900522J30",
+        "count" : "1"
+      }, {
+        "item" : "AAMR790223HJ7",
+        "count" : "1"
+      }, {
+        "item" : "AACR710501CV2",
+        "count" : "1"
+      }, {
+        "item" : "AEA980504UZA",
+        "count" : "1"
+      }, {
+        "item" : "ACU900615BU7",
+        "count" : "1"
+      }, {
+        "item" : "AEAA880904FJ6",
+        "count" : "1"
+      }, {
+        "item" : "AAMR771230V96",
+        "count" : "1"
+      } ],
+      "smallest" : "123456789",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149857,
+    "name" : "OP_AUTH_TYPE",
+    "dataTypeName" : "text",
+    "description" : "Operating Authority Type",
+    "fieldName" : "op_auth_type",
+    "position" : 4,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276753,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "Motor Carrier of Property (Except Household Goods)",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Motor Carrier of Property (Except Household Goods)",
+        "count" : "106538"
+      }, {
+        "item" : "Broker of Property (Except Household Goods)",
+        "count" : "5797"
+      }, {
+        "item" : "Motor Carrier of Household Goods",
+        "count" : "2162"
+      }, {
+        "item" : "Motor Carrier of Passengers",
+        "count" : "1201"
+      }, {
+        "item" : "Freight Forwarder of Property (Except Household Goods)",
+        "count" : "946"
+      }, {
+        "item" : "Mexico Domiciled Motor Carrier of Property (Except Household Goods)",
+        "count" : "557"
+      }, {
+        "item" : "Enterprise Motor Carrier of Property (Except Household Goods)",
+        "count" : "469"
+      }, {
+        "item" : "Broker of Household Goods",
+        "count" : "337"
+      }, {
+        "item" : "Freight Forwarder of Household Goods",
+        "count" : "227"
+      }, {
+        "item" : "Mexico Domiciled Private Motor Carrier of Property (Except Household Goods)",
+        "count" : "72"
+      }, {
+        "item" : "Enterprise Motor Carrier of Household Goods",
+        "count" : "5"
+      }, {
+        "item" : "Mexico Domiciled Motor Carrier of Household Goods",
+        "count" : "3"
+      } ],
+      "smallest" : "Broker of Household Goods",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149858,
+    "name" : "OP_AUTH_STATUS",
+    "dataTypeName" : "text",
+    "description" : "Operating Authority Status",
+    "fieldName" : "op_auth_status",
+    "position" : 5,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276754,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "Withdrawn",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Active",
+        "count" : "88372"
+      }, {
+        "item" : "Pending",
+        "count" : "19242"
+      }, {
+        "item" : "Inactive",
+        "count" : "7975"
+      }, {
+        "item" : "Withdrawn",
+        "count" : "2725"
+      } ],
+      "smallest" : "Active",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149883,
+    "name" : "MIN_COV_AMOUNT",
+    "dataTypeName" : "number",
+    "description" : "Amount of BI&PD insurance required (in thousands)",
+    "fieldName" : "min_cov_amount",
+    "position" : 6,
+    "renderTypeName" : "number",
+    "tableColumnId" : 168517462,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "5000000.000000000000000000",
+      "null" : "0",
+      "top" : [ {
+        "item" : "750000.000000000000000000",
+        "count" : "83111"
+      }, {
+        "item" : "0E-18",
+        "count" : "13046"
+      }, {
+        "item" : "1000000.000000000000000000",
+        "count" : "11574"
+      }, {
+        "item" : "300000.000000000000000000",
+        "count" : "8883"
+      }, {
+        "item" : "5000000.000000000000000000",
+        "count" : "1312"
+      }, {
+        "item" : "1500000.000000000000000000",
+        "count" : "388"
+      } ],
+      "smallest" : "0E-18",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149860,
+    "name" : "CARGO_REQ",
+    "dataTypeName" : "text",
+    "description" : "Y = Yes N = No",
+    "fieldName" : "cargo_req",
+    "position" : 7,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276756,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "Y",
+      "null" : "0",
+      "top" : [ {
+        "item" : "N",
+        "count" : "116140"
+      }, {
+        "item" : "Y",
+        "count" : "2174"
+      } ],
+      "smallest" : "N",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149861,
+    "name" : "BOND_REQ",
+    "dataTypeName" : "text",
+    "description" : "Y = Yes N = No",
+    "fieldName" : "bond_req",
+    "position" : 8,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276757,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "Y",
+      "null" : "0",
+      "top" : [ {
+        "item" : "N",
+        "count" : "111007"
+      }, {
+        "item" : "Y",
+        "count" : "7307"
+      } ],
+      "smallest" : "N",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149882,
+    "name" : "BIPD_FILE",
+    "dataTypeName" : "number",
+    "description" : "Amount of BI&PD insurance on file (in thousands)",
+    "fieldName" : "bipd_file",
+    "position" : 9,
+    "renderTypeName" : "number",
+    "tableColumnId" : 168517461,
+    "cachedContents" : {
+      "non_null" : "118308",
+      "largest" : "290000000.000000000000000000",
+      "null" : "6",
+      "top" : [ {
+        "item" : "750000.000000000000000000",
+        "count" : "56759"
+      }, {
+        "item" : "0E-18",
+        "count" : "30535"
+      }, {
+        "item" : "1000000.000000000000000000",
+        "count" : "25298"
+      }, {
+        "item" : "5000000.000000000000000000",
+        "count" : "1740"
+      }, {
+        "item" : "1500000.000000000000000000",
+        "count" : "1025"
+      }, {
+        "item" : "300000.000000000000000000",
+        "count" : "934"
+      }, {
+        "item" : "2000000.000000000000000000",
+        "count" : "857"
+      }, {
+        "item" : "1750000.000000000000000000",
+        "count" : "243"
+      }, {
+        "item" : "7000000.000000000000000000",
+        "count" : "141"
+      }, {
+        "item" : "10000000.000000000000000000",
+        "count" : "128"
+      }, {
+        "item" : "3000000.000000000000000000",
+        "count" : "109"
+      }, {
+        "item" : "6000000.000000000000000000",
+        "count" : "103"
+      }, {
+        "item" : "4000000.000000000000000000",
+        "count" : "73"
+      }, {
+        "item" : "9000000.000000000000000000",
+        "count" : "64"
+      }, {
+        "item" : "75000.000000000000000000",
+        "count" : "61"
+      }, {
+        "item" : "8000000.000000000000000000",
+        "count" : "35"
+      }, {
+        "item" : "1900000.000000000000000000",
+        "count" : "22"
+      }, {
+        "item" : "15000000.000000000000000000",
+        "count" : "17"
+      }, {
+        "item" : "500000.000000000000000000",
+        "count" : "15"
+      }, {
+        "item" : "11000000.000000000000000000",
+        "count" : "14"
+      } ],
+      "smallest" : "0E-18",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149863,
+    "name" : "CARGO_FILE",
+    "dataTypeName" : "text",
+    "description" : "Y = Yes N = No",
+    "fieldName" : "cargo_file",
+    "position" : 10,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276759,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "Y",
+      "null" : "0",
+      "top" : [ {
+        "item" : "N",
+        "count" : "117319"
+      }, {
+        "item" : "Y",
+        "count" : "995"
+      } ],
+      "smallest" : "N",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149864,
+    "name" : "BOND_FILE",
+    "dataTypeName" : "text",
+    "description" : "Y = Yes N = No",
+    "fieldName" : "bond_file",
+    "position" : 11,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276760,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "Y",
+      "null" : "0",
+      "top" : [ {
+        "item" : "N",
+        "count" : "114414"
+      }, {
+        "item" : "Y",
+        "count" : "3900"
+      } ],
+      "smallest" : "N",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149865,
+    "name" : "BUS_UNDELIVERABLE_MAIL",
+    "dataTypeName" : "text",
+    "description" : "Y = Deliverable N = Undeliverable - Mail was returned \"undeliverable\" form USPS",
+    "fieldName" : "bus_undeliverable_mail",
+    "position" : 12,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276761,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "Y",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Y",
+        "count" : "117748"
+      }, {
+        "item" : "N",
+        "count" : "566"
+      } ],
+      "smallest" : "N",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149866,
+    "name" : "MAIL_UNDELIVERABLE_MAIL",
+    "dataTypeName" : "text",
+    "description" : "Y = Deliverable N = Undeliverable - Mail was returned \"undeliverable\" form USPS",
+    "fieldName" : "mail_undeliverable_mail",
+    "position" : 13,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276762,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "Y",
+      "null" : "0",
+      "top" : [ {
+        "item" : "Y",
+        "count" : "117548"
+      }, {
+        "item" : "N",
+        "count" : "766"
+      } ],
+      "smallest" : "N",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149867,
+    "name" : "DBA_NAME",
+    "dataTypeName" : "text",
+    "description" : "“Doing Business As” Name. Can be more than one DBA name",
+    "fieldName" : "dba_name",
+    "position" : 14,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276763,
+    "cachedContents" : {
+      "non_null" : "16613",
+      "largest" : "ZWR ENTERPRISES LLC",
+      "null" : "101701",
+      "top" : [ {
+        "item" : "TWO MEN AND A TRUCK",
+        "count" : "83"
+      }, {
+        "item" : "NA",
+        "count" : "43"
+      }, {
+        "item" : "OWNER",
+        "count" : "36"
+      }, {
+        "item" : "UNIVERSAL",
+        "count" : "31"
+      }, {
+        "item" : "NO",
+        "count" : "30"
+      }, {
+        "item" : "U-HAUL",
+        "count" : "28"
+      }, {
+        "item" : "ARMSTRONG RELOCATION",
+        "count" : "26"
+      }, {
+        "item" : "NONE",
+        "count" : "24"
+      }, {
+        "item" : "NEED IT NOW",
+        "count" : "16"
+      }, {
+        "item" : "APPLE MOVING",
+        "count" : "12"
+      }, {
+        "item" : "TRANSPORTATION",
+        "count" : "11"
+      }, {
+        "item" : "PASHA FREIGHT",
+        "count" : "10"
+      }, {
+        "item" : "ARMSTRONG RELOCATION COMPANY",
+        "count" : "10"
+      }, {
+        "item" : "WM",
+        "count" : "9"
+      }, {
+        "item" : "TRUCKING",
+        "count" : "8"
+      }, {
+        "item" : "COVENANT LOGISTICS",
+        "count" : "8"
+      }, {
+        "item" : "ATLANTIC RELOCATION SYSTEMS",
+        "count" : "8"
+      }, {
+        "item" : "CTI",
+        "count" : "8"
+      }, {
+        "item" : "MTL",
+        "count" : "7"
+      }, {
+        "item" : "STI",
+        "count" : "7"
+      } ],
+      "smallest" : "+",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149868,
+    "name" : "LEGAL_NAME",
+    "dataTypeName" : "text",
+    "description" : "Company Legal Name",
+    "fieldName" : "legal_name",
+    "position" : 15,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276764,
+    "cachedContents" : {
+      "non_null" : "118314",
+      "largest" : "ZZZ TRANSPORTATION INC",
+      "null" : "0",
+      "top" : [ {
+        "item" : "ARMSTRONG TRANSFER & STORAGE COMPANY INC",
+        "count" : "12"
+      }, {
+        "item" : "THE PASHA GROUP",
+        "count" : "11"
+      }, {
+        "item" : "COLONIAL VAN LINES INC",
+        "count" : "10"
+      }, {
+        "item" : "BEKINS A-1 MOVERS INC",
+        "count" : "8"
+      }, {
+        "item" : "LIBERTY LINEHAUL WEST INC",
+        "count" : "8"
+      }, {
+        "item" : "MATRIX TRANSPORTATION INC",
+        "count" : "6"
+      }, {
+        "item" : "ODYSSEY INTERNATIONAL SERVICES INC",
+        "count" : "6"
+      }, {
+        "item" : "HAWAIIAN OCEAN TRANSPORT INC",
+        "count" : "6"
+      }, {
+        "item" : "SILVER ROAD LOGISTICS LLC",
+        "count" : "6"
+      }, {
+        "item" : "C & A TRANSPORT LLC",
+        "count" : "6"
+      }, {
+        "item" : "CONSOLIDATED ELECTRICAL DISTRIBUTORS INC",
+        "count" : "6"
+      }, {
+        "item" : "RICARDO CAMACHO",
+        "count" : "6"
+      }, {
+        "item" : "ODYSSEY HAWAII LLC",
+        "count" : "6"
+      }, {
+        "item" : "ROYAL HAWAIIAN MOVERS INC",
+        "count" : "6"
+      }, {
+        "item" : "CARLILE TRANSPORTATION SYSTEMS LLC",
+        "count" : "6"
+      }, {
+        "item" : "AMERICAN TRANSPORT INC",
+        "count" : "6"
+      }, {
+        "item" : "AGIA TRIDIA LLC",
+        "count" : "6"
+      }, {
+        "item" : "EAGLE BUS INC",
+        "count" : "6"
+      }, {
+        "item" : "MAYFLOWER TRANSIT LLC",
+        "count" : "6"
+      }, {
+        "item" : "IRON MAN LOGIX LLC",
+        "count" : "6"
+      } ],
+      "smallest" : "007 TRUCKING LLC",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149869,
+    "name" : "BUS_STREET_PO",
+    "dataTypeName" : "text",
+    "description" : "Company Business Address",
+    "fieldName" : "bus_street_po",
+    "position" : 16,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276765,
+    "cachedContents" : {
+      "non_null" : "118278",
+      "largest" : "ZACHILA #31",
+      "null" : "36",
+      "top" : [ {
+        "item" : "1 PREMIER DRIVE",
+        "count" : "85"
+      }, {
+        "item" : "5900 BALCONES DR STE 100",
+        "count" : "35"
+      }, {
+        "item" : "101 EAST WASHINGTON BLVD SUITE 1100",
+        "count" : "29"
+      }, {
+        "item" : "7901 4TH ST N STE 300",
+        "count" : "26"
+      }, {
+        "item" : "100-110 W COLUMBIA ST",
+        "count" : "23"
+      }, {
+        "item" : "13410 SUTTON PARK DRIVE SOUTH",
+        "count" : "22"
+      }, {
+        "item" : "9625 BROADWAY",
+        "count" : "20"
+      }, {
+        "item" : "8777 ROCKSIDE ROAD",
+        "count" : "18"
+      }, {
+        "item" : "3377 CALIFORNIA AVE",
+        "count" : "18"
+      }, {
+        "item" : "12755 E 9 MILE RD",
+        "count" : "17"
+      }, {
+        "item" : "7400 45TH ST CT E",
+        "count" : "16"
+      }, {
+        "item" : "777 MAIN STREET SUITE 600",
+        "count" : "15"
+      }, {
+        "item" : "200 AIRSIDE DRIVE SUITE 260",
+        "count" : "15"
+      }, {
+        "item" : "101 E WASHINGTON BLVD SUITE 1100",
+        "count" : "14"
+      }, {
+        "item" : "2 COOPER STREET",
+        "count" : "13"
+      }, {
+        "item" : "5353 E CITY NORTH DRIVE",
+        "count" : "13"
+      }, {
+        "item" : "44112 MERCURE CIRCLE",
+        "count" : "13"
+      }, {
+        "item" : "9625 BROADWAY ST",
+        "count" : "13"
+      }, {
+        "item" : "1901 RAYMER AVE",
+        "count" : "13"
+      }, {
+        "item" : "870 S 300 W",
+        "count" : "12"
+      } ],
+      "smallest" : "0062 COUNTY ROAD 113 BLD H",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149870,
+    "name" : "BUS_COLONIA",
+    "dataTypeName" : "text",
+    "description" : "Company Business Address",
+    "fieldName" : "bus_colonia",
+    "position" : 17,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276766,
+    "cachedContents" : {
+      "non_null" : "109",
+      "largest" : "ZONA FISCAL",
+      "null" : "118205",
+      "top" : [ {
+        "item" : "EL CAPORAL",
+        "count" : "3"
+      }, {
+        "item" : "VISTA HERMOSA",
+        "count" : "2"
+      }, {
+        "item" : "REFORMA",
+        "count" : "2"
+      }, {
+        "item" : "ANAHUAC",
+        "count" : "2"
+      }, {
+        "item" : "FRANCISCO VILLA",
+        "count" : "2"
+      }, {
+        "item" : "BENITO JUAREZ FOVISSSTE",
+        "count" : "2"
+      }, {
+        "item" : "GUERRERO",
+        "count" : "2"
+      }, {
+        "item" : "ALIANZA PARA LA PRODUCCION",
+        "count" : "1"
+      }, {
+        "item" : "ALBERTO ALDRETE",
+        "count" : "1"
+      }, {
+        "item" : "11 de febrero",
+        "count" : "1"
+      }, {
+        "item" : "BAGDAD SUR",
+        "count" : "1"
+      }, {
+        "item" : "Buena Vista 58",
+        "count" : "1"
+      }, {
+        "item" : "BUSTAMANTE",
+        "count" : "1"
+      }, {
+        "item" : "CAÑADA ANCHA",
+        "count" : "1"
+      }, {
+        "item" : "ANKARA RESIDENCIAL",
+        "count" : "1"
+      }, {
+        "item" : "20 DE NOVIEMBRE",
+        "count" : "1"
+      }, {
+        "item" : "Centro",
+        "count" : "1"
+      }, {
+        "item" : "centro",
+        "count" : "1"
+      }, {
+        "item" : "CENTRO",
+        "count" : "1"
+      }, {
+        "item" : "CENTRAL MERCADO DE ABASTOS",
+        "count" : "1"
+      } ],
+      "smallest" : "-",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149871,
+    "name" : "BUS_CITY",
+    "dataTypeName" : "text",
+    "description" : "Company Business Address",
+    "fieldName" : "bus_city",
+    "position" : 18,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276767,
+    "cachedContents" : {
+      "non_null" : "118278",
+      "largest" : "ZWOLLE",
+      "null" : "36",
+      "top" : [ {
+        "item" : "FRESNO",
+        "count" : "1676"
+      }, {
+        "item" : "HOUSTON",
+        "count" : "1414"
+      }, {
+        "item" : "BAKERSFIELD",
+        "count" : "981"
+      }, {
+        "item" : "PHILADELPHIA",
+        "count" : "904"
+      }, {
+        "item" : "COLUMBUS",
+        "count" : "886"
+      }, {
+        "item" : "INDIANAPOLIS",
+        "count" : "808"
+      }, {
+        "item" : "CHICAGO",
+        "count" : "805"
+      }, {
+        "item" : "MIAMI",
+        "count" : "761"
+      }, {
+        "item" : "SACRAMENTO",
+        "count" : "754"
+      }, {
+        "item" : "DALLAS",
+        "count" : "680"
+      }, {
+        "item" : "CHARLOTTE",
+        "count" : "637"
+      }, {
+        "item" : "LAREDO",
+        "count" : "624"
+      }, {
+        "item" : "LAS VEGAS",
+        "count" : "597"
+      }, {
+        "item" : "MANTECA",
+        "count" : "597"
+      }, {
+        "item" : "BRAMPTON",
+        "count" : "525"
+      }, {
+        "item" : "LOS ANGELES",
+        "count" : "512"
+      }, {
+        "item" : "STOCKTON",
+        "count" : "503"
+      }, {
+        "item" : "EL PASO",
+        "count" : "485"
+      }, {
+        "item" : "FONTANA",
+        "count" : "483"
+      }, {
+        "item" : "SAN DIEGO",
+        "count" : "472"
+      } ],
+      "smallest" : "108",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149872,
+    "name" : "BUS_STATE_CODE",
+    "dataTypeName" : "text",
+    "description" : "Company Business Address",
+    "fieldName" : "bus_state_code",
+    "position" : 19,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276768,
+    "cachedContents" : {
+      "non_null" : "118276",
+      "largest" : "ZA",
+      "null" : "38",
+      "top" : [ {
+        "item" : "CA",
+        "count" : "18058"
+      }, {
+        "item" : "TX",
+        "count" : "13162"
+      }, {
+        "item" : "IL",
+        "count" : "7609"
+      }, {
+        "item" : "FL",
+        "count" : "7554"
+      }, {
+        "item" : "OH",
+        "count" : "5591"
+      }, {
+        "item" : "PA",
+        "count" : "5309"
+      }, {
+        "item" : "GA",
+        "count" : "4338"
+      }, {
+        "item" : "NC",
+        "count" : "3760"
+      }, {
+        "item" : "NJ",
+        "count" : "3437"
+      }, {
+        "item" : "IN",
+        "count" : "3297"
+      }, {
+        "item" : "WA",
+        "count" : "2581"
+      }, {
+        "item" : "MN",
+        "count" : "2406"
+      }, {
+        "item" : "MI",
+        "count" : "2242"
+      }, {
+        "item" : "TN",
+        "count" : "2191"
+      }, {
+        "item" : "VA",
+        "count" : "2016"
+      }, {
+        "item" : "AZ",
+        "count" : "2008"
+      }, {
+        "item" : "NY",
+        "count" : "1994"
+      }, {
+        "item" : "MO",
+        "count" : "1889"
+      }, {
+        "item" : "ON",
+        "count" : "1792"
+      }, {
+        "item" : "SC",
+        "count" : "1655"
+      } ],
+      "smallest" : "AB",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149873,
+    "name" : "BUS_CTRY_CODE",
+    "dataTypeName" : "text",
+    "description" : "Company Business Address",
+    "fieldName" : "bus_ctry_code",
+    "position" : 20,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276769,
+    "cachedContents" : {
+      "non_null" : "118278",
+      "largest" : "US",
+      "null" : "36",
+      "top" : [ {
+        "item" : "US",
+        "count" : "114266"
+      }, {
+        "item" : "CA",
+        "count" : "3383"
+      }, {
+        "item" : "MX",
+        "count" : "629"
+      } ],
+      "smallest" : "CA",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149874,
+    "name" : "BUS_ZIP_CODE",
+    "dataTypeName" : "text",
+    "description" : "Company Business Address",
+    "fieldName" : "bus_zip_code",
+    "position" : 21,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276770,
+    "cachedContents" : {
+      "non_null" : "118278",
+      "largest" : "Y1A 6E4",
+      "null" : "36",
+      "top" : [ {
+        "item" : "93722",
+        "count" : "444"
+      }, {
+        "item" : "93313",
+        "count" : "388"
+      }, {
+        "item" : "95337",
+        "count" : "384"
+      }, {
+        "item" : "93727",
+        "count" : "323"
+      }, {
+        "item" : "92154",
+        "count" : "294"
+      }, {
+        "item" : "78045",
+        "count" : "283"
+      }, {
+        "item" : "93723",
+        "count" : "218"
+      }, {
+        "item" : "46143",
+        "count" : "185"
+      }, {
+        "item" : "95330",
+        "count" : "161"
+      }, {
+        "item" : "19116",
+        "count" : "152"
+      }, {
+        "item" : "92336",
+        "count" : "147"
+      }, {
+        "item" : "92335",
+        "count" : "139"
+      }, {
+        "item" : "95993",
+        "count" : "138"
+      }, {
+        "item" : "60527",
+        "count" : "136"
+      }, {
+        "item" : "45040",
+        "count" : "136"
+      }, {
+        "item" : "93311",
+        "count" : "132"
+      }, {
+        "item" : "95835",
+        "count" : "123"
+      }, {
+        "item" : "75243",
+        "count" : "123"
+      }, {
+        "item" : "95834",
+        "count" : "113"
+      }, {
+        "item" : "45069",
+        "count" : "110"
+      } ],
+      "smallest" : "00646-2234",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149875,
+    "name" : "BUS_TELNO",
+    "dataTypeName" : "text",
+    "description" : "Company Business Telephone Number",
+    "fieldName" : "bus_telno",
+    "position" : 22,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276771,
+    "cachedContents" : {
+      "non_null" : "117807",
+      "largest" : "9999999999",
+      "null" : "507",
+      "top" : [ {
+        "item" : "4694615000",
+        "count" : "52"
+      }, {
+        "item" : "+1 (202) 918-2132",
+        "count" : "51"
+      }, {
+        "item" : "2604292511",
+        "count" : "45"
+      }, {
+        "item" : "6363055000",
+        "count" : "45"
+      }, {
+        "item" : "6363054000",
+        "count" : "42"
+      }, {
+        "item" : "9156150827",
+        "count" : "32"
+      }, {
+        "item" : "6022636811",
+        "count" : "30"
+      }, {
+        "item" : "5703859048",
+        "count" : "29"
+      }, {
+        "item" : "8008729400",
+        "count" : "29"
+      }, {
+        "item" : "8002339445",
+        "count" : "24"
+      }, {
+        "item" : "4127888878",
+        "count" : "19"
+      }, {
+        "item" : "+1 (828) 705-6405",
+        "count" : "17"
+      }, {
+        "item" : "+1 (219) 476-1304",
+        "count" : "17"
+      }, {
+        "item" : "4159276400",
+        "count" : "15"
+      }, {
+        "item" : "9725632401",
+        "count" : "15"
+      }, {
+        "item" : "+1 (405) 482-8181",
+        "count" : "13"
+      }, {
+        "item" : "7573971248",
+        "count" : "12"
+      }, {
+        "item" : "5616831313",
+        "count" : "12"
+      }, {
+        "item" : "2197878868",
+        "count" : "12"
+      }, {
+        "item" : "3132992167",
+        "count" : "12"
+      } ],
+      "smallest" : "0314055004",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149876,
+    "name" : "MAIL_STREET_PO",
+    "dataTypeName" : "text",
+    "description" : "Company Mailing Address",
+    "fieldName" : "mail_street_po",
+    "position" : 23,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276772,
+    "cachedContents" : {
+      "non_null" : "118274",
+      "largest" : "Xxx logistics LLC  3516 Fairmont Lane",
+      "null" : "40",
+      "top" : [ {
+        "item" : "20850 LEAPWOOD AVE SUITE A",
+        "count" : "100"
+      }, {
+        "item" : "1 PREMIER DRIVE",
+        "count" : "85"
+      }, {
+        "item" : "501 N BRIDGE ST STE 566",
+        "count" : "72"
+      }, {
+        "item" : "PO BOX 720655",
+        "count" : "53"
+      }, {
+        "item" : "19083 COLIMA RD",
+        "count" : "46"
+      }, {
+        "item" : "1901 FRONT ST",
+        "count" : "46"
+      }, {
+        "item" : "1010 CAVALIER BLVD",
+        "count" : "45"
+      }, {
+        "item" : "2400 OLD MILL RD",
+        "count" : "39"
+      }, {
+        "item" : "101 N MCCOLL RD STE 10",
+        "count" : "33"
+      }, {
+        "item" : "1887 SANDY LAKE GROVE CITY RD",
+        "count" : "30"
+      }, {
+        "item" : "4366 MT PLEASANT ST NW",
+        "count" : "28"
+      }, {
+        "item" : "PO BOX 3607",
+        "count" : "27"
+      }, {
+        "item" : "P O BOX 482",
+        "count" : "25"
+      }, {
+        "item" : "PO BOX 482",
+        "count" : "24"
+      }, {
+        "item" : "4663 S ENTERPRISE ST",
+        "count" : "23"
+      }, {
+        "item" : "5900 BALCONES DR STE 100",
+        "count" : "23"
+      }, {
+        "item" : "3377 CALIFORNIA AVE",
+        "count" : "23"
+      }, {
+        "item" : "P O BOX 268",
+        "count" : "22"
+      }, {
+        "item" : "PO BOX 100",
+        "count" : "22"
+      }, {
+        "item" : "7901 4TH ST N STE 300",
+        "count" : "22"
+      } ],
+      "smallest" : "0062 COUNTY ROAD 113 BLD H",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149877,
+    "name" : "MAIL_COLONIA",
+    "dataTypeName" : "text",
+    "description" : "Company Mailing Address",
+    "fieldName" : "mail_colonia",
+    "position" : 24,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276773,
+    "cachedContents" : {
+      "non_null" : "13",
+      "largest" : "Zaragoza",
+      "null" : "118301",
+      "top" : [ {
+        "item" : ".",
+        "count" : "1"
+      }, {
+        "item" : "AGRICOLA ANALCO",
+        "count" : "1"
+      }, {
+        "item" : "centro",
+        "count" : "1"
+      }, {
+        "item" : "DUBLAN",
+        "count" : "1"
+      }, {
+        "item" : "EJIDO DEL PROGRESO",
+        "count" : "1"
+      }, {
+        "item" : "EJIDO LA LUZ",
+        "count" : "1"
+      }, {
+        "item" : "hidalgo",
+        "count" : "1"
+      }, {
+        "item" : "LOMAS DE GUADALUPE",
+        "count" : "1"
+      }, {
+        "item" : "Manitoba",
+        "count" : "1"
+      }, {
+        "item" : "prados de san vicente 2a secc",
+        "count" : "1"
+      }, {
+        "item" : "RICARDO FLORES MAGON",
+        "count" : "1"
+      }, {
+        "item" : "SECCION 3 PETROLEROS",
+        "count" : "1"
+      }, {
+        "item" : "Zaragoza",
+        "count" : "1"
+      } ],
+      "smallest" : ".",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149878,
+    "name" : "MAIL_CITY",
+    "dataTypeName" : "text",
+    "description" : "Company Mailing Address",
+    "fieldName" : "mail_city",
+    "position" : 25,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276774,
+    "cachedContents" : {
+      "non_null" : "118274",
+      "largest" : "ZWOLLE",
+      "null" : "40",
+      "top" : [ {
+        "item" : "FRESNO",
+        "count" : "1662"
+      }, {
+        "item" : "HOUSTON",
+        "count" : "1375"
+      }, {
+        "item" : "BAKERSFIELD",
+        "count" : "974"
+      }, {
+        "item" : "PHILADELPHIA",
+        "count" : "896"
+      }, {
+        "item" : "COLUMBUS",
+        "count" : "868"
+      }, {
+        "item" : "CHICAGO",
+        "count" : "785"
+      }, {
+        "item" : "INDIANAPOLIS",
+        "count" : "778"
+      }, {
+        "item" : "MIAMI",
+        "count" : "776"
+      }, {
+        "item" : "SACRAMENTO",
+        "count" : "751"
+      }, {
+        "item" : "LAREDO",
+        "count" : "738"
+      }, {
+        "item" : "DALLAS",
+        "count" : "653"
+      }, {
+        "item" : "CHARLOTTE",
+        "count" : "612"
+      }, {
+        "item" : "MANTECA",
+        "count" : "602"
+      }, {
+        "item" : "EL PASO",
+        "count" : "594"
+      }, {
+        "item" : "LAS VEGAS",
+        "count" : "581"
+      }, {
+        "item" : "BRAMPTON",
+        "count" : "558"
+      }, {
+        "item" : "SAN DIEGO",
+        "count" : "524"
+      }, {
+        "item" : "STOCKTON",
+        "count" : "494"
+      }, {
+        "item" : "LOS ANGELES",
+        "count" : "487"
+      }, {
+        "item" : "FONTANA",
+        "count" : "485"
+      } ],
+      "smallest" : "11411",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149879,
+    "name" : "MAIL_STATE_CODE",
+    "dataTypeName" : "text",
+    "description" : "Company Mailing Address",
+    "fieldName" : "mail_state_code",
+    "position" : 26,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276775,
+    "cachedContents" : {
+      "non_null" : "118272",
+      "largest" : "YT",
+      "null" : "42",
+      "top" : [ {
+        "item" : "CA",
+        "count" : "18325"
+      }, {
+        "item" : "TX",
+        "count" : "13595"
+      }, {
+        "item" : "FL",
+        "count" : "7663"
+      }, {
+        "item" : "IL",
+        "count" : "7605"
+      }, {
+        "item" : "OH",
+        "count" : "5527"
+      }, {
+        "item" : "PA",
+        "count" : "5214"
+      }, {
+        "item" : "GA",
+        "count" : "4391"
+      }, {
+        "item" : "NC",
+        "count" : "3721"
+      }, {
+        "item" : "NJ",
+        "count" : "3497"
+      }, {
+        "item" : "IN",
+        "count" : "3208"
+      }, {
+        "item" : "WA",
+        "count" : "2552"
+      }, {
+        "item" : "MN",
+        "count" : "2404"
+      }, {
+        "item" : "MI",
+        "count" : "2257"
+      }, {
+        "item" : "TN",
+        "count" : "2154"
+      }, {
+        "item" : "NY",
+        "count" : "2135"
+      }, {
+        "item" : "VA",
+        "count" : "2032"
+      }, {
+        "item" : "AZ",
+        "count" : "2001"
+      }, {
+        "item" : "MO",
+        "count" : "1875"
+      }, {
+        "item" : "ON",
+        "count" : "1814"
+      }, {
+        "item" : "SC",
+        "count" : "1633"
+      } ],
+      "smallest" : "AB",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149880,
+    "name" : "MAIL_CTRY_CODE",
+    "dataTypeName" : "text",
+    "description" : "Company Mailing Address",
+    "fieldName" : "mail_ctry_code",
+    "position" : 27,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276776,
+    "cachedContents" : {
+      "non_null" : "118274",
+      "largest" : "US",
+      "null" : "40",
+      "top" : [ {
+        "item" : "US",
+        "count" : "114833"
+      }, {
+        "item" : "CA",
+        "count" : "3397"
+      }, {
+        "item" : "MX",
+        "count" : "44"
+      } ],
+      "smallest" : "CA",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  }, {
+    "id" : 635149881,
+    "name" : "MAIL_ZIP_CODE",
+    "dataTypeName" : "text",
+    "description" : "Company Mailing Address",
+    "fieldName" : "mail_zip_code",
+    "position" : 28,
+    "renderTypeName" : "text",
+    "tableColumnId" : 168276777,
+    "cachedContents" : {
+      "non_null" : "118274",
+      "largest" : "Y1A 5X9",
+      "null" : "40",
+      "top" : [ {
+        "item" : "93722",
+        "count" : "389"
+      }, {
+        "item" : "95337",
+        "count" : "356"
+      }, {
+        "item" : "92154",
+        "count" : "318"
+      }, {
+        "item" : "93313",
+        "count" : "313"
+      }, {
+        "item" : "78045",
+        "count" : "296"
+      }, {
+        "item" : "93727",
+        "count" : "266"
+      }, {
+        "item" : "93723",
+        "count" : "195"
+      }, {
+        "item" : "95330",
+        "count" : "145"
+      }, {
+        "item" : "46143",
+        "count" : "144"
+      }, {
+        "item" : "92336",
+        "count" : "136"
+      }, {
+        "item" : "19116",
+        "count" : "120"
+      }, {
+        "item" : "60527",
+        "count" : "119"
+      }, {
+        "item" : "78041",
+        "count" : "119"
+      }, {
+        "item" : "90746",
+        "count" : "117"
+      }, {
+        "item" : "92335",
+        "count" : "116"
+      }, {
+        "item" : "93311",
+        "count" : "112"
+      }, {
+        "item" : "78557",
+        "count" : "112"
+      }, {
+        "item" : "45040",
+        "count" : "107"
+      }, {
+        "item" : "63026",
+        "count" : "107"
+      }, {
+        "item" : "79928",
+        "count" : "96"
+      } ],
+      "smallest" : "00646-2234",
+      "count" : "118314",
+      "cardinality" : "118314"
+    },
+    "format" : { }
+  } ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "attachments" : [ {
+      "filename" : "USDOT Motus Operating Authority Data Dictionary.pdf",
+      "assetId" : "900038f4-5f9e-409d-997e-6a76d3fe7a6a",
+      "name" : "USDOT Motus Operating Authority Data Dictionary.pdf"
+    } ],
+    "custom_fields" : {
+      "Common Core" : {
+        "Contact Email" : "\tFMCSA.CDO@dot.gov",
+        "Update Frequency\t" : "R/P1D",
+        "Contact Name" : "\tFMCSA CDO Office",
+        "License" : "https://project-open-data.cio.gov/unknown-license/",
+        "Publisher" : "Federal Motor Carrier Safety Administration",
+        "Bureau Code" : "021:17",
+        "Public Access Level" : "public"
+      }
+    },
+    "availableDisplayTypes" : [ "table", "fatrow", "page" ]
+  },
+  "owner" : {
+    "id" : "k79j-djkm",
+    "createdAt" : 1690393919,
+    "displayName" : "FMCSA MCMIS",
+    "screenName" : "FMCSA MCMIS",
+    "type" : "team",
+    "members" : [ {
+      "id" : "9pji-k3v9",
+      "createdAt" : 1683059241,
+      "displayName" : "Ankur Saini",
+      "screenName" : "Ankur Saini",
+      "teamId" : 1532684,
+      "teamRole" : "owner",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "rmyw-698d",
+      "createdAt" : 1682094737,
+      "displayName" : "Bharath Mittapally",
+      "screenName" : "Bharath Mittapally",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "7kpx-sgf3",
+      "createdAt" : 1688993969,
+      "displayName" : "FMCSA CDO",
+      "screenName" : "FMCSA CDO",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "6wd6-m76x",
+      "createdAt" : 1773688898,
+      "displayName" : "Jyothsna Vemula",
+      "screenName" : "Jyothsna Vemula",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "qhwc-mp69",
+      "createdAt" : 1729801646,
+      "displayName" : "Lorraine Wiliams",
+      "screenName" : "Lorraine Wiliams",
+      "teamId" : 1532684,
+      "teamRole" : "owner",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "rqne-5r2r",
+      "createdAt" : 1707238850,
+      "displayName" : "Prasanth",
+      "screenName" : "Prasanth",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "99s9-qd2y",
+      "createdAt" : 1744992838,
+      "displayName" : "Ray White",
+      "screenName" : "Ray White",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    } ]
+  },
+  "query" : { },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "k79j-djkm",
+    "createdAt" : 1690393919,
+    "displayName" : "FMCSA MCMIS",
+    "screenName" : "FMCSA MCMIS",
+    "type" : "team",
+    "members" : [ {
+      "id" : "9pji-k3v9",
+      "createdAt" : 1683059241,
+      "displayName" : "Ankur Saini",
+      "screenName" : "Ankur Saini",
+      "teamId" : 1532684,
+      "teamRole" : "owner",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "rmyw-698d",
+      "createdAt" : 1682094737,
+      "displayName" : "Bharath Mittapally",
+      "screenName" : "Bharath Mittapally",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "7kpx-sgf3",
+      "createdAt" : 1688993969,
+      "displayName" : "FMCSA CDO",
+      "screenName" : "FMCSA CDO",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "6wd6-m76x",
+      "createdAt" : 1773688898,
+      "displayName" : "Jyothsna Vemula",
+      "screenName" : "Jyothsna Vemula",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "qhwc-mp69",
+      "createdAt" : 1729801646,
+      "displayName" : "Lorraine Wiliams",
+      "screenName" : "Lorraine Wiliams",
+      "teamId" : 1532684,
+      "teamRole" : "owner",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "rqne-5r2r",
+      "createdAt" : 1707238850,
+      "displayName" : "Prasanth",
+      "screenName" : "Prasanth",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    }, {
+      "id" : "99s9-qd2y",
+      "createdAt" : 1744992838,
+      "displayName" : "Ray White",
+      "screenName" : "Ray White",
+      "teamId" : 1532684,
+      "teamRole" : "member",
+      "type" : "interactive",
+      "flags" : [ "siteMember" ]
+    } ]
+  },
+  "flags" : [ "default", "federated", "internalToPublicFederatedView", "restorable", "restorePossibleForType" ]
+}
