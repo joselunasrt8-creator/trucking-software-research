@@ -4,56 +4,99 @@
   "title": "FMCSA coded-field semantic binding",
   "type": "object",
   "additionalProperties": false,
-  "required": ["artifact_format", "dataset_id", "metadata_evidence", "fields", "eligibility_rule_status"],
+  "required": ["artifact_format", "dataset_id", "sources", "fields", "eligibility_rule_status"],
   "properties": {
-    "artifact_format": {"const": "fmcsa-semantic-binding-v1"},
+    "artifact_format": {"const": "fmcsa-semantic-binding-v2"},
     "dataset_id": {"const": "az4n-8mr2"},
-    "metadata_evidence": {
-      "type": "object", "additionalProperties": false,
-      "required": ["path", "sha256", "finding"],
-      "properties": {
-        "path": {"type": "string", "minLength": 1},
-        "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
-        "finding": {"const": "field names and types available; authoritative coded-value definitions unavailable"}
-      }
+    "sources": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/$defs/source"}
     },
     "fields": {
-      "type": "array", "minItems": 1,
-      "items": {
-        "type": "object", "additionalProperties": false,
-        "required": ["field", "definition_status", "authoritative_definition", "authoritative_source", "inference_policy", "eligibility_use"],
-        "properties": {
-          "field": {"type": "string", "minLength": 1},
-          "definition_status": {"enum": ["AUTHORITATIVE_DEFINITION_AVAILABLE", "AUTHORITATIVE_DEFINITION_UNAVAILABLE"]},
-          "authoritative_definition": {"type": ["string", "null"]},
-          "authoritative_source": {"type": ["object", "null"]},
-          "inference_policy": {"const": "PROHIBITED_INFERENCE"},
-          "eligibility_use": {"enum": ["PERMITTED_AFTER_RULE_FREEZE", "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"]}
-        },
-        "allOf": [
-          {
-            "if": {"properties": {"definition_status": {"const": "AUTHORITATIVE_DEFINITION_AVAILABLE"}}},
-            "then": {
-              "properties": {
-                "authoritative_definition": {"type": "string", "minLength": 1},
-                "authoritative_source": {"type": "object"},
-                "eligibility_use": {"const": "PERMITTED_AFTER_RULE_FREEZE"}
-              }
-            }
-          },
-          {
-            "if": {"properties": {"definition_status": {"const": "AUTHORITATIVE_DEFINITION_UNAVAILABLE"}}},
-            "then": {
-              "properties": {
-                "authoritative_definition": {"const": null},
-                "authoritative_source": {"const": null},
-                "eligibility_use": {"const": "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"}
-              }
-            }
-          }
-        ]
+      "type": "array", "minItems": 5,
+      "items": {"$ref": "#/$defs/field"}
+    },
+    "eligibility_rule_status": {
+      "enum": [
+        "NOT_FROZEN_SEMANTIC_DEPENDENCIES_UNRESOLVED",
+        "NOT_FROZEN_CANDIDATE_INPUT_DATA_UNAVAILABLE"
+      ]
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "authority", "title", "source_url", "retrieved_at", "artifact_path", "sha256", "byte_size"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "authority": {"enum": ["Federal Motor Carrier Safety Administration", "U.S. Department of Transportation"]},
+        "title": {"type": "string", "minLength": 1},
+        "source_url": {"type": "string", "pattern": "^https://(data\\.transportation\\.gov|[^/]*fmcsa\\.dot\\.gov)/"},
+        "retrieved_at": {"type": "string", "format": "date-time"},
+        "artifact_path": {"type": "string", "pattern": "^data/fmcsa/authoritative/"},
+        "sha256": {"$ref": "#/$defs/digest"},
+        "byte_size": {"type": "integer", "minimum": 1},
+        "dataset_id": {"const": "az4n-8mr2"},
+        "asset_id": {"type": "string", "minLength": 1},
+        "document_revision": {"type": "string", "minLength": 1}
       }
     },
-    "eligibility_rule_status": {"const": "NOT_FROZEN_SEMANTIC_DEPENDENCIES_UNRESOLVED"}
+    "citation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "pages"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "pages": {"type": "array", "minItems": 1, "items": {"type": "integer", "minimum": 1}}
+      }
+    },
+    "code": {
+      "type": "object", "additionalProperties": false,
+      "required": ["value", "meaning", "citation"],
+      "properties": {
+        "value": {"type": "string"},
+        "meaning": {"type": "string", "minLength": 1},
+        "citation": {"$ref": "#/$defs/citation"}
+      }
+    },
+    "field": {
+      "type": "object", "additionalProperties": false,
+      "required": ["field", "definition_status", "authoritative_definition", "definition_citation", "code_values", "unresolved_code_values", "inference_policy", "eligibility_use"],
+      "properties": {
+        "field": {"enum": ["status_code", "carrier_operation", "docket1_status_code", "safety_rating", "review_type"]},
+        "definition_status": {"enum": ["AUTHORITATIVE_DEFINITION_AVAILABLE", "AUTHORITATIVE_DEFINITION_UNAVAILABLE"]},
+        "authoritative_definition": {"type": ["string", "null"]},
+        "definition_citation": {"anyOf": [{"$ref": "#/$defs/citation"}, {"type": "null"}]},
+        "code_values": {"type": "array", "items": {"$ref": "#/$defs/code"}},
+        "unresolved_code_values": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "inference_policy": {"const": "PROHIBITED_INFERENCE"},
+        "eligibility_use": {"enum": ["PERMITTED_AFTER_RULE_FREEZE", "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"]},
+        "limitation": {"type": "string", "minLength": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"definition_status": {"const": "AUTHORITATIVE_DEFINITION_AVAILABLE"}}},
+          "then": {
+            "properties": {
+              "authoritative_definition": {"type": "string", "minLength": 1},
+              "definition_citation": {"$ref": "#/$defs/citation"},
+              "code_values": {"minItems": 1},
+              "unresolved_code_values": {"maxItems": 0},
+              "eligibility_use": {"const": "PERMITTED_AFTER_RULE_FREEZE"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"definition_status": {"const": "AUTHORITATIVE_DEFINITION_UNAVAILABLE"}}},
+          "then": {
+            "required": ["limitation"],
+            "properties": {
+              "unresolved_code_values": {"minItems": 1},
+              "eligibility_use": {"const": "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"}
+            }
+          }
+        }
+      ]
+    }
   }
 }

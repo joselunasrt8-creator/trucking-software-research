@@ -141,22 +141,38 @@ class BoundedCohortTests(unittest.TestCase):
 
 
 class SemanticBindingTests(unittest.TestCase):
-    def test_unresolved_coded_fields_are_explicitly_noninferential(self):
+    def test_semantic_statuses_advance_only_for_fully_defined_code_domains(self):
         binding = json.loads((ROOT / "data/fmcsa/company-census-semantic-binding.json").read_text())
         expected = {"status_code", "carrier_operation", "docket1_status_code", "safety_rating", "review_type"}
         self.assertEqual({field["field"] for field in binding["fields"]}, expected)
+        fields = {field["field"]: field for field in binding["fields"]}
+        self.assertEqual(
+            {name for name, field in fields.items() if field["definition_status"] == "AUTHORITATIVE_DEFINITION_AVAILABLE"},
+            {"status_code", "carrier_operation", "safety_rating"},
+        )
+        self.assertEqual({item["value"] for item in fields["status_code"]["code_values"]}, {"A", "I", "P"})
+        self.assertEqual({item["value"] for item in fields["carrier_operation"]["code_values"]}, {"A", "B", "C"})
+        self.assertEqual({item["value"] for item in fields["safety_rating"]["code_values"]}, {"S", "C", "U", ""})
+        self.assertEqual({item["value"] for item in fields["docket1_status_code"]["code_values"]}, {"A", "I"})
+        self.assertNotIn("B", {item["value"] for item in fields["review_type"]["code_values"]})
+        self.assertEqual(fields["docket1_status_code"]["unresolved_code_values"], ["P"])
+        self.assertEqual(fields["review_type"]["unresolved_code_values"], ["B"])
         for field in binding["fields"]:
-            self.assertEqual(field["definition_status"], "AUTHORITATIVE_DEFINITION_UNAVAILABLE")
-            self.assertIsNone(field["authoritative_definition"])
-            self.assertIsNone(field["authoritative_source"])
             self.assertEqual(field["inference_policy"], "PROHIBITED_INFERENCE")
-            self.assertEqual(field["eligibility_use"], "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION")
+            if field["definition_status"] == "AUTHORITATIVE_DEFINITION_AVAILABLE":
+                self.assertEqual(field["unresolved_code_values"], [])
+                self.assertEqual(field["eligibility_use"], "PERMITTED_AFTER_RULE_FREEZE")
+            else:
+                self.assertTrue(field["unresolved_code_values"])
+                self.assertEqual(field["eligibility_use"], "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION")
         self.assertEqual(binding["eligibility_rule_status"], "NOT_FROZEN_SEMANTIC_DEPENDENCIES_UNRESOLVED")
 
-    def test_semantic_binding_is_bound_to_exact_official_metadata_bytes(self):
+    def test_semantic_sources_are_bound_to_exact_preserved_bytes(self):
         binding = json.loads((ROOT / "data/fmcsa/company-census-semantic-binding.json").read_text())
-        metadata = (ROOT / binding["metadata_evidence"]["path"]).read_bytes()
-        self.assertEqual(binding["metadata_evidence"]["sha256"], "sha256:" + hashlib.sha256(metadata).hexdigest())
+        for source in binding["sources"]:
+            artifact = ROOT / source["artifact_path"]
+            self.assertEqual(source["byte_size"], artifact.stat().st_size)
+            self.assertEqual(source["sha256"], "sha256:" + hashlib.sha256(artifact.read_bytes()).hexdigest())
 
     def test_schema_distinguishes_available_unavailable_and_prohibited_inference(self):
         schema = json.loads((ROOT / "data/fmcsa/semantic-binding-schema.json").read_text())

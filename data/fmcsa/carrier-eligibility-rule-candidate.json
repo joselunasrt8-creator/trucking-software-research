@@ -1,0 +1,106 @@
+{
+  "artifact_format": "fmcsa-carrier-eligibility-candidate-v1",
+  "status": "CANDIDATE_ONLY",
+  "determination": "DETERMINISTIC_CANDIDATE_DEFINED_INPUT_DATA_UNAVAILABLE",
+  "target_predicate": "active AND interstate AND for-hire AND property carrier",
+  "join": {
+    "left_dataset_id": "az4n-8mr2",
+    "right_dataset_id": "inys-ebih",
+    "left_field": "dot_number",
+    "right_field": "usdot_number",
+    "cardinality": "ONE_TO_MANY",
+    "missing_join_behavior": "INDETERMINATE_EXCLUDE",
+    "duplicate_behavior": "Evaluate every authority row; at least one row must satisfy the complete authority conjunction."
+  },
+  "minimal_fields": [
+    "az4n-8mr2.status_code",
+    "az4n-8mr2.carrier_operation",
+    "inys-ebih.op_auth_type",
+    "inys-ebih.op_auth_status"
+  ],
+  "predicates": [
+    {
+      "name": "active_carrier",
+      "field": "az4n-8mr2.status_code",
+      "operator": "EQUALS",
+      "value": "A",
+      "meaning": "Active entity record in MCMIS.",
+      "citation": {
+        "source_id": "mcmis-census-dictionary-rev08",
+        "pages": [
+          1,
+          6
+        ]
+      },
+      "missing_or_other_behavior": "INDETERMINATE_EXCLUDE",
+      "deterministically_computable": true
+    },
+    {
+      "name": "interstate",
+      "field": "az4n-8mr2.carrier_operation",
+      "operator": "EQUALS",
+      "value": "A",
+      "meaning": "Interstate carrier operation.",
+      "citation": {
+        "source_id": "mcmis-census-dictionary-rev08",
+        "pages": [
+          1,
+          9
+        ]
+      },
+      "missing_or_other_behavior": "INDETERMINATE_EXCLUDE",
+      "deterministically_computable": true
+    },
+    {
+      "name": "for_hire_property_authority",
+      "field": "inys-ebih.op_auth_type",
+      "operator": "EQUALS",
+      "value": "Motor Carrier of Property (Except Household Goods)",
+      "meaning": "A property motor-carrier operating-authority type; FMCSA defines this authority as an authorized for-hire motor carrier transporting regulated commodities for the public for payment.",
+      "citation": {
+        "source_id": "motus-operating-authority-dictionary-2026-05-18",
+        "pages": [
+          2
+        ]
+      },
+      "semantic_support_url": "https://www.fmcsa.dot.gov/registration/types-operating-authority",
+      "semantic_support_retrieved_at": "2026-08-29T02:37:00Z",
+      "semantic_support_preservation": "AUTHORITATIVE_SEMANTIC_SOURCE_PRESERVED_AND_DIGEST_BOUND; rule remains unfrozen pending point-in-time MOTUS data and temporal alignment.",
+      "missing_or_other_behavior": "INDETERMINATE_EXCLUDE",
+      "deterministically_computable": true
+    },
+    {
+      "name": "active_property_authority",
+      "field": "inys-ebih.op_auth_status",
+      "operator": "EQUALS",
+      "value": "Active",
+      "meaning": "Active operating-authority status.",
+      "citation": {
+        "source_id": "motus-operating-authority-dictionary-2026-05-18",
+        "pages": [
+          2
+        ]
+      },
+      "semantic_support_url": "https://www.fmcsa.dot.gov/sites/fmcsa.dot.gov/files/2025-09/OP-1%28P%29%20Form.pdf",
+      "semantic_support_retrieved_at": "2026-08-29T02:37:00Z",
+      "semantic_support_preservation": "AUTHORITATIVE_SEMANTIC_SOURCE_PRESERVED_AND_DIGEST_BOUND; rule remains unfrozen pending point-in-time MOTUS data and temporal alignment.",
+      "missing_or_other_behavior": "INDETERMINATE_EXCLUDE",
+      "deterministically_computable": true
+    }
+  ],
+  "decision": "INCLUDE only when both Company Census predicates are true and at least one joined MOTUS row has both authority predicates true; otherwise EXCLUDE, with missing/null/unknown inputs recorded as INDETERMINATE_EXCLUDE.",
+  "prohibited_dependencies": [
+    "docket1_status_code",
+    "review_type",
+    "safety_rating",
+    "observed_value_frequencies"
+  ],
+  "docket1_status_code_required": false,
+  "review_type_required": false,
+  "rule_frozen": false,
+  "freeze_blockers": [
+    "No point-in-time MOTUS Carrier - All With History artifact is preserved and joined to the bounded cohort.",
+    "The reference timestamp and cross-dataset temporal alignment have not been preregistered."
+  ],
+  "governance": "This artifact specifies deterministic implementation behavior only. It is not a carrier eligibility result, a frozen rule, platform qualification evidence, or gate-validity evidence."
+}

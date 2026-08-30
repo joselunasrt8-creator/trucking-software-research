@@ -85,18 +85,18 @@
       "artifact_id": "eligibility_field_definitions",
       "role": "Authoritative definitions and code meanings needed to freeze later eligibility semantics",
       "required": true,
-      "expected_filename": null,
+      "expected_filename": "data/fmcsa/company-census-semantic-binding.json",
       "media_type": "application/json",
-      "expected_sha256": null,
-      "expected_byte_size": null,
+      "expected_sha256": "sha256:cd8d95cb7536014dc06fe9a3067e397d578a966110d4dd8808f853dca8fe7c0b",
+      "expected_byte_size": 9595,
       "expected_row_count": null,
       "dataset_id": "az4n-8mr2",
-      "provenance": "No repository-owned source currently binds the active, interstate, for-hire, and property-carrier meanings.",
-      "storage_reference": null,
-      "retrieval_method": null,
+      "provenance": "The DOT-hosted FMCSA Revision 8 dictionary binds status_code, carrier_operation, and safety_rating. Preserved MOTUS metadata and its May 18, 2026 dictionary bind the alternative authority dataset and field identities. docket1_status_code=P and review_type=B remain unresolved.",
+      "storage_reference": "data/fmcsa/authoritative/MCMIS-Company-Census-Data-Dictionary-Rev08-2026-01-23.pdf",
+      "retrieval_method": "Retrieved the attachment asset identified by the official az4n-8mr2 dataset metadata; exact metadata and PDF bytes are preserved and digest-bound.",
       "verification_method": "Each selected field and every used code value must cite an authoritative source identity and preserved evidence location before predicates are defined.",
-      "status": "MISSING",
-      "blocker": "Authoritative field/code definitions and their identities are unavailable; names or labels are not definitions."
+      "status": "AVAILABLE_UNVERIFIED",
+      "blocker": "The semantic package remains partially bound. The candidate's OP_AUTH_TYPE and OP_AUTH_STATUS semantics are supported by the preserved, digest-bound USDOT MOTUS Operating Authority Data Dictionary; no point-in-time MOTUS join is preserved and temporal alignment remains unresolved."
     }
   ],
   "field_semantics": [

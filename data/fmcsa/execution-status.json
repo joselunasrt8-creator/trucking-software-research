@@ -15,7 +15,7 @@
   "eligible_frame_blockers": [
     "The repository-owned complete-frame bytes are unavailable in this execution environment, so their digest and row count cannot be verified.",
     "The repository-owned acquisition manifest, authoritative schema binding, and successful real-frame audit evidence are unavailable in this execution environment.",
-    "Without authoritative field definitions and code values, active, interstate, for-hire, and property-carrier predicates cannot be frozen without inferring undocumented FMCSA semantics."
+    "A deterministic alternative eligibility candidate exists and its supporting MOTUS value-semantics document is preserved and digest-bound, but no point-in-time MOTUS join is acquired and the reference timestamp and cross-dataset temporal alignment are not preregistered, so no rule is frozen."
   ],
   "eligible_frame_determination": "ELIGIBLE_FRAME_BLOCKED",
   "eligible_frame_evaluated_at": "2026-08-28T00:00:00Z",
@@ -32,7 +32,29 @@
   "bounded_cohort_row_count": 100,
   "bounded_cohort_content_digest": "sha256:0d5b09ce940d0d22c7fba5eaee72c3904532a3e1bd77c33066fe0c7c3f59e9e6",
   "bounded_cohort_scope": "NON_RANDOM_NON_REPRESENTATIVE_NON_COMPLETE_FRAME",
-  "semantic_binding_status": "SEMANTIC_BINDING_UNRESOLVED",
+  "semantic_binding_status": "SEMANTIC_BINDING_PARTIALLY_BOUND",
+  "semantic_binding_verified_at": "2026-08-29T02:23:19Z",
+  "semantic_fields_available": [
+    "status_code",
+    "carrier_operation",
+    "safety_rating"
+  ],
+  "semantic_fields_unavailable": [
+    "docket1_status_code",
+    "review_type"
+  ],
   "eligibility_rule_status": "ELIGIBILITY_RULE_NOT_FROZEN",
+  "eligibility_candidate_status": "CANDIDATE_ONLY_INPUT_DATA_AND_DIGEST_BINDING_BLOCKED",
+  "eligibility_candidate_artifact": "data/fmcsa/carrier-eligibility-rule-candidate.json",
+  "eligibility_candidate_minimal_fields": [
+    "status_code",
+    "carrier_operation",
+    "op_auth_type",
+    "op_auth_status"
+  ],
+  "eligibility_candidate_prohibited_fields": [
+    "docket1_status_code",
+    "review_type"
+  ],
   "prospective_qualification_status": "PROSPECTIVE_QUALIFICATION_NOT_STARTED"
 }

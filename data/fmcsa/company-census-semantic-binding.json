@@ -1,17 +1,141 @@
 {
-  "artifact_format": "fmcsa-semantic-binding-v1",
+  "artifact_format": "fmcsa-semantic-binding-v2",
   "dataset_id": "az4n-8mr2",
-  "metadata_evidence": {
-    "path": "data/fmcsa/company-census-columns-official.json",
-    "sha256": "sha256:8ca885f2d6ba7de8c2cbad66b1a5c2cfda88bd6125c0413e117e79215a3e661e",
-    "finding": "field names and types available; authoritative coded-value definitions unavailable"
-  },
+  "sources": [
+    {
+      "source_id": "dot-dataset-metadata-2026-08-29",
+      "authority": "U.S. Department of Transportation",
+      "title": "Company Census File dataset metadata",
+      "source_url": "https://data.transportation.gov/api/views/az4n-8mr2",
+      "retrieved_at": "2026-08-29T02:23:19Z",
+      "artifact_path": "data/fmcsa/authoritative/company-census-dataset-metadata-2026-08-28.json",
+      "sha256": "sha256:213483ad1582825bb6800d9875bcd722d50cd7a6b19ce9ca97885f76c3694cd9",
+      "byte_size": 197222,
+      "dataset_id": "az4n-8mr2",
+      "asset_id": "05274d1b-8109-4409-a4ef-237e12f870c9"
+    },
+    {
+      "source_id": "mcmis-census-dictionary-rev08",
+      "authority": "Federal Motor Carrier Safety Administration",
+      "title": "MCMIS Company Census File Data Dictionary",
+      "source_url": "https://data.transportation.gov/api/views/az4n-8mr2/files/05274d1b-8109-4409-a4ef-237e12f870c9?download=true",
+      "retrieved_at": "2026-08-29T02:23:19Z",
+      "artifact_path": "data/fmcsa/authoritative/MCMIS-Company-Census-Data-Dictionary-Rev08-2026-01-23.pdf",
+      "sha256": "sha256:8d161e59becb19bc1c3efb3369614f23eecd49f5d117d7c41ad44bc9c60c75e8",
+      "byte_size": 872158,
+      "dataset_id": "az4n-8mr2",
+      "asset_id": "05274d1b-8109-4409-a4ef-237e12f870c9",
+      "document_revision": "Revision 8, 2026-01-23"
+    },
+    {
+      "source_id": "dot-motus-carrier-metadata-2026-08-29",
+      "authority": "U.S. Department of Transportation",
+      "title": "Motus Carrier - All With History dataset metadata",
+      "source_url": "https://data.transportation.gov/api/views/inys-ebih",
+      "retrieved_at": "2026-08-29T02:39:26Z",
+      "artifact_path": "data/fmcsa/authoritative/motus-carrier-all-history-metadata-2026-08-28.json",
+      "sha256": "sha256:1c5bd137876d13ac9733e46a40592a6a9341d20a728cf265c033cab63470d589",
+      "byte_size": 46994,
+      "dataset_id": "inys-ebih",
+      "asset_id": "900038f4-5f9e-409d-997e-6a76d3fe7a6a"
+    },
+    {
+      "source_id": "motus-operating-authority-dictionary-2026-05-18",
+      "authority": "Federal Motor Carrier Safety Administration",
+      "title": "USDOT MOTUS Operating Authority Data Dictionary",
+      "source_url": "https://data.transportation.gov/api/views/inys-ebih/files/900038f4-5f9e-409d-997e-6a76d3fe7a6a?download=true",
+      "retrieved_at": "2026-08-29T02:39:26Z",
+      "artifact_path": "data/fmcsa/authoritative/USDOT-Motus-Operating-Authority-Data-Dictionary-2026-05-18.pdf",
+      "sha256": "sha256:5259e1712aeb1523fb98f18d434aab07efa4e41f4b95c078c8ddf8cd11b825d2",
+      "byte_size": 271236,
+      "dataset_id": "inys-ebih",
+      "asset_id": "900038f4-5f9e-409d-997e-6a76d3fe7a6a",
+      "document_revision": "As of 2026-05-18"
+    }
+  ],
   "fields": [
-    {"field":"status_code","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"},
-    {"field":"carrier_operation","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"},
-    {"field":"docket1_status_code","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"},
-    {"field":"safety_rating","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"},
-    {"field":"review_type","definition_status":"AUTHORITATIVE_DEFINITION_UNAVAILABLE","authoritative_definition":null,"authoritative_source":null,"inference_policy":"PROHIBITED_INFERENCE","eligibility_use":"BLOCKED_PENDING_AUTHORITATIVE_DEFINITION"}
+    {
+      "field": "status_code",
+      "definition_status": "AUTHORITATIVE_DEFINITION_AVAILABLE",
+      "authoritative_definition": "Status of the entity record in MCMIS.",
+      "definition_citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [1, 7]},
+      "code_values": [
+        {"value": "A", "meaning": "Active: currently in business and subject to FMCSR or HMR, or an intrastate non-HM carrier issued a USDOT number by selected states.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [1, 7]}},
+        {"value": "I", "meaning": "Inactive: no longer in business or no longer subject to FMCSR or HMR.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [1, 7]}},
+        {"value": "P", "meaning": "Pending: a Mexican-domiciled company applying for U.S. operating authority whose application remains under review.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [1, 7]}}
+      ],
+      "unresolved_code_values": [],
+      "inference_policy": "PROHIBITED_INFERENCE",
+      "eligibility_use": "PERMITTED_AFTER_RULE_FREEZE"
+    },
+    {
+      "field": "carrier_operation",
+      "definition_status": "AUTHORITATIVE_DEFINITION_AVAILABLE",
+      "authoritative_definition": "Carrier transport-activity category.",
+      "definition_citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [1, 9]},
+      "code_values": [
+        {"value": "A", "meaning": "Interstate.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [1, 9]}},
+        {"value": "B", "meaning": "Intrastate hazardous material.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [1, 9]}},
+        {"value": "C", "meaning": "Intrastate non-hazardous material.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [1, 9]}}
+      ],
+      "unresolved_code_values": [],
+      "inference_policy": "PROHIBITED_INFERENCE",
+      "eligibility_use": "PERMITTED_AFTER_RULE_FREEZE"
+    },
+    {
+      "field": "docket1_status_code",
+      "definition_status": "AUTHORITATIVE_DEFINITION_UNAVAILABLE",
+      "authoritative_definition": "Status of the first docket number; the dictionary defines only Active and Inactive codes.",
+      "definition_citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [3, 8]},
+      "code_values": [
+        {"value": "A", "meaning": "Active.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [3, 8]}},
+        {"value": "I", "meaning": "Inactive.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [3, 8]}}
+      ],
+      "unresolved_code_values": ["P"],
+      "inference_policy": "PROHIBITED_INFERENCE",
+      "eligibility_use": "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION",
+      "limitation": "The preserved current DOT dataset metadata reports P for docket status, but Revision 8 defines only A and I. P remains unresolved and is not inferred."
+    },
+    {
+      "field": "safety_rating",
+      "definition_status": "AUTHORITATIVE_DEFINITION_AVAILABLE",
+      "authoritative_definition": "Measure of a carrier's compliance with the Federal Motor Carrier Safety Regulations.",
+      "definition_citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [3, 13]},
+      "code_values": [
+        {"value": "S", "meaning": "Satisfactory: records indicate no evidence of substantial non-compliance with safety requirements.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [13]}},
+        {"value": "C", "meaning": "Conditional: records indicate the carrier was out of compliance with one or more safety requirements.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [13]}},
+        {"value": "U", "meaning": "Unsatisfactory: records indicate evidence of substantial noncompliance with safety requirements.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [13]}},
+        {"value": "", "meaning": "Blank: no Safety/Compliance Review has been conducted on the motor carrier.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [13]}}
+      ],
+      "unresolved_code_values": [],
+      "inference_policy": "PROHIBITED_INFERENCE",
+      "eligibility_use": "PERMITTED_AFTER_RULE_FREEZE"
+    },
+    {
+      "field": "review_type",
+      "definition_status": "AUTHORITATIVE_DEFINITION_UNAVAILABLE",
+      "authoritative_definition": "Type of the latest review conducted.",
+      "definition_citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [3, 12]},
+      "code_values": [
+        {"value": "C", "meaning": "Compliance Review.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "H", "meaning": "Shipper Review.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "N", "meaning": "Non-Ratable Review.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "A", "meaning": "Safety Audit.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "S", "meaning": "Safety Review.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "E", "meaning": "Educational Contact Review.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "U", "meaning": "Historical Audit Record.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "K", "meaning": "Automatic Safety Assessment Program Review.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "F", "meaning": "CTFR Only.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "G", "meaning": "CR and CTFR.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "I", "meaning": "Carrier Inactivate.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "J", "meaning": "CR and Security Contact Review.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}},
+        {"value": "", "meaning": "Null/no code.", "citation": {"source_id": "mcmis-census-dictionary-rev08", "pages": [12]}}
+      ],
+      "unresolved_code_values": ["B"],
+      "inference_policy": "PROHIBITED_INFERENCE",
+      "eligibility_use": "BLOCKED_PENDING_AUTHORITATIVE_DEFINITION",
+      "limitation": "The Revision 8 summary table lists B as allowed but supplies no meaning; its detailed definition lists K instead. B remains unresolved and the discrepancy is not interpreted."
+    }
   ],
   "eligibility_rule_status": "NOT_FROZEN_SEMANTIC_DEPENDENCIES_UNRESOLVED"
 }

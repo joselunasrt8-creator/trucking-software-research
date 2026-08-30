@@ -8,7 +8,7 @@ request acquired 100 rows and official Socrata column metadata, but no complete
 frame or eligible frame is committed or claimed. Current status is:
 
 ```text
-SEMANTIC_BINDING_UNRESOLVED
+SEMANTIC_BINDING_PARTIALLY_BOUND
 COMPLETE_FRAME_BLOCKED
 ```
 
@@ -42,28 +42,71 @@ population claims.
 ## Semantic binding and qualification boundary
 
 The official column response is preserved as
-`company-census-columns-official.json`. It supplies field names and Socrata
-types, but its descriptions for the relevant coded fields are blank. The
-machine-readable `company-census-semantic-binding.json`, governed by
-`semantic-binding-schema.json`, therefore records the definitions of
-`status_code`, `carrier_operation`, `docket1_status_code`, `safety_rating`, and
-`review_type` as `AUTHORITATIVE_DEFINITION_UNAVAILABLE`, makes inference
-`PROHIBITED_INFERENCE`, and blocks their eligibility use.
+`company-census-columns-official.json`. Its coded-field descriptions are blank.
+The DOT dataset metadata retrieved on 2026-08-29, however, identifies FMCSA's
+attached **MCMIS Company Census File Data Dictionary, Revision 8 (2026-01-23)**.
+Both the metadata response and exact 872,158-byte PDF are preserved under
+`data/fmcsa/authoritative/` and SHA-256-bound in
+`company-census-semantic-binding.json`.
+
+The dictionary supports these exact transitions:
+
+| Field | Result | Authoritatively bound codes | Remaining dependency |
+|---|---|---|---|
+| `status_code` | `AUTHORITATIVE_DEFINITION_AVAILABLE` | `A` Active; `I` Inactive; `P` Pending, with the dictionary's full qualifications | none in the documented domain |
+| `carrier_operation` | `AUTHORITATIVE_DEFINITION_AVAILABLE` | `A` Interstate; `B` Intrastate HM; `C` Intrastate non-HM | none in the documented domain |
+| `safety_rating` | `AUTHORITATIVE_DEFINITION_AVAILABLE` | `S` Satisfactory; `C` Conditional; `U` Unsatisfactory; blank means no Safety/Compliance Review conducted | none in the documented domain |
+| `docket1_status_code` | `AUTHORITATIVE_DEFINITION_UNAVAILABLE` | `A` Active; `I` Inactive | current DOT metadata reports `P`, but Revision 8 does not define it |
+| `review_type` | `AUTHORITATIVE_DEFINITION_UNAVAILABLE` | `C,H,N,A,S,E,U,K,F,G,I,J` and null/blank as individually defined in Revision 8 | the summary lists `B` without a meaning and disagrees with the detailed list's `K` |
+
+`PROHIBITED_INFERENCE` remains mandatory for all five fields. Run
+`python3 scripts/verify_fmcsa_semantic_binding.py` to verify official-host
+identity, preserved-byte digests/sizes, attachment identity, citations, code
+inventories, semantic transitions, and the not-frozen eligibility state.
 
 Observed letters, frequencies, field names, and labels are not definitions.
 No eligible subset is produced. Exact current downstream states are:
 
 ```text
-SEMANTIC_BINDING_UNRESOLVED
+SEMANTIC_BINDING_PARTIALLY_BOUND
 ELIGIBILITY_RULE_NOT_FROZEN
 PROSPECTIVE_QUALIFICATION_NOT_STARTED
 ```
 
-The next empirical dependency is an authoritative FMCSA data dictionary or
-other official source that defines each required field and every selected code
-value. After preserving and digest-binding that source, preregister the reference
-time, inclusion/exclusion predicates, missing-data behavior, and deterministic
-logic before observing platform qualification outcomes.
+The next empirical dependency is authoritative FMCSA clarification of
+`docket1_status_code=P` and `review_type=B` (including resolution of the
+Revision 8 `B`/`K` discrepancy), plus authoritative binding of every separate
+field needed to establish for-hire property operation. Only after all selected
+inputs are bound may the reference time, inclusion/exclusion predicates,
+missing-data behavior, and deterministic logic be preregistered and frozen.
+
+### Path A / Path B decision (2026-08-28)
+
+Path A did not resolve either dictionary defect. No official FMCSA/DOT source
+located in the targeted search defines docket status `P`, review type `B`, or
+reconciles the Revision 8 summary's `B` with the detailed table's `K`. Those
+values remain `AUTHORITATIVE_DEFINITION_UNAVAILABLE`; inference is prohibited.
+
+Path B identified a minimal alternative candidate: Company Census
+`status_code=A` (active) and `carrier_operation=A` (interstate), joined by USDOT
+number to a MOTUS authority row whose `op_auth_type` is `Motor Carrier of
+Property (Except Household Goods)` and whose `op_auth_status` is `Active`.
+FMCSA's official operating-authority page defines that authority as an
+authorized for-hire motor carrier transporting regulated commodities for the
+public for payment, and its official OP-1 instructions state that an ACTIVE
+authority registration is required before operation. The preserved MOTUS
+metadata and May 18, 2026 dictionary bind the dataset, fields, attachment, and
+source bytes. Direct preservation of the two supporting FMCSA pages/documents
+are now preserved locally and bound by exact byte size and SHA-256.
+
+Accordingly, `carrier-eligibility-rule-candidate.json` is deterministic but
+strictly `CANDIDATE_ONLY`: null, missing, unmatched, and unknown inputs fail
+closed as `INDETERMINATE_EXCLUDE`; one joined authority row must satisfy both
+authority conditions. `docket1_status_code`, `review_type`, and `safety_rating`
+are not dependencies of this target predicate. Run
+`python3 scripts/verify_fmcsa_eligibility_candidate.py` to verify the dependency
+set, prohibited inputs, deterministic predicates, and unfrozen status. No
+carrier results are produced.
 
 ### Issue #21 bounded re-evaluation (2026-08-28)
 
