@@ -1,7 +1,7 @@
 {
   "artifact_format": "fmcsa-carrier-eligibility-candidate-v1",
   "status": "CANDIDATE_ONLY",
-  "determination": "DETERMINISTIC_CANDIDATE_DEFINED_INPUT_DATA_UNAVAILABLE",
+  "determination": "DETERMINISTIC_CANDIDATE_DEFINED_CENSUS_INPUT_UNAVAILABLE",
   "target_predicate": "active AND interstate AND for-hire AND property carrier",
   "join": {
     "left_dataset_id": "az4n-8mr2",
@@ -65,7 +65,7 @@
       },
       "semantic_support_url": "https://www.fmcsa.dot.gov/registration/types-operating-authority",
       "semantic_support_retrieved_at": "2026-08-29T02:37:00Z",
-      "semantic_support_preservation": "AUTHORITATIVE_SEMANTIC_SOURCE_PRESERVED_AND_DIGEST_BOUND; rule remains unfrozen pending point-in-time MOTUS data and temporal alignment.",
+      "semantic_support_preservation": "AUTHORITATIVE_SEMANTIC_SOURCE_PRESERVED_AND_DIGEST_BOUND; rule remains unfrozen pending the preregistered admissible Company Census object.",
       "missing_or_other_behavior": "INDETERMINATE_EXCLUDE",
       "deterministically_computable": true
     },
@@ -83,7 +83,7 @@
       },
       "semantic_support_url": "https://www.fmcsa.dot.gov/sites/fmcsa.dot.gov/files/2025-09/OP-1%28P%29%20Form.pdf",
       "semantic_support_retrieved_at": "2026-08-29T02:37:00Z",
-      "semantic_support_preservation": "AUTHORITATIVE_SEMANTIC_SOURCE_PRESERVED_AND_DIGEST_BOUND; rule remains unfrozen pending point-in-time MOTUS data and temporal alignment.",
+      "semantic_support_preservation": "AUTHORITATIVE_SEMANTIC_SOURCE_PRESERVED_AND_DIGEST_BOUND; rule remains unfrozen pending the preregistered admissible Company Census object.",
       "missing_or_other_behavior": "INDETERMINATE_EXCLUDE",
       "deterministically_computable": true
     }
@@ -99,8 +99,8 @@
   "review_type_required": false,
   "rule_frozen": false,
   "freeze_blockers": [
-    "No point-in-time MOTUS Carrier - All With History artifact is preserved and joined to the bounded cohort.",
-    "The reference timestamp and cross-dataset temporal alignment have not been preregistered."
+    "The exact complete Company Census object required by data/fmcsa/temporal-alignment-contract.json is absent and has not passed the canonical audit.",
+    "The preregistered join has not been performed; the bounded 100-row Census cohort is prohibited as a substitute."
   ],
   "governance": "This artifact specifies deterministic implementation behavior only. It is not a carrier eligibility result, a frozen rule, platform qualification evidence, or gate-validity evidence."
 }

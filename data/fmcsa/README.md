@@ -217,6 +217,34 @@ remain unchanged. The Issue #25 determination is:
 NEW_FMCSA_ACQUISITION_BLOCKED
 ```
 
+### Preregistered MOTUS / Census temporal alignment
+
+The MOTUS complete frame introduced at commit `5bef755` is now byte-, schema-,
+manifest-, dataset-version-, and commit-bound in
+`temporal-alignment-contract.json`. Before any joined outcome is inspected, the
+contract fixes the reference time as the later `rowsUpdatedAt` marker and caps
+the permitted marker skew at 86,400 seconds. The bound MOTUS marker and the
+already preserved Census metadata marker differ by 80,794 seconds. This supports
+only a contemporaneous administrative-snapshot interpretation, not a claim that
+either source records event-effective state at the reference instant.
+
+No admissible Census empirical object is present. The bounded 100-row cohort is
+expressly ineligible. The machine-readable determination is
+`temporal-alignment-determination.json`; verify it with:
+
+```bash
+python3 scripts/verify_fmcsa_temporal_alignment.py
+```
+
+Exit status `2` and
+`TEMPORAL_ALIGNMENT_BLOCKED_MISSING_ADMISSIBLE_CENSUS_OBJECT` are required in
+this checkout. The next object must be the complete `az4n-8mr2` frame at
+`rowsUpdatedAt=1787919159`, with exact schema and acquisition-manifest bindings
+and a preserved successful result from the unchanged canonical complete-frame
+audit. A changed live Census version is not a substitute under this contract;
+it requires a newly versioned preregistration. No join, qualification count, or
+eligibility freeze has been produced.
+
 ## Exact source identities and acquisition contract
 
 - Dataset: **Company Census File**, Socrata ID `az4n-8mr2`, U.S. DOT / FMCSA.

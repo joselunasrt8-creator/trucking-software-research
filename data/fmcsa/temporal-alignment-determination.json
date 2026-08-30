@@ -1,0 +1,20 @@
+{
+  "determination_version": "fmcsa-motus-census-temporal-alignment-determination-v1",
+  "determination": "TEMPORAL_ALIGNMENT_BLOCKED_MISSING_ADMISSIBLE_CENSUS_OBJECT",
+  "join_performed": false,
+  "eligibility_frozen": false,
+  "contract": "data/fmcsa/temporal-alignment-contract.json",
+  "motus_commit": "5bef755d6fee97210cce035c21c8037668022ede",
+  "motus_artifact_verified": true,
+  "census_object_present": false,
+  "missing_empirical_object_id": "fmcsa-company-census-az4n-8mr2-rowsUpdatedAt-1787919159-complete-frame",
+  "required_next_action": "Acquire or recover the complete Company Census File az4n-8mr2 at rowsUpdatedAt 1787919159, together with its exact schema binding and acquisition manifest; run the unchanged canonical complete-frame audit and preserve its machine-readable successful result. If that exact source version can no longer be acquired or recovered, this preregistered join remains permanently blocked and a new study contract/version is required.",
+  "missing_paths": [
+    "data/raw/fmcsa/company-census-complete.json",
+    "data/derived/fmcsa/complete-frame-manifest.json",
+    "data/fmcsa/company-census-schema.json",
+    "data/derived/fmcsa/complete-frame-audit.json"
+  ],
+  "verified_version_marker_skew_seconds": 80794,
+  "maximum_version_marker_skew_seconds": 86400
+}

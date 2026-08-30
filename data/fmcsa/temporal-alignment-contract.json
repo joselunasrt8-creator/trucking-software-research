@@ -1,0 +1,54 @@
+{
+  "contract_version": "fmcsa-motus-census-temporal-alignment-v1",
+  "preregistration_status": "PREREGISTERED_BEFORE_JOIN_AND_OUTCOME_INSPECTION",
+  "target_interpretation": "Contemporaneous administrative snapshot of active interstate for-hire property-carrier status; not a record-level historical as-of claim.",
+  "reference_time_rule": "The later of the two dataset rowsUpdatedAt version markers.",
+  "maximum_version_marker_skew_seconds": 86400,
+  "skew_rationale": "One preregistered UTC day is the maximum tolerated source-publication lag. It is applied before any join or eligibility outcome is inspected and must not be widened post hoc.",
+  "motus_input": {
+    "repository_commit": "5bef755d6fee97210cce035c21c8037668022ede",
+    "dataset_id": "inys-ebih",
+    "rows_updated_at": 1787999953,
+    "rows_updated_at_utc": "2026-08-29T10:39:13Z",
+    "frame_path": "data/raw/fmcsa/motus-carrier-all-history.json",
+    "frame_sha256": "fd6461ab04a9b466bef27d871f8ed5b04968e5b28bea0062751f4d265de8f806",
+    "manifest_path": "data/derived/fmcsa/motus-acquisition-manifest.json",
+    "manifest_sha256": "fb1ca4c5ff34f58e37cfd37a5be6b0ed766899563dcd48f7c6a6f9d55e931973",
+    "schema_path": "data/fmcsa/motus-schema.json",
+    "schema_sha256": "c6dc29188b91c195e03b87eaf61bcfdacee80f1d49b9ba3655b6a81267e41de8"
+  },
+  "required_census_input": {
+    "empirical_object_id": "fmcsa-company-census-az4n-8mr2-rowsUpdatedAt-1787919159-complete-frame",
+    "dataset_id": "az4n-8mr2",
+    "required_rows_updated_at": 1787919159,
+    "required_rows_updated_at_utc": "2026-08-28T12:12:39Z",
+    "frame_path": "data/raw/fmcsa/company-census-complete.json",
+    "manifest_path": "data/derived/fmcsa/complete-frame-manifest.json",
+    "schema_path": "data/fmcsa/company-census-schema.json",
+    "audit_path": "data/derived/fmcsa/complete-frame-audit.json",
+    "admissibility": [
+      "The frame, manifest, and schema must pass scripts/audit_fmcsa_census.py unchanged.",
+      "The manifest dataset_identity.rows_updated_at must equal 1787919159 and its start/end stability check must bind that same value.",
+      "The preserved audit must bind the exact frame digest, row count, zero missing dot_number values, zero duplicate dot_number values, and COMPLETE_FRAME_READY_WITH_LIMITATIONS status.",
+      "All four artifacts must be repository-owned or have immutable retrieval references and exact SHA-256 identities; mere ignored-path presence is insufficient."
+    ]
+  },
+  "computed_alignment": {
+    "reference_time_utc": "2026-08-29T10:39:13Z",
+    "version_marker_skew_seconds": 80794,
+    "within_preregistered_maximum": true
+  },
+  "join_contract": {
+    "key_normalization": "Parse Census dot_number and MOTUS usdot_number as base-10 non-negative integers; reject booleans, signs, decimals, non-digits, and empty values; equality is integer equality.",
+    "census_cardinality": "Exactly one row per normalized USDOT number, already required by the complete-frame audit.",
+    "motus_cardinality": "Zero-to-many authority rows per normalized USDOT number; preserve and evaluate every row without deduplication.",
+    "unmatched_or_invalid_behavior": "INDETERMINATE_EXCLUDE",
+    "authority_conjunction": "At least one single MOTUS row must jointly satisfy op_auth_type and op_auth_status; predicates may not be combined across rows.",
+    "execution_gate": "Do not join, inspect qualification counts, or freeze eligibility unless every Census admissibility condition and every artifact identity check passes."
+  },
+  "prohibited_claims": [
+    "The reference time is not an event-effective timestamp for either carrier or authority records.",
+    "The 24-hour tolerance may not be changed after inspecting join or eligibility outcomes.",
+    "A later live Census version may not be substituted under this preregistration."
+  ]
+}

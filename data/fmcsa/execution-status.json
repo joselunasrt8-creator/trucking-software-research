@@ -15,7 +15,7 @@
   "eligible_frame_blockers": [
     "The repository-owned complete-frame bytes are unavailable in this execution environment, so their digest and row count cannot be verified.",
     "The repository-owned acquisition manifest, authoritative schema binding, and successful real-frame audit evidence are unavailable in this execution environment.",
-    "A deterministic alternative eligibility candidate exists and its supporting MOTUS value-semantics document is preserved and digest-bound, but no point-in-time MOTUS join is acquired and the reference timestamp and cross-dataset temporal alignment are not preregistered, so no rule is frozen."
+    "A deterministic alternative eligibility candidate and version-bound MOTUS complete frame exist, and temporal alignment is preregistered, but the exact admissible Company Census complete-frame object is absent, so no join is performed and no rule is frozen."
   ],
   "eligible_frame_determination": "ELIGIBLE_FRAME_BLOCKED",
   "eligible_frame_evaluated_at": "2026-08-28T00:00:00Z",
@@ -44,7 +44,9 @@
     "review_type"
   ],
   "eligibility_rule_status": "ELIGIBILITY_RULE_NOT_FROZEN",
-  "eligibility_candidate_status": "CANDIDATE_ONLY_INPUT_DATA_AND_DIGEST_BINDING_BLOCKED",
+  "eligibility_candidate_status": "CANDIDATE_ONLY_CENSUS_INPUT_BLOCKED",
+  "temporal_alignment_contract": "data/fmcsa/temporal-alignment-contract.json",
+  "temporal_alignment_determination": "TEMPORAL_ALIGNMENT_BLOCKED_MISSING_ADMISSIBLE_CENSUS_OBJECT",
   "eligibility_candidate_artifact": "data/fmcsa/carrier-eligibility-rule-candidate.json",
   "eligibility_candidate_minimal_fields": [
     "status_code",
