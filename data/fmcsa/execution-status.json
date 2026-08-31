@@ -1,7 +1,7 @@
 {
   "attempted_at": null,
   "attempted_at_limitation": "The failed manual execution did not emit a machine-recorded start timestamp.",
-  "complete_frame_status": "COMPLETE_FRAME_BLOCKED",
+  "complete_frame_status": "BLOCKED_EXACT_CENSUS_VERSION_UNAVAILABLE",
   "canonical_evidence_package_contract": "data/fmcsa/evidence-package.json",
   "canonical_evidence_package_determination": "CANONICAL_EVIDENCE_PACKAGE_BLOCKED",
   "historical_recovery_report": "data/fmcsa/recovery-report.json",
@@ -13,8 +13,8 @@
   "reacquisition_status": "AUTHORIZED_BY_ISSUE_25_ATTEMPT_BLOCKED",
   "dataset_id": "az4n-8mr2",
   "eligible_frame_blockers": [
-    "The repository-owned complete-frame bytes are unavailable in this execution environment, so their digest and row count cannot be verified.",
-    "The repository-owned acquisition manifest, authoritative schema binding, and successful real-frame audit evidence are unavailable in this execution environment.",
+    "Only a validated 1,400,000-row prefix is preserved for rowsUpdatedAt 1787919159; its checkpoint records terminal_page_received=false, so it is not a complete frame.",
+    "No complete-frame manifest or successful real-frame audit exists, and the authoritative Socrata API exposes no immutable snapshot selector with which to recover the missing historical suffix.",
     "A deterministic alternative eligibility candidate and version-bound MOTUS complete frame exist, and temporal alignment is preregistered, but the exact admissible Company Census complete-frame object is absent, so no join is performed and no rule is frozen."
   ],
   "eligible_frame_determination": "ELIGIBLE_FRAME_BLOCKED",
@@ -46,7 +46,7 @@
   "eligibility_rule_status": "ELIGIBILITY_RULE_NOT_FROZEN",
   "eligibility_candidate_status": "CANDIDATE_ONLY_CENSUS_INPUT_BLOCKED",
   "temporal_alignment_contract": "data/fmcsa/temporal-alignment-contract.json",
-  "temporal_alignment_determination": "TEMPORAL_ALIGNMENT_BLOCKED_MISSING_ADMISSIBLE_CENSUS_OBJECT",
+  "temporal_alignment_determination": "BLOCKED_EXACT_CENSUS_VERSION_UNAVAILABLE",
   "eligibility_candidate_artifact": "data/fmcsa/carrier-eligibility-rule-candidate.json",
   "eligibility_candidate_minimal_fields": [
     "status_code",

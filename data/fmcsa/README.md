@@ -237,13 +237,14 @@ python3 scripts/verify_fmcsa_temporal_alignment.py
 ```
 
 Exit status `2` and
-`TEMPORAL_ALIGNMENT_BLOCKED_MISSING_ADMISSIBLE_CENSUS_OBJECT` are required in
-this checkout. The next object must be the complete `az4n-8mr2` frame at
-`rowsUpdatedAt=1787919159`, with exact schema and acquisition-manifest bindings
-and a preserved successful result from the unchanged canonical complete-frame
-audit. A changed live Census version is not a substitute under this contract;
-it requires a newly versioned preregistration. No join, qualification count, or
-eligibility freeze has been produced.
+`BLOCKED_EXACT_CENSUS_VERSION_UNAVAILABLE` are required in this checkout. A
+valid checkpoint preserves 1,400,000 rows at `rowsUpdatedAt=1787919159`, but no
+terminal page or remaining suffix. Because the source exposes no immutable
+historical snapshot selector, the mutable live endpoint cannot legitimately
+complete that prefix. A changed live Census version is not a substitute under
+this contract; it requires a newly versioned preregistration and contemporarily
+aligned inputs. No join, qualification count, or eligibility freeze has been
+produced.
 
 ## Exact source identities and acquisition contract
 

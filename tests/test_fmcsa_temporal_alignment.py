@@ -28,6 +28,7 @@ class TemporalAlignmentTests(unittest.TestCase):
         result = alignment.verify(self.path)
         expected = json.loads((ROOT / "data/fmcsa/temporal-alignment-determination.json").read_text())
         self.assertEqual(result["determination"], expected["determination"])
+        self.assertEqual(result["determination"], "BLOCKED_EXACT_CENSUS_VERSION_UNAVAILABLE")
         self.assertEqual(set(result["missing_paths"]), set(expected["missing_paths"]))
 
     def test_motus_artifacts_and_commit_are_exactly_bound(self):

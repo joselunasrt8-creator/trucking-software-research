@@ -97,7 +97,7 @@ def verify(contract_path=CONTRACT):
     if errors:
         determination = "TEMPORAL_ALIGNMENT_CONTRACT_INVALID"
     elif blockers:
-        determination = "TEMPORAL_ALIGNMENT_BLOCKED_MISSING_ADMISSIBLE_CENSUS_OBJECT"
+        determination = "BLOCKED_EXACT_CENSUS_VERSION_UNAVAILABLE"
     else:
         determination = "TEMPORAL_ALIGNMENT_INPUTS_ADMISSIBLE_JOIN_NOT_PERFORMED"
     return {"determination": determination, "errors": errors, "blockers": blockers, "missing_paths": missing}
