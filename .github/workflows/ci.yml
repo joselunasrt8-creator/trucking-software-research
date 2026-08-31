@@ -50,11 +50,13 @@ jobs:
               "SCHEMA_NOT_BOUND",
               "SCHEMA_BOUND",
               "SCHEMA_BOUND_WITH_LIMITATIONS",
+              "OFFICIAL_COLUMN_METADATA_ACQUIRED",
           }
           assert data["complete_frame_status"] in {
               "COMPLETE_FRAME_BLOCKED",
               "COMPLETE_FRAME_READY",
               "COMPLETE_FRAME_READY_WITH_LIMITATIONS",
+              "BLOCKED_EXACT_CENSUS_VERSION_UNAVAILABLE",
           }
           PY
 
