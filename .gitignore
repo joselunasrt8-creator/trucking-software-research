@@ -6,6 +6,7 @@ __pycache__/
 data/raw/*
 !data/raw/fmcsa/
 data/raw/fmcsa/*
+!data/raw/fmcsa/company-census-bounded-100.json
 !data/raw/fmcsa/motus-carrier-all-history.json
 data/fmcsa/company-census-schema.json
 data/derived/fmcsa/complete-frame-manifest.json
