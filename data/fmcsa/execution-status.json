@@ -18,10 +18,12 @@
     "A deterministic alternative eligibility candidate and version-bound MOTUS complete frame exist, and temporal alignment is preregistered, but the exact admissible Company Census complete-frame object is absent, so no join is performed and no rule is frozen."
   ],
   "eligible_frame_determination": "ELIGIBLE_FRAME_BLOCKED",
+  "eligible_frame_determination_artifact": "data/fmcsa/eligible-frame-determination.json",
   "eligible_frame_evaluated_at": "2026-08-28T00:00:00Z",
   "eligible_frame_rule_frozen": false,
   "error": "Authoritative host access failed at the environment CONNECT proxy with HTTP 403; no response content was acquired.",
   "issue_6_determination": "COMPLETE_FRAME_BLOCKED",
+  "issue_6_schema_determination": "SCHEMA_NOT_BOUND",
   "issue_6_re_evaluated_at": "2026-08-28T00:00:00Z",
   "issue_6_re_evaluation_basis": "Tracked repository evidence contains no complete-frame bytes, acquisition manifest, authoritative schema binding, or successful real-frame audit artifact. Fixture-tested code and merge history for PRs #18 and #19 are implementation evidence, not empirical acquisition evidence.",
   "recorded_at": "2026-08-22T08:25:20Z",

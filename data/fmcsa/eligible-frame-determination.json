@@ -1,0 +1,104 @@
+{
+  "determination_format": "fmcsa-eligible-frame-determination-v1",
+  "determination": "ELIGIBLE_FRAME_BLOCKED",
+  "determined_at": "2026-09-04T04:10:59Z",
+  "source_dataset": {
+    "agency": "U.S. DOT / Federal Motor Carrier Safety Administration",
+    "id": "az4n-8mr2",
+    "name": "Company Census File"
+  },
+  "required_complete_frame": {
+    "path": "data/raw/fmcsa/company-census-complete.json",
+    "present": false,
+    "sha256": null,
+    "row_count": null,
+    "acquisition_window": null,
+    "retrieval_window": null,
+    "ordering_contract": {
+      "field": "dot_number",
+      "direction": "ascending",
+      "strict": true,
+      "missing_identifiers": "reject",
+      "duplicate_identifiers": "reject"
+    }
+  },
+  "required_acquisition_manifest": {
+    "path": "data/derived/fmcsa/complete-frame-manifest.json",
+    "present": false,
+    "sha256": null
+  },
+  "required_schema": {
+    "path": "data/fmcsa/company-census-schema.json",
+    "source_url": "https://data.transportation.gov/api/views/az4n-8mr2/columns.json",
+    "present": false,
+    "artifact_sha256": null,
+    "source_content_sha256": null
+  },
+  "required_real_frame_audit": {
+    "path": "data/derived/fmcsa/complete-frame-audit.json",
+    "present": false,
+    "successful": false,
+    "sha256": null
+  },
+  "bound_repository_evidence": [
+    {
+      "path": "data/fmcsa/evidence-package.json",
+      "sha256": "sha256:e0a38769bc413ca462f89fe44f94b7dce53ea89b782f648d57c863a41be266c8"
+    },
+    {
+      "path": "data/fmcsa/carrier-eligibility-rule-candidate.json",
+      "sha256": "sha256:9f72ea8e1dfa98ca058e92e4a7530b1adf56290752f7cef6ce9a5069142459fe"
+    },
+    {
+      "path": "data/fmcsa/temporal-alignment-contract.json",
+      "sha256": "sha256:313084bdbf372827ee7aa4b2306ab9298fe61f27c64d7dc88bb9840b41fc1fe6"
+    },
+    {
+      "path": "data/fmcsa/temporal-alignment-determination.json",
+      "sha256": "sha256:7c4ba288d675d7f899d02c7b164a9e1769f3f6a19985cc3e5e957e193c65f4ab"
+    }
+  ],
+  "implementation_identities": {
+    "repository_commit_inspected": "204f5966831ada1665646b873bfc405c8c63b8fe",
+    "acquisition_implementation_sha256": "sha256:d75e53d73c2e95d23f584a7b28f90ecc4a1e9086c886d0c19a0b65bd9e8da170",
+    "audit_implementation_sha256": "sha256:b3c9d8a9460c1381bf402042bdd645d2c1e39bc8d2b5c09bd5e858429050d292"
+  },
+  "eligibility_definition": {
+    "status": "CANDIDATE_ONLY_NOT_FROZEN",
+    "target_population": "active interstate for-hire property carriers",
+    "reference_time_semantics": "PREREGISTERED_BUT_UNSATISFIED",
+    "candidate_path": "data/fmcsa/carrier-eligibility-rule-candidate.json",
+    "missing_data_behavior": "INDETERMINATE_EXCLUDE",
+    "duplicate_behavior": "Census duplicate dot_number rejects the input; MOTUS one-to-many rows are all evaluated and at least one must satisfy the complete authority conjunction.",
+    "outcome_inspection_performed": false
+  },
+  "issue_6_determinations": {
+    "complete_frame": "COMPLETE_FRAME_BLOCKED",
+    "schema": "SCHEMA_NOT_BOUND",
+    "semantic_binding_separate_limitation": "The candidate's selected predicate meanings are bound, but the schema object belonging to the required complete-frame acquisition is absent."
+  },
+  "eligible_frame": {
+    "materialized": false,
+    "path": null,
+    "row_count": null,
+    "sha256": null,
+    "exclusion_counts_by_reason": null,
+    "unresolved_or_indeterminate_count": null,
+    "reproducibility_runs": 0
+  },
+  "blockers": [
+    "The exact complete Company Census frame is absent, so its digest, row count, acquisition window, ordering, and content cannot be verified.",
+    "The complete-frame acquisition manifest, acquisition-bound schema object, and successful real-frame audit artifact are absent.",
+    "The only documented Census acquisition prefix is incomplete and is not present in this checkout; the live mutable endpoint cannot reconstruct its historical identity.",
+    "The preregistered temporal contract therefore prohibits the Census/MOTUS join and the candidate rule cannot be frozen or executed."
+  ],
+  "known_limitations": [
+    "The bounded 100-row Census cohort is non-random, non-representative, and not a substitute for the complete frame.",
+    "The available MOTUS complete frame is not independently sufficient to construct the eligible carrier frame.",
+    "No exclusion counts, eligible row count, eligible-frame digest, or repeat-run comparison exists because fail-closed validation stops before transformation."
+  ],
+  "issue_7_unblocked": false,
+  "sample_drawn": false,
+  "qualification_outcomes_inspected": false,
+  "broker_or_platform_observation_performed": false
+}

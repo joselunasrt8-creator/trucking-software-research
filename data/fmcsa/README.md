@@ -110,6 +110,20 @@ carrier results are produced.
 
 ### Issue #21 bounded re-evaluation (2026-08-28)
 
+The machine-readable, repository-evidence-bound final determination is
+`eligible-frame-determination.json`. Verify it without acquiring data, joining
+datasets, transforming rows, or sampling with:
+
+```bash
+python3 scripts/verify_fmcsa_eligible_frame_determination.py
+```
+
+Exit status `2` and `ELIGIBLE_FRAME_BLOCKED` are the required successful
+blocked-boundary result. The artifact records unavailable source identities as
+`null` rather than inventing them, binds the evidence and implementation bytes
+that were actually inspected, records Issue #6 as `COMPLETE_FRAME_BLOCKED` and
+`SCHEMA_NOT_BOUND`, and explicitly records that Issue #7 remains blocked.
+
 Issue #21 cannot legitimately freeze an eligible frame from the repository-owned
 evidence available in this checkout. The ignored complete-frame bytes,
 acquisition manifest, authoritative schema binding, and successful real-frame
