@@ -1,0 +1,62 @@
+{
+  "status_format": "fmcsa-issue-21-codex-environment-status-v1",
+  "environment_determination": "CODEX_ENVIRONMENT_BLOCKED",
+  "observed_at": "2026-09-04T04:10:59Z",
+  "scope": "This is an execution-environment status, not an authoritative terminal Issue #21 scientific determination.",
+  "source_dataset": {
+    "agency": "U.S. DOT / Federal Motor Carrier Safety Administration",
+    "id": "az4n-8mr2",
+    "name": "Company Census File"
+  },
+  "historical_empirical_evidence": {
+    "source": "https://github.com/joselunasrt8-creator/trucking-software-research/pull/19",
+    "merge_commit": "6ec952b69353bc6bc86a45beb11b667f0a8ffad8",
+    "status": "SUCCESSFUL_REAL_FRAME_AUDIT_REPORTED",
+    "reported_complete_frame_byte_size": 5103345155,
+    "reported_complete_frame_row_count": 4490646,
+    "reported_raw_sha256_matched_acquisition_manifest": true,
+    "reported_row_count_matched_acquisition_manifest": true,
+    "reported_missing_dot_number_count": 0,
+    "reported_duplicate_dot_number_count": 0,
+    "reported_complete_numeric_ordering_validated": true,
+    "current_checkout_reverification": "NOT_POSSIBLE_ARTIFACTS_UNAVAILABLE"
+  },
+  "current_environment_evidence": {
+    "required_artifacts": [
+      {
+        "path": "data/raw/fmcsa/company-census-complete.json",
+        "present": false
+      },
+      {
+        "path": "data/derived/fmcsa/complete-frame-manifest.json",
+        "present": false
+      },
+      {
+        "path": "data/fmcsa/company-census-schema.json",
+        "present": false
+      },
+      {
+        "path": "data/derived/fmcsa/complete-frame-audit.json",
+        "present": false
+      }
+    ],
+    "meaning": "The current Codex checkout cannot execute or reproduce the eligible-frame transformation. Artifact absence here does not establish historical nonexistence or an empirical boundary failure."
+  },
+  "issue_21": {
+    "authoritative_status": "UNRESOLVED",
+    "eligible_frame_constructed": false,
+    "eligible_frame_row_count": null,
+    "eligible_frame_sha256": null,
+    "exclusion_counts_by_reason": null,
+    "remaining_prerequisite": "Execute Issue #21 in an environment with access to the preserved PR #19 complete-frame evidence package (raw frame, acquisition manifest, bound schema, and successful real-frame audit) and validate those exact artifacts before transformation."
+  },
+  "issue_7_unblocked": false,
+  "hard_boundaries": {
+    "replacement_data_acquired": false,
+    "sample_drawn": false,
+    "qualification_outcomes_inspected": false,
+    "broker_or_platform_observation_performed": false,
+    "historical_identity_reconstructed_from_mutable_endpoint": false,
+    "unverified_hashes_invented": false
+  }
+}

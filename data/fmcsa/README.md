@@ -2,14 +2,16 @@
 
 ## Current execution status
 
-The authoritative hosts were unreachable from the 2026-08-22 complete-frame
-implementation environment (the proxy returned HTTP 403). A later bounded
-request acquired 100 rows and official Socrata column metadata, but no complete
-frame or eligible frame is committed or claimed. Current status is:
+The authoritative hosts were unreachable from one complete-frame implementation
+environment (the proxy returned HTTP 403). PR #19 nevertheless reports a
+successful audit of a preserved 4,490,646-row real frame. Its large ignored
+evidence package is unavailable in this checkout, so it cannot be reverified or
+used to execute Issue #21 here. No eligible frame is claimed. Current status is:
 
 ```text
 SEMANTIC_BINDING_PARTIALLY_BOUND
-COMPLETE_FRAME_BLOCKED
+CODEX_ENVIRONMENT_BLOCKED
+ISSUE_21_UNRESOLVED
 ```
 
 The code path is fixture-tested, but fixture values are not empirical results.
@@ -110,48 +112,42 @@ carrier results are produced.
 
 ### Issue #21 bounded re-evaluation (2026-08-28)
 
-The machine-readable, repository-evidence-bound final determination is
-`eligible-frame-determination.json`. Verify it without acquiring data, joining
-datasets, transforming rows, or sampling with:
+The machine-readable record for this checkout is
+`issue-21-codex-environment-status.json`. Verify it without acquiring data,
+joining datasets, transforming rows, or sampling with:
 
 ```bash
-python3 scripts/verify_fmcsa_eligible_frame_determination.py
+python3 scripts/verify_fmcsa_issue21_environment.py
 ```
 
-Exit status `2` and `ELIGIBLE_FRAME_BLOCKED` are the required successful
-blocked-boundary result. The artifact records unavailable source identities as
-`null` rather than inventing them, binds the evidence and implementation bytes
-that were actually inspected, records Issue #6 as `COMPLETE_FRAME_BLOCKED` and
-`SCHEMA_NOT_BOUND`, and explicitly records that Issue #7 remains blocked.
+Exit status `2` and `CODEX_ENVIRONMENT_BLOCKED` are the expected successful
+environment-boundary result. This is not an authoritative terminal Issue #21
+determination.
 
-Issue #21 cannot legitimately freeze an eligible frame from the repository-owned
-evidence available in this checkout. The ignored complete-frame bytes,
-acquisition manifest, authoritative schema binding, and successful real-frame
-audit artifact are absent. Consequently, the source content digest, row count,
-schema digests, acquisition/retrieval window, and real-frame audit result cannot
-be verified or bound. Merge commits for PRs #18 and #19 prove that the streaming
-audit implementation was reviewed and merged; they do not substitute for its
-empirical output.
+PR #19 reports a successful audit of the preserved real Company Census frame:
+5,103,345,155 bytes, 4,490,646 rows, exact raw SHA-256 and row-count matches to
+the acquisition manifest, zero missing or duplicate `dot_number` values, and
+validated complete numeric ordering. The merge is preserved as commit
+`6ec952b69353bc6bc86a45beb11b667f0a8ffad8`. This historical empirical report
+must not be overwritten merely because its large artifacts are not carried by
+this checkout.
 
-Issue #6 has therefore been re-evaluated from preserved evidence and remains
-`COMPLETE_FRAME_BLOCKED`, not `COMPLETE_FRAME_READY_WITH_LIMITATIONS`. The
-fixture-tested acquisition and audit paths demonstrate executable validation
-logic only. They do not establish a canonical acquired frame or authoritative
-eligibility semantics.
+The current Codex checkout does not contain the ignored raw frame, acquisition
+manifest, acquisition-bound schema, or preserved audit output needed to execute
+Issue #21. That is an environment access limitation, not evidence that the
+historical frame never existed and not an empirical complete-frame failure.
 
-No eligibility predicate, transformation, derived eligible-frame artifact, or
-sampling operation was created. Doing so would require either manufacturing
-missing source evidence or inferring undocumented meanings for the active,
-interstate, for-hire, and property-carrier fields. Both are outside the research
-boundary. Once the exact ignored artifacts are restored, Issue #21 must first
-verify them with `python scripts/audit_fmcsa_census.py`, then bind every
-eligibility field to its preserved authoritative definition and code values
-before inspecting qualification outcomes or implementing the transformation.
+Issue #21 is therefore unresolved in this repository state. Resolution requires
+execution in an environment with access to the preserved PR #19 raw frame,
+acquisition manifest, bound schema, and successful audit, followed by validation
+of those exact objects before transformation. No eligible frame, exclusion
+counts, or eligible-frame digest has been produced. Issue #7 remains blocked;
+no sample or qualification outcome has been inspected.
 
-The canonical Issue #21 determination for this evidence state is:
+The bounded determination for this execution environment is:
 
 ```text
-ELIGIBLE_FRAME_BLOCKED
+CODEX_ENVIRONMENT_BLOCKED
 ```
 
 ### Issue #23 portable evidence package
