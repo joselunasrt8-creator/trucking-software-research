@@ -1,135 +1,173 @@
 # Trucking Software Research
 
-## Focus
+## Mission
 
-Researching how trucking software uses data, algorithms, risk, and operational constraints to support safer, better-informed trucking decisions.
+Research how trucking software uses data, algorithms, predictions, risk signals, and operational constraints to shape decisions—and how those decisions can be examined, verified, and improved without weakening legitimate safety or compliance controls.
 
-The current applied focus is **pre-trip planning for step-deck, RGN/lowboy, and permitted oversize loads**. The research asks whether software can help qualified personnel identify missing, conflicting, or outdated information before a load moves.
+This repository combines **empirical research**, **evidence-pipeline tooling**, and **exploratory workflow research**. It is not committed to a single product or claim. Each workstream has its own evidence requirements, status, and stop/go criteria.
 
-**Current stage:** Field learning and research. The proposed analyzer is a hypothesis, not a validated product.
+**Current stage:** Research and tooling development. Some data-pipeline scripts and tests exist; prospective field validation and the specialized-load analyzer remain incomplete. No broad product, safety, or market claim should be treated as validated without documented evidence.
 
-## Governing question
+## Core research question
 
-**Can software make specialized-load planning information clearer and easier to verify without replacing professional judgment or safety controls?**
+**When trucking software makes or supports a decision, what facts, rules, predictions, and uncertainties drive that decision—and what evidence would show whether it is justified?**
 
-## Problem hypothesis
-
-Specialized-load planning can involve information spread across equipment specifications, cargo measurements, securement documentation, permits, escort requirements, jurisdiction rules, and route restrictions. Missing or conflicting details may lead to delays, rework, or unsafe assumptions.
-
-The research will test whether a checklist-first tool can surface those issues early and provide traceable evidence for human review.
-
-This is a hypothesis to investigate, not an assertion that the problem is widespread or that a software solution will necessarily improve outcomes.
-
-## Candidate workflow
+## Research framework
 
 ```text
-Load and equipment details
+Operational reality
         ↓
-Required documents and authoritative sources
+Available evidence and data quality
         ↓
-Compatibility and constraint checks
+Rule, model, prediction, or constraint
         ↓
-Missing / conflicting / stale information flags
+Decision / recommendation / review gate
         ↓
-Evidence and uncertainty summary
+Operational outcome
         ↓
-Qualified human review
-        ↓
-Decision remains with responsible personnel
+Evidence-based evaluation
 ```
 
-## Initial scope
+The framework distinguishes:
 
-Investigate whether a human-reviewed analyzer can help check and organize:
+- **Underlying state:** What is actually true in the operation.
+- **Represented state:** What the system's available records say.
+- **Rule or policy:** The documented requirement or decision condition.
+- **Risk estimate:** A prediction or signal about a possible outcome.
+- **Uncertainty:** What cannot be established from available evidence.
+- **Decision:** What the system or responsible person does with that information.
+- **Outcome:** What subsequently happens and what can be verified.
 
-- cargo dimensions against trailer dimensions and configuration
-- cargo weight, axle-distribution information, and equipment ratings
+These categories must not be collapsed. A missing record is not automatically proof of a failed requirement; a prediction is not a fact; a tool recommendation is not authority to act.
+
+## Research tracks
+
+### 1. Carrier qualification and platform decision gates
+
+**Question:** When a carrier is delayed, reviewed, or rejected during qualification, was the underlying requirement genuinely unsatisfied, or did missing, stale, conflicting, or misrepresented evidence prevent the system from establishing the true state?
+
+This track studies the boundary between carrier state, represented evidence, qualification rules, and observed gate outcomes. It does not assume every rejection is wrong or infer proprietary scoring logic without evidence.
+
+Current work includes:
+
+- FMCSA Company Census acquisition and audit tooling
+- source identity, schema semantics, and evidence provenance
+- deterministic bounded-cohort handling
+- eligibility-rule and evidence-package verification
+- a proposed prospective qualification-attempt instrument
+- classification of valid gates, candidate false gates, confirmed false gates, and indeterminate cases
+
+**Status:** Tooling and research artifacts exist, but the exact version-bound Census source artifact and required semantic bindings remain gating dependencies for the current eligible-frame workflow. The eligibility rule is not frozen, and prospective qualification observation has not started. These limitations must remain visible; they do not establish whether any carrier or platform decision is valid.
+
+Key references:
+- [Issue #1 — Measure false gates in carrier qualification and load booking](https://github.com/joselunasrt8-creator/trucking-software-research/issues/1)
+- [Issue #2 — Run prospective carrier qualification false-gate pilot](https://github.com/joselunasrt8-creator/trucking-software-research/issues/2)
+- [Issue #21 — Freeze the eligible carrier frame](https://github.com/joselunasrt8-creator/trucking-software-research/issues/21)
+- [Issue #23 — Bind the canonical empirical evidence package](https://github.com/joselunasrt8-creator/trucking-software-research/issues/23)
+- [Issue #25 — Authorize and acquire a new FMCSA frame](https://github.com/joselunasrt8-creator/trucking-software-research/issues/25)
+
+Implementation areas:
+- [Scripts](https://github.com/joselunasrt8-creator/trucking-software-research/tree/main/scripts)
+- [Tests](https://github.com/joselunasrt8-creator/trucking-software-research/tree/main/tests)
+- [Qualification-attempt instrument](https://github.com/joselunasrt8-creator/trucking-software-research/tree/main/instruments/qualification-attempt-v1)
+
+### 2. Specialized-load planning and safety information
+
+**Question:** Can software help specialized-haul personnel find missing, conflicting, stale, or unverified planning information before a load moves—without replacing qualified judgment or safety controls?
+
+The exploratory focus includes step-deck, RGN/lowboy, and permitted oversize workflows. Candidate information areas include:
+
+- cargo and trailer dimensions and configuration
+- weight, axle-distribution information, and equipment ratings
 - securement plans, documentation, and working-load limits
-- permit requirements by jurisdiction
-- escort requirements and applicable restrictions
+- permit and escort requirements by jurisdiction
 - route restrictions and known clearance constraints
-- missing, conflicting, outdated, or unverified information
-- unresolved questions that must be referred to qualified personnel
+- conflicting documents and unresolved planning questions
 
-The tool should show the source, timestamp, and limitations of information where available. It should distinguish a verified check from an unresolved or unavailable check.
+The research starts with observation and checklist-first methods, not an assumption that a full AI product is necessary. Existing checklists, experienced personnel, and current software may already solve some of these problems adequately.
 
-## Safety boundaries
+**Status:** Hypothesis and planning stage. The frequency and importance of the problem, the specific gap in existing methods, user demand, and analyzer accuracy have not been validated.
 
-The analyzer must not:
+Validation requires two separate forms of evidence:
 
-- autonomously certify a load as safe or legal
-- replace physical inspection or required measurements
-- authorize dispatch or override the driver, carrier, permit authority, or qualified safety personnel
-- treat unknown, conflicting, or stale critical information as a pass
-- present an inference as an authoritative rule
-- imply that a checklist can capture every real-world hazard
+1. **Need and workflow evidence:** recurring problems across independent workflows, clear users and decision points, documented current workarounds, and users willing to continue structured testing.
+2. **Safety and performance evidence:** source-backed checks, synthetic failure cases, explicit uncertainty states, qualified review, and measurement of missed issues, unnecessary flags, and unresolved cases.
 
-Safety-critical decisions remain with the responsible qualified people and applicable authorities.
+A demonstration or positive feedback alone is not validation. If current methods already work well or the problem is too rare to matter, narrow or stop the hypothesis.
 
-## Validation plan
-
-1. **Observe:** Document recurring planning questions using lawful, authorized, privacy-safe notes.
-2. **Define:** Specify the intended users, workflow, inputs, evidence requirements, uncertainty states, and explicit non-goals.
-3. **Prototype:** Build a checklist-first workflow using synthetic cases.
-4. **Test:** Evaluate missing data, conflicting measurements, stale sources, invalid assumptions, and clear stop/escalation cases.
-5. **Review:** Have qualified personnel assess the outputs against authoritative documentation and real workflow needs.
-6. **Decide:** Continue, revise, or stop based on recorded findings.
-
-Do not record or upload confidential employer, customer, driver, or shipment information without permission. Use redacted, authorized examples for any testing beyond synthetic cases.
-
-## What would validate the hypothesis?
-
-Evidence should establish:
-
-- which planning tasks repeatedly create confusion or rework
-- which information sources are authoritative for each check
-- whether the tool reliably identifies missing and conflicting inputs
-- whether outputs are understandable and useful to qualified reviewers
-- how often the tool produces false reassurance or misses a critical issue
-- whether the tool reduces avoidable rework without encouraging unsafe reliance
-
-A successful demo alone is not validation. Any prototype must be evaluated for failure cases and limitations before use in operational settings.
-
-## Evidence required to validate demand
-
-Technical accuracy is necessary but does not establish that people need or will use the tool. Before expanding the prototype, gather evidence from the people who actually plan, review, or approve specialized loads.
-
-Look for:
-
-- **A repeated problem:** The same information gap or planning failure appears across multiple independent loads or workflows, not just one anecdote.
-- **A clear user and decision point:** Identify who encounters the problem, who currently resolves it, and when the information is needed.
-- **Observed current behavior:** Document existing checklists, calls, spreadsheets, software, and manual cross-checks. Do not assume a workaround is ineffective merely because it is manual.
-- **Demonstrable consequences:** Record authorized, non-sensitive evidence of rechecking, delays, rework, unresolved questions, or near misses. Do not infer causation from correlation or rely on unsafe experiments.
-- **A specific gap in existing tools:** Establish what current processes fail to surface, explain, or track, rather than assuming a new tool is needed.
-- **User-verified usefulness:** Have intended users review realistic scenarios and say which flags or evidence summaries would change their workflow—and why.
-- **Evidence of continued use:** Stronger signals include users voluntarily returning to the prototype, asking to test additional cases, or requesting a controlled pilot after seeing its limitations. General interest or praise alone is weak evidence.
-
-### Demand-validation decision gate
-
-Use a simple evidence log for each observation: date, role (not personal identity), workflow, issue observed, current workaround, consequence, source/permission status, and confidence. Keep confidential details out of the repository.
-
-Do not call demand validated until findings show a recurring, meaningful problem; a defined user and workflow; a gap not adequately handled by current methods; and explicit user commitment to a next test or controlled pilot. Set the number and diversity of observations before fieldwork where practical, and record contradictory findings as well as supporting ones.
-
-If evidence shows the problem is rare, already handled well, or not important enough for users to change their workflow, narrow or stop the product hypothesis. Demand validation is separate from safety validation: user interest cannot establish that the analyzer is accurate or safe.
-
-## Working issues
-
+Key references:
 - [#35 — Anchor: Specialized trucking transition, field learning, and software experiment](https://github.com/joselunasrt8-creator/trucking-software-research/issues/35)
 - [#37 — Plan the MVP architecture and phased roadmap](https://github.com/joselunasrt8-creator/trucking-software-research/issues/37)
 - [#36 — Design a human-reviewed pre-trip load safety analyzer](https://github.com/joselunasrt8-creator/trucking-software-research/issues/36)
 - [#33 — Specialized-load feasibility checklist](https://github.com/joselunasrt8-creator/trucking-software-research/issues/33)
-- [#32 — Field-observation protocol for step-deck / RGN / oversize workflows](https://github.com/joselunasrt8-creator/trucking-software-research/issues/32)
+- [#32 — Field-observation protocol](https://github.com/joselunasrt8-creator/trucking-software-research/issues/32)
 
-## Separate research: carrier qualification evidence
+#### Safety boundaries
 
-The repository also contains an earlier empirical research track examining carrier qualification and platform decision gates. It is separate from the specialized-load safety work and remains blocked until the exact, version-bound FMCSA Company Census source artifact and required field semantics are available.
+Any analyzer remains decision support. It must not autonomously certify a load as safe or legal, replace physical inspection, authorize dispatch, or override the driver, carrier, permit authority, or qualified safety personnel. Unknown, conflicting, or stale critical information must never be treated as a pass. No confidential employer, customer, driver, or shipment information may be used without authorization.
 
-Current determination: `BLOCKED_EXACT_CENSUS_VERSION_UNAVAILABLE`; `ELIGIBILITY_RULE_NOT_FROZEN`. Prospective qualification observation has not started. These pipeline states do not establish whether any carrier is eligible or whether a platform decision is valid.
+### 3. Cross-cutting evidence and decision quality
 
-See [Issue #21](https://github.com/joselunasrt8-creator/trucking-software-research/issues/21), [Issue #23](https://github.com/joselunasrt8-creator/trucking-software-research/issues/23), and [Issue #25](https://github.com/joselunasrt8-creator/trucking-software-research/issues/25) for that workstream's evidence requirements.
+Both tracks share methodological questions:
+
+- What was known at the time of the decision?
+- Which source establishes each fact, and how current is it?
+- What is the governing rule, and is it applicable in this context?
+- Is a conclusion based on a measured fact, a prediction, an assumption, or an unknown proprietary signal?
+- What evidence would confirm, weaken, or falsify the claim?
+- What should remain indeterminate or require human review?
+- Can another researcher reproduce the result from the recorded evidence?
+
+This is a shared method, not a claim that the two tracks are one product or that results from one can automatically validate the other.
+
+## Evidence standards
+
+Across the repository:
+
+- Preserve source identity, provenance, retrieval time, version, and known limitations.
+- Separate observations, interpretations, hypotheses, and validated findings.
+- Record missingness and uncertainty explicitly.
+- Do not claim representativeness from bounded or non-random cohorts.
+- Do not infer undocumented field meanings or proprietary rules.
+- Preserve contradictory evidence and negative results.
+- Use data only when access is lawful and authorized; minimize personal and confidential information.
+- Treat safety, compliance, fraud, and service outcomes as essential constraints, not optional afterthoughts.
+- Keep recommendations separate from execution and preserve human accountability for safety-critical decisions.
+
+```text
+Data ≠ Evidence
+Evidence ≠ Validation
+Prediction ≠ Fact
+Recommendation ≠ Authority
+Unknown ≠ Pass
+```
+
+## Repository map
+
+- `scripts/` — FMCSA acquisition, audit, and evidence-verification tooling
+- `tests/` — automated tests for the current data-pipeline scripts and evidence checks
+- `instruments/` — structured research instruments
+- `data/` — data areas, with raw and derived artifacts separated
+- `.github/workflows/` — repository automation and CI
+
+Do not assume that the presence of a script, test, or directory proves the entire research pipeline is complete or that the underlying hypothesis is validated. Check the relevant issue and recorded evidence for current status.
+
+## How progress is evaluated
+
+A research track advances only when its own prerequisites are met:
+
+1. Define a bounded question and unit of analysis.
+2. Identify the authoritative evidence and the limits of access.
+3. Specify classification rules before interpreting results.
+4. Test scripts and instruments against edge cases.
+5. Collect only authorized evidence with provenance.
+6. Record results, uncertainty, contradictions, and failures.
+7. Decide whether to continue, revise, pause, or stop.
+
+The repository may legitimately conclude that a hypothesis is unsupported, a pipeline is blocked, or no new product is warranted.
 
 ## Research before product
 
-The immediate priority is to understand the workflow, identify the most consequential information gaps, and test whether a human-reviewed tool can address them safely. Do not expand the scope or build around assumptions before field evidence supports the next step.
+The goal is to understand real workflows and decision boundaries before committing to a product direction. Build only when the evidence identifies a recurring problem, an actionable and legitimate intervention point, and a testable path to improvement.
 
-**Make uncertainty visible. Keep safety decisions with qualified people.**
+**Make the decision process inspectable. Preserve uncertainty. Keep safety authority with qualified people.**
