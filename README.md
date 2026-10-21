@@ -90,6 +90,39 @@ Better information
 → More economically viable activity
 ```
 
+## Emerging Field-Learning Track: Specialized-Load Safety
+
+A separate, exploratory track will investigate whether pre-trip planning for step-deck, RGN/lowboy, and permitted oversize loads contains recurring information gaps that software could help qualified personnel identify.
+
+Potential areas to investigate include:
+
+- load and trailer dimensional compatibility
+- cargo weight, axle-distribution information, and equipment ratings
+- securement documentation and working-load limits
+- permit, escort, jurisdiction, and route-restriction checks
+- conflicts, missing information, stale sources, and unresolved assumptions
+- the cost of preventable planning errors, delays, and rework
+
+This is a **product hypothesis, not a validated product or proven market opportunity**. Field observations must be lawful, safe, and authorized. Do not record or upload confidential employer, customer, driver, or shipment information without permission.
+
+### Proposed development sequence
+
+1. **Observe and document** recurring workflow problems using privacy-safe notes and synthetic examples.
+2. **Plan the MVP** and define its scope, input schema, source requirements, uncertainty states, privacy controls, and validation criteria.
+3. **Prototype a checklist-first analyzer** that shows evidence, flags missing or conflicting information, and routes unresolved items to qualified human review.
+4. **Validate** with synthetic cases first, then authorized and redacted examples reviewed by qualified personnel.
+5. **Decide based on evidence** whether a limited pilot or further development is justified.
+
+The tool must not autonomously certify a load as safe, replace a physical inspection, authorize dispatch, or override driver, carrier, permit, or qualified safety decisions. Unknown or stale critical information must never be treated as a pass.
+
+### Working issues
+
+- [#35 — Anchor: Specialized trucking transition, field learning, economics, and software experiment](https://github.com/joselunasrt8-creator/trucking-software-research/issues/35)
+- [#37 — Plan the MVP architecture and phased roadmap](https://github.com/joselunasrt8-creator/trucking-software-research/issues/37)
+- [#36 — Design a human-reviewed pre-trip load safety analyzer](https://github.com/joselunasrt8-creator/trucking-software-research/issues/36)
+- [#33 — Specialized-load feasibility checklist](https://github.com/joselunasrt8-creator/trucking-software-research/issues/33)
+- [#32 — Field-observation protocol for step-deck / RGN / oversize workflows](https://github.com/joselunasrt8-creator/trucking-software-research/issues/32)
+
 ## Research Before Product
 
 This repository does not begin with a predetermined SaaS product.
