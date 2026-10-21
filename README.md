@@ -90,6 +90,28 @@ Evidence should establish:
 
 A successful demo alone is not validation. Any prototype must be evaluated for failure cases and limitations before use in operational settings.
 
+## Evidence required to validate demand
+
+Technical accuracy is necessary but does not establish that people need or will use the tool. Before expanding the prototype, gather evidence from the people who actually plan, review, or approve specialized loads.
+
+Look for:
+
+- **A repeated problem:** The same information gap or planning failure appears across multiple independent loads or workflows, not just one anecdote.
+- **A clear user and decision point:** Identify who encounters the problem, who currently resolves it, and when the information is needed.
+- **Observed current behavior:** Document existing checklists, calls, spreadsheets, software, and manual cross-checks. Do not assume a workaround is ineffective merely because it is manual.
+- **Demonstrable consequences:** Record authorized, non-sensitive evidence of rechecking, delays, rework, unresolved questions, or near misses. Do not infer causation from correlation or rely on unsafe experiments.
+- **A specific gap in existing tools:** Establish what current processes fail to surface, explain, or track, rather than assuming a new tool is needed.
+- **User-verified usefulness:** Have intended users review realistic scenarios and say which flags or evidence summaries would change their workflow—and why.
+- **Evidence of continued use:** Stronger signals include users voluntarily returning to the prototype, asking to test additional cases, or requesting a controlled pilot after seeing its limitations. General interest or praise alone is weak evidence.
+
+### Demand-validation decision gate
+
+Use a simple evidence log for each observation: date, role (not personal identity), workflow, issue observed, current workaround, consequence, source/permission status, and confidence. Keep confidential details out of the repository.
+
+Do not call demand validated until findings show a recurring, meaningful problem; a defined user and workflow; a gap not adequately handled by current methods; and explicit user commitment to a next test or controlled pilot. Set the number and diversity of observations before fieldwork where practical, and record contradictory findings as well as supporting ones.
+
+If evidence shows the problem is rare, already handled well, or not important enough for users to change their workflow, narrow or stop the product hypothesis. Demand validation is separate from safety validation: user interest cannot establish that the analyzer is accurate or safe.
+
 ## Working issues
 
 - [#35 — Anchor: Specialized trucking transition, field learning, and software experiment](https://github.com/joselunasrt8-creator/trucking-software-research/issues/35)
