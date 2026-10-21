@@ -42,6 +42,17 @@ These categories must not be collapsed. A missing record is not automatically pr
 
 ## Research tracks
 
+## Live research status
+
+This table is the README-level status summary. The linked authoritative issue owns the detailed checklist, evidence, and status history; update that issue first, then synchronize this summary. Status labels describe research readiness, not product readiness.
+
+| Track | Current status | Single next action | Evidence required to unblock / advance | Continue or stop when | Authoritative issue |
+|---|---|---|---|---|---|
+| Carrier qualification and platform decision gates | **Blocked** | Resolve the exact source-artifact and semantic-binding requirements in the eligible-frame workflow. | A retrievable, version-bound FMCSA Census artifact; documented source/schema semantics; frozen eligibility rule and Census–MOTUS join protocol; reproducible audit evidence. | Continue to sampling only after the frame and rules are frozen and independently reproducible. Remain blocked if any required source, meaning, or join cannot be established; do not draw a sample or claim false-gate rates. | [#21 — Freeze the eligible carrier frame](https://github.com/joselunasrt8-creator/trucking-software-research/issues/21) |
+| Specialized-load planning and safety information | **Discovery** | Conduct authorized workflow observations and record recurring planning problems without collecting confidential data. | Independent observations; a named user and decision point; current workaround; concrete consequence; evidence of a gap in existing methods; source-backed candidate checks for any later prototype. | Continue to checklist and analyzer validation only if a repeated, meaningful gap is evidenced and qualified reviewers can assess it. Narrow or stop if current methods adequately solve it or the problem is too rare or low-impact. | [#35 — Specialized trucking research anchor](https://github.com/joselunasrt8-creator/trucking-software-research/issues/35) |
+| Cross-cutting evidence and governed decision-to-action research | **Active** | Define one bounded, externally testable decision boundary and specify its inputs, authority, and observable outcome. | A real workflow; authoritative state and policy sources; explicit handling of missing or conflicting evidence; a reproducible test protocol; and an outcome that can be independently checked. | Continue when a real boundary can be tested without inferring proprietary rules or bypassing safety controls. Re-scope or stop if required state/action interfaces or verifiable outcomes are unavailable. | [#30 — Production trucking AI action surfaces](https://github.com/joselunasrt8-creator/trucking-software-research/issues/30) |
+
+
 ### 1. Carrier qualification and platform decision gates
 
 **Question:** When a carrier is delayed, reviewed, or rejected during qualification, was the underlying requirement genuinely unsatisfied, or did missing, stale, conflicting, or misrepresented evidence prevent the system from establishing the true state?
